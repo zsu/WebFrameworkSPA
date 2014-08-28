@@ -1,0 +1,1 @@
+﻿[{applicationName}] Confirm Email Request

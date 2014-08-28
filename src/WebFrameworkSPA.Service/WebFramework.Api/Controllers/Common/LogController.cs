@@ -1,0 +1,99 @@
+﻿using WebFramework.Data.Domain;
+using App.Common.InversionOfControl;
+using App.Common.Logging;
+using Service;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Web.Http;
+using System.Linq.Dynamic;
+using Web.Infrastructure;
+using Web.Infrastructure.Exceptions;
+using Web.Infrastructure.JqGrid;
+
+namespace Web.Controllers
+{
+    public class LogController : ApiController
+    {
+        private ILogService _service;
+        public LogController()
+        {
+            _service = IoC.GetService<ILogService>();
+        }
+        // GET api/log/5
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
+
+        // POST api/log
+        public HttpResponseMessage PostJavascriptLog(LogEntry data)
+        {
+            //LogLevel logLevel = LogLevel.Debug;
+            //foreach (var item in data)
+            //{
+            //    StringBuilder message = new StringBuilder();
+            //    message.AppendLine(item.Message);
+            //    message.AppendFormat("Request Url: {0}", item.Url);
+            //    Enum.TryParse<LogLevel>(item.Level, true, out logLevel);
+            //    //Logger.Log(logLevel, new JavascriptException(item.Message));
+            //    if (logLevel == LogLevel.Error || logLevel == LogLevel.Fatal)
+            //        Logger.Log(logLevel, new JavascriptException(message.ToString()));
+            //    else
+            //        Logger.Log(logLevel, message.ToString());
+            //}
+            //var response = Request.CreateResponse(HttpStatusCode.Created);
+            //return response;
+            LogLevel logLevel = LogLevel.Debug;
+            StringBuilder message = new StringBuilder();
+            message.AppendLine(data.Message);
+            message.AppendFormat("Request Url: {0}", data.Url);
+            Enum.TryParse<LogLevel>(data.Level, true, out logLevel);
+            if (logLevel == LogLevel.Error || logLevel == LogLevel.Fatal)
+                Logger.Log(logLevel, new JavascriptException(message.ToString()));
+            else
+                Logger.Log(logLevel, message.ToString());
+            var response = Request.CreateResponse(HttpStatusCode.Created);
+            return response;
+
+        }
+        public struct LogEntry
+        {
+            public string Logger;
+            public long Timestamp;
+            public string Level;
+            public string Url;
+            public string Message;
+        }
+        [Authorize(Roles = Constants.ROLE_ADMIN)]
+        public dynamic GetGridData([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
+        {
+            var query = _service.Query();
+            if (Constants.SHOULD_FILTER_BY_APP)
+                query = query.Where(x => x.Application == App.Common.Util.ApplicationConfiguration.AppAcronym);
+            var data = Util.GetGridData<Logs>(searchModel, query);
+            var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message, x.Host, x.SessionId }).ToList();
+            return new
+            {
+                total = searchModel.page > 0 ? (int)Math.Ceiling((float)data.TotalNumber / searchModel.rows) : 1,
+                page = searchModel.page,
+                //records = data.TotalNumber,
+                //rows = dataList.Select(x => new { id = x.FundReqId, cell = new object[] { x.FundReqId, x.Year, x.ApplFormCode, x.FundReqStatusCd, x.FundReqReceiptNtfctnDt, x.CmmtmntNtfctnDt, x.CrtfctnRecvdDt, x.PiaCertificationCutoffDt } }).ToArray()
+                TotalItems = data.TotalNumber,
+                Items = dataList.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message, x.Host, x.SessionId }).ToArray()
+            };
+        }
+        [Authorize(Roles = Constants.ROLE_ADMIN)]
+        public dynamic GetById(long id)
+        {
+            if (id == default(long))
+                return BadRequest("Id cannot be emapty.");
+            var item = _service.GetById(id);
+            return Ok(item);
+        }
+    }
+
+}

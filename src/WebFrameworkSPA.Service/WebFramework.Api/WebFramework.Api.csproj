@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{207BF911-041A-4963-A2A3-B34C9BAA42DB}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Web</RootNamespace>
+    <AssemblyName>WebFramework.Api</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BrockAllen.MembershipReboot.WebHost">
+      <HintPath>..\libs\BrockAllen.MembershipReboot.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="BrockAllen.OAuth2">
+      <HintPath>..\libs\BrockAllen.OAuth2.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Castle.Core.3.2.2\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Castle.Windsor.3.2.1\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.0.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.0.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.3.0.0-beta1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.2.0.2\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0-beta1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.0-beta1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernateOracleManagedDriver">
+      <HintPath>..\packages\NHibernate.OracleManaged.1.0.1\lib\NHibernateOracleManagedDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="NodaTime">
+      <HintPath>..\packages\NodaTime.1.3.0\lib\net35-Client\NodaTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess">
+      <HintPath>..\packages\odp.net.managed.121.1.1\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Cors">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.1.2\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.1.2\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.1.2\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.0.0\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.1.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\WebFramework.sdf" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="packages.config" />
+    <Content Include="Configurations\Application.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Configurations\hibernate.cfg.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Configurations\Log.config" />
+    <Content Include="index.cshtml" />
+    <None Include="Properties\PublishProfiles\WebFrameworkSPA - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\WebFrameworkSPA - Web Deploy.pubxml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.4.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.0.3.js" />
+    <Content Include="Scripts\jquery.signalR-2.0.3.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IoCConfig.cs" />
+    <Compile Include="App_Start\NHibernateConfig.cs" />
+    <Compile Include="App_Start\SecurityConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Controllers\Common\ActivityLogController.cs" />
+    <Compile Include="Controllers\Common\AuthenticationAuditController.cs" />
+    <Compile Include="Controllers\Common\CommonController.cs" />
+    <Compile Include="Controllers\Common\LogController.cs" />
+    <Compile Include="Controllers\Common\MaintenanceWarningController.cs" />
+    <Compile Include="Controllers\Common\MessageTemplateController.cs" />
+    <Compile Include="Controllers\Common\PermissionController.cs" />
+    <Compile Include="Controllers\Common\ProfileController.cs" />
+    <Compile Include="Controllers\Common\RoleController.cs" />
+    <Compile Include="Controllers\Common\SettingController.cs" />
+    <Compile Include="Controllers\Common\TaskController.cs" />
+    <Compile Include="Controllers\Common\UserController.cs" />
+    <Compile Include="Controllers\PersonalizationController.cs" />
+    <Compile Include="FilterAttributes\AjaxMessagesFilterAttribute.cs" />
+    <Compile Include="FilterAttributes\MaintenanceMessagesFilterAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Hubs\ClientNotificationHub.cs" />
+    <Compile Include="Hubs\LogHub.cs" />
+    <Compile Include="Infrastructure\Exceptions\JavascriptException.cs" />
+    <Compile Include="Infrastructure\Extensions\DateTimeExtension.cs" />
+    <Compile Include="Infrastructure\Extensions\PrincipleExtension.cs" />
+    <Compile Include="Infrastructure\FieldValueModelBinder.cs" />
+    <Compile Include="Infrastructure\FixedMsSqlCE40Dialet.cs" />
+    <Compile Include="Infrastructure\GridModel.cs" />
+    <Compile Include="Infrastructure\NgGridSearchModelConverter.cs" />
+    <Compile Include="Infrastructure\NgGridSearchModel.cs" />
+    <Compile Include="Infrastructure\JqGrid\GroupOperations.cs" />
+    <Compile Include="Infrastructure\JqGrid\JqGridFilter.cs" />
+    <Compile Include="Infrastructure\JqGrid\JqGridModel.cs" />
+    <Compile Include="Infrastructure\JqGrid\JqGridRule.cs" />
+    <Compile Include="Infrastructure\JqGrid\JqGridSearchModel.cs" />
+    <Compile Include="Infrastructure\JqGrid\SearchOperations.cs" />
+    <Compile Include="Infrastructure\JqGrid\WhereClause.cs" />
+    <Compile Include="Infrastructure\JqGrid\WhereClauseGenerator.cs" />
+    <Compile Include="Infrastructure\ModelEventConsumer.cs" />
+    <Compile Include="Infrastructure\ObjectSerializer.cs" />
+    <Compile Include="Infrastructure\JqGridSearchModelConverter.cs" />
+    <Compile Include="Infrastructure\SearchModel.cs" />
+    <Compile Include="Infrastructure\PagingOptions.cs" />
+    <Compile Include="Infrastructure\RoleClaimsAuthenticationManager.cs" />
+    <Compile Include="Infrastructure\Tasks\DeleteActivityLogsTask.cs" />
+    <Compile Include="Infrastructure\Tasks\DeleteAuthenticationAudits.cs" />
+    <Compile Include="Infrastructure\Tasks\DeleteLogsTask.cs" />
+    <Compile Include="Infrastructure\Util.cs" />
+    <Compile Include="Infrastructure\WebApiExceptionLogger.cs" />
+    <Compile Include="Infrastructure\NgWhereClauseGenerator.cs" />
+    <Compile Include="Models\ChangePasswordModel.cs" />
+    <Compile Include="Models\EntitySearchModel.cs" />
+    <Compile Include="Models\Personalization\Features.cs" />
+    <Compile Include="Models\Personalization\PersonalizationData.cs" />
+    <Compile Include="Models\Personalization\UiClaimsData.cs" />
+    <Compile Include="Models\RolePermissionModel.cs" />
+    <Compile Include="Models\RoleUserModel.cs" />
+    <Compile Include="Models\UserRoleModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebFramework.Data.Mapping.Log\WebFramework.Data.Mappings.Log.csproj">
+      <Project>{66ebcd12-7cf5-4bb6-bde4-3949f1ebb39a}</Project>
+      <Name>WebFramework.Data.Mappings.Log</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebFramework.Data.Mappings.Security\WebFramework.Data.Mappings.Security.csproj">
+      <Project>{0031373f-8220-454c-a208-3adaa4678c43}</Project>
+      <Name>WebFramework.Data.Mappings.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebFramework.Data\WebFramework.Data.csproj">
+      <Project>{b7f19cd7-1a9a-4790-a9de-04f9ae8eaef7}</Project>
+      <Name>WebFramework.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\App.Common\App.Common.csproj">
+      <Project>{2063ffb0-c405-4709-98ae-5ddc3b3b0e42}</Project>
+      <Name>App.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\App.Infrastructure.Castle\App.Infrastructure.Castle.csproj">
+      <Project>{606e036c-0f88-4239-9d1c-95a9e4c9fa20}</Project>
+      <Name>App.Infrastructure.Castle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\App.Infrastructure.NHibernate\App.Infrastructure.NHibernate.csproj">
+      <Project>{c1b60e5c-3f01-42c0-9a97-d4e562550bad}</Project>
+      <Name>App.Infrastructure.NHibernate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BrockAllen.MembershipReboot.Nh\BrockAllen.MembershipReboot.Nh.csproj">
+      <Project>{e53d1e50-194f-445f-9477-fcbc3e6da824}</Project>
+      <Name>BrockAllen.MembershipReboot.Nh</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BrockAllen.MembershipReboot\BrockAllen.MembershipReboot.csproj">
+      <Project>{a33fe01f-ae9b-4bde-b521-ab13916b1cfa}</Project>
+      <Name>BrockAllen.MembershipReboot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebFramework.Service\WebFramework.Service.csproj">
+      <Project>{325619c8-0126-4edd-9d6b-f66fd3428a22}</Project>
+      <Name>WebFramework.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SLib\SLib.csproj">
+      <Project>{4ea940f8-c52d-4374-8ce5-0062e7e0fd7b}</Project>
+      <Name>SLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>5034</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/WebFrameworkService</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

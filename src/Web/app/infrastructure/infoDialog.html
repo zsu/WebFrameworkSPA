@@ -1,0 +1,27 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" ng-click="dialogOptions.close()" aria-hidden="true">x</button>
+    <h3>{{ dialogOptions.headerText }}</h3>
+</div>
+<div class="modal-body">
+    <p>{{ dialogOptions.bodyText }}</p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default"
+            data-ng-click="dialogOptions.close()">
+        {{ dialogOptions.closeButtonText }}
+    </button>
+    <button class="btn btn-primary"
+            data-ng-click="dialogOptions.ok();">
+        {{ dialogOptions.actionButtonText }}
+    </button>
+</div>
+<div class="modal-header" ng-if="dialogOptions.detailsText">
+    <span ng-if="dialogOptions.collapsed" ng-click="dialogOptions.uncollapse()"><span class="glyphicon glyphicon-chevron-down pull-left"></span></span>
+    <span ng-if="!dialogOptions.collapsed" ng-click="dialogOptions.collapse()"><span class="glyphicon glyphicon-chevron-up pull-left"></span></span>
+
+    <div ng-if="!dialogOptions.collapsed" class="container-fluid">
+        <div class="well">
+            <p>{{ dialogOptions.detailsText }}</p>
+        </div>
+    </div>
+</div>

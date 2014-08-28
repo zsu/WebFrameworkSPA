@@ -1,0 +1,86 @@
+﻿<h3>Log Detail</h3>
+<div>
+    <a ng-click="goBack()" class="btn btn-info">
+        <span class="glyphicon glyphicon-hand-left"></span> Back
+    </a>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">
+        ApplicationName
+    </label>
+    <div class="col-md-10">
+        {{item.Application}}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">
+        HostName
+    </label>
+    <div class="col-md-10">
+        {{item.Host}}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">
+        LogLevel
+    </label>
+    <div class="col-md-10">
+        {{item.LogLevel}}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">
+        Message
+    </label>
+    <div class="col-md-10">
+        <pre>{{item.Message}}</pre>
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">
+        User
+    </label>
+    <div class="col-md-10">
+        {{item.UserName}}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">
+        Time
+    </label>
+    <div class="col-md-10">
+        {{item.CreatedDate}}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">
+        Logger
+    </label>
+    <div class="col-md-10">
+        {{item.Logger}}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">
+        Client IP
+    </label>
+    <div class="col-md-10">
+        {{item.ClientIP}}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">
+        Session Id
+    </label>
+    <div class="col-md-10">
+        {{item.SessionId}}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">
+        Thread
+    </label>
+    <div class="col-md-10">
+        {{item.Thread}}
+    </div>
+</div>

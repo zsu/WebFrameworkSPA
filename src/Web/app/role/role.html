@@ -1,0 +1,259 @@
+﻿<style>
+    div.ui-jqgrid-view table.ui-jqgrid-btable {
+        border-style: none;
+        border-top-style: none;
+        border-collapse: separate;
+    }
+
+        div.ui-jqgrid-view table.ui-jqgrid-btable td {
+            border-left-style: none;
+        }
+
+    div.ui-jqgrid-view table.ui-jqgrid-htable {
+        border-style: none;
+        border-top-style: none;
+        border-collapse: separate;
+    }
+
+    div.ui-jqgrid-view table.ui-jqgrid-btable th {
+        border-left-style: none;
+    }
+</style>
+<h3>Roles</h3>
+<div id="main">
+    <maintenance-warning></maintenance-warning>
+    <div class="form-horizontal">
+        <hr />
+        <div>
+            <div class="table-responsive">
+                <table id="tblgrid"></table>
+            </div>
+            <div id="pager">
+            </div>
+            <script type="text/javascript">
+                $().ready(function () {
+                    var baseUrl = ttTools.baseUrl;
+                    var API_URL = baseUrl + "api/role/";
+                    var grid = $('#tblgrid');
+                    //var clientTimezone = getTimezoneName();
+                    //var timezoneHeader = '';
+                    //if (clientTimezone)
+                    //    timezoneHeader = ' (' + clientTimezone + ')';
+                    $(grid).jqGrid({
+                        autowidth: true,
+                        caption: 'Roles',
+                        datatype: 'json',
+                        mtype: 'GET',
+                        height: '100%',
+                        pager: '#pager',
+                        rowList: [10, 15, 20, 50],
+                        rowNum: 10,
+                        sortname: 'Name',
+                        sortorder: 'asc',
+                        toolbar: [false, 'bottom'],
+                        url: API_URL,
+                        viewrecords: true,
+                        ignoreCase: true,
+                        loadBeforeSend: function (jqXHR) {
+                            var scope = angular.element(document.getElementById("mainContainer")).scope();
+                            if (scope) {
+                                var tokenData = scope.getToken();
+                                if (tokenData)
+                                    jqXHR.setRequestHeader("Authorization", "Bearer " + tokenData.access_token);
+                                else scope.requireLogin();
+                            }
+                        },
+                        //colNames: ["Id", "Application", "Time"+timezoneHeader, "Type", "User", "Message","Host","Status Code"],
+                        colModel: [
+                                    {
+                                        name: 'Id',
+                                        label: 'Id',
+                                        editable: true,
+                                        edittype: 'text',
+                                        editoptions: { readonly: 'readonly' },
+                                        index: 'Id',
+                                        hidden: true
+                                    }, {
+                                        name: 'Name',
+                                        editable: true,
+                                        edittype: 'text',
+                                        eidtoptions: { maxlength: 100 },
+                                        editrules: { required: true },
+                                        index: 'Name'
+                                    }, {
+                                        name: 'Description',
+                                        editable: true,
+                                        edittype: 'text',
+                                        editoptions: { maxlength: 150 },
+                                        editrules: { required: false },
+                                        index: 'Description'
+                                    }
+                        ], jsonReader: {
+                            root: "Items",
+                            page: "page",
+                            total: "total",
+                            records: "TotalItems",
+                            repeatitems: false,
+                            id: "Id"
+                        },
+                        loadError: function (jqXHR, textStatus, errorThrown) {
+                            var scope = angular.element(document.getElementById("mainContainer")).scope();
+                            if (scope) {
+                                scope.showError(jqXHR);
+                            }
+                            else
+                                alert('HTTP status code: ' + jqXHR.status + '\n' + 'textStatus: ' + textStatus + '\n' + 'errorThrown: ' + errorThrown);
+                        }
+                    });
+                    //$(grid).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: false });
+                    $(grid).jqGrid("navGrid", "#pager", { add: true, edit: true, del: true, search: true, refresh: true },
+                                updateDialog('PUT', API_URL),//edit parameters
+                                updateDialog('POST', API_URL),//add parameters
+                                updateDialog('DELETE', API_URL),//del parameters
+                    {
+                        groupOps: [{ op: "AND", text: "and" }, { op: "OR", text: "or" }], multipleSearch: true, multipleGroup: true, showQuery: true, sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'cn', 'nc']
+                    },//search parameters
+                    { recreateForm: true }
+                    );
+                    $(grid).jqGrid('navButtonAdd', "#pager",
+                    //{ caption: "Clear", title: "Clear Search", buttonicon: 'ui-icon-arrowreturnthick-1-w', onClickButton: function () { $(grid)[0].clearToolbar(); } },
+                    {
+                        caption: ""/*"Show"*/, buttonicon: "ui-icon-zoomin", title: "View Role Permissions",
+                        onClickButton: function () {
+                            var rowid = $(grid).jqGrid('getGridParam', 'selrow');
+                            if (!rowid) {
+                                showSelectRowAlert(this.id);
+                                return;
+                            }
+                            window.location = '#/rolepermission?id=' + $(grid).jqGrid('getCell', rowid, 'Id') + '&name=' + $(grid).jqGrid('getCell', rowid, 'Name');
+                        }
+                    });
+                    $.extend($.jgrid.edit, {
+                        afterSubmit: function (response, postdata) {
+                            var res = $.parseJSON(response.responseText);
+                            if (res.Message) {
+                                var myInfo = '<div class="ui-state-highlight ui-corner-all">' +
+                            '<span class="ui-icon ui-icon-info" ' +
+                                'style="float: left; margin-right: .3em;"></span>' +
+                            res.Message +
+                            '</div>',
+                            $infoTr = $("#TblGrid_" + $.jgrid.jqID(this.id) + ">tbody>tr.tinfo"),
+                            $infoTd = $infoTr.children("td.topinfo");
+                                $infoTd.html(myInfo);
+                                $infoTr.show();
+
+                                // display status message to 3 sec only
+                                setTimeout(function () {
+                                    $infoTr.slideUp("slow");
+                                }, 3000);
+                            }
+                            return [res.Success, res.Message, res.RowId];
+                        },
+                        errorTextFormat: showError
+                    });
+                    $.extend($.jgrid.del, { errorTextFormat: showError });
+                });
+                function updateDialog(action, url) {
+                    return {
+                        url: url,
+                        closeAfterAdd: false,
+                        closeAfterEdit: false,
+                        afterShowForm: function (formId) { },
+                        modal: true,
+                        onclickSubmit: function (params) {
+                            var list = $("#tblgrid");
+                            var selectedRow = list.getGridParam("selrow");
+                            rowData = list.getRowData(selectedRow);
+                            params.url = url + rowData.Id;
+                            params.mtype = action;
+                        },
+                        beforeShowForm: function ($form) {
+                            $form.find(".FormElement[readonly]")
+                                .prop("disabled", true)
+                                .addClass("ui-state-disabled")
+                                .closest(".DataTD")
+                                .prev(".CaptionTD")
+                                .prop("disabled", true)
+                                .addClass("ui-state-disabled");
+                            switch (action) {
+                                case "POST":
+                                    $('#tr_IsLoginAllowed', $form).hide();
+                                    $('#tr_FailedLoginCount', $form).hide();
+                                    $('#tr_RequiresPasswordReset', $form).hide();
+                                    $('#tr_IsAccountVerified', $form).hide();
+                                    $('#tr_FailedPasswordResetCount', $form).hide();
+                                    $('#tr_MobilePhoneNumber', $form).hide();
+                                    $('#tr_IsAccountClosed', $form).hide();
+                                    break;
+                            }
+                        },
+                        recreateForm: true,
+                        width: "300"
+                    };
+                }
+                function showSelectRowAlert(gridid) {
+                    var alertIDs = { themodal: 'alertmod', modalhead: 'alerthd', modalcontent: 'alertcnt' };
+                    if ($("#" + alertIDs.themodal).html() === null || $("#" + alertIDs.themodal).html() === undefined) {
+                        var gbox = $("#gbox_" + $.jgrid.jqID(gridid));
+                        var of = $(gbox).offset();
+                        var w = $(gbox).width();
+                        var h = $(gbox).height();
+                        var w1 = $("#" + alertIDs.themodal).width();
+                        var h1 = $("#" + alertIDs.themodal).height();
+                        var toppos = of.top + ((h - h1) / 2);
+                        var leftpos = of.left + ((w - w1) / 2);
+                        $.jgrid.createModal(alertIDs, "<div>" + $.jgrid.nav.alerttext + "</div><span tabindex='0'><span tabindex='-1' id='jqg_alrt'></span></span>",
+                            {
+                                gbox: "#gbox_" + $.jgrid.jqID(gridid), jqModal: true, drag: true, resize: true,
+                                caption: $.jgrid.nav.alertcap,
+                                //top: 100, left: 100, width: 200, height: 'auto',
+                                top: toppos, left: leftpos, width: w1, height: 'auto',
+                                closeOnEscape: true,
+                                zIndex: null
+                            }, "", "", true);
+                    }
+                    $.jgrid.viewModal("#" + alertIDs.themodal, { gbox: "#gbox_" + $.jgrid.jqID(gridid), jqm: true });
+                    $("#jqg_alrt").focus();
+                }
+                function showError(data) {
+                    var res = $.parseJSON(data.responseText);
+                    //if (res.ExceptionMessage)
+                    //    log.error(res.ExceptionMessage);
+                    return '<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>' +
+                           "<strong>Error: <strong>" + res.Message;/*Status: '" +
+                             data.statusText + "'. Error code: " + data.status;*/
+                }
+                function datePick(elem) {
+                    $(elem).datepicker(
+                        {
+                            changeYear: true,
+                            changeMonth: true,
+                            showButtonPanel: false,
+                            dateFormat: 'yy-mm-dd'
+                        });
+                }
+                function validateGuid(value, colName) {
+                    if (value && value.length > 0) {
+                        var re = new RegExp(/^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$/);
+                        if (re.test(value))
+                            return [true, ""];
+                    }
+                    return [false, colName + ": Invalid Guid."];
+                }
+                function validateDate(value, colName) {
+                    if (value && value.length > 0) {
+                        var re = new RegExp(/^(19|20)\d\d([-/.])(0?[1-9]|1[012])\2(0?[1-9]|[12][0-9]|3[01])$/);
+                        if (re.test(value))
+                            return [true, ""];
+                    }
+                    return [false, colName + ": please enter a date with format YYYY-MM-DD."];
+                }
+            </script>
+        </div>
+    </div>
+</div>
+
+
+
+
+

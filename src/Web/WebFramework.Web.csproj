@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7B2C0D1F-37D9-4E8B-91FE-3CE33B1DA822}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebFramework.Web</RootNamespace>
+    <AssemblyName>WebFramework.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="app\0lib\angular-cookie.min.js" />
+    <Content Include="app\0lib\angular-ui-router.js" />
+    <Content Include="app\0lib\i18n\grid.locale-en.js" />
+    <Content Include="app\0lib\jquery-ui-1.10.4.min.js" />
+    <Content Include="app\0lib\jquery.jqGrid.min.js" />
+    <Content Include="app\0lib\jquery.signalR-2.0.3.js" />
+    <Content Include="app\0lib\jstz.js" />
+    <Content Include="app\0lib\jstz.min.js" />
+    <Content Include="app\0lib\ui-bootstrap-tpls-0_11_0.js" />
+    <Content Include="app\authenticationaudit\authenticationaudit.html" />
+    <Content Include="app\authenticationaudit\authenticationauditApiService.js" />
+    <Content Include="app\authenticationaudit\authenticationauditController.js" />
+    <Content Include="app\content\css\bootstrap-theme.css" />
+    <Content Include="app\content\css\form.css" />
+    <Content Include="app\content\css\images\animated-overlay.gif" />
+    <Content Include="app\content\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="app\content\css\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="app\content\css\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="app\content\css\images\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="app\content\css\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="app\content\css\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="app\content\css\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="app\content\css\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="app\content\css\images\ui-icons_217bc0_256x240.png" />
+    <Content Include="app\content\css\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="app\content\css\images\ui-icons_469bdd_256x240.png" />
+    <Content Include="app\content\css\images\ui-icons_6da8d5_256x240.png" />
+    <Content Include="app\content\css\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="app\content\css\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="app\content\css\images\ui-icons_f9bd01_256x240.png" />
+    <Content Include="app\content\css\jquery-ui.css" />
+    <Content Include="app\content\css\ui.jqgrid.css" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="app\content\images\logo.gif" />
+    <Content Include="app\infrastructure\common.js" />
+    <Content Include="app\infrastructure\infoDialog.html" />
+    <Content Include="app\logDetail\logDetail.html" />
+    <Content Include="app\logDetail\logDetailApiService.js" />
+    <Content Include="app\logDetail\logDetailController.js" />
+    <Content Include="app\activitylog\activitylog.html" />
+    <Content Include="app\activitylog\activitylogApiService.js" />
+    <Content Include="app\activitylog\activitylogController.js" />
+    <Content Include="app\messagetemplate\messagetemplate.html" />
+    <Content Include="app\messagetemplate\messagetemplateApiService.js" />
+    <Content Include="app\messagetemplate\messagetemplateController.js" />
+    <Content Include="app\permission\permission.html" />
+    <Content Include="app\permission\permissionApiService.js" />
+    <Content Include="app\permission\permissionController.js" />
+    <Content Include="app\rolepermission\rolepermission.html" />
+    <Content Include="app\rolepermission\rolepermissionApiService.js" />
+    <Content Include="app\rolepermission\rolepermissionController.js" />
+    <Content Include="app\roleuserlist\roleuserlist.html" />
+    <Content Include="app\roleuserlist\roleuserlistApiService.js" />
+    <Content Include="app\roleuserlist\roleuserlistController.js" />
+    <Content Include="app\role\role.html" />
+    <Content Include="app\role\roleApiService.js" />
+    <Content Include="app\role\roleController.js" />
+    <Content Include="app\userrole\userrole.html" />
+    <Content Include="app\userrole\userroleApiService.js" />
+    <Content Include="app\userrole\userroleController.js" />
+    <Content Include="app\user\user.html" />
+    <Content Include="app\user\userApiService.js" />
+    <Content Include="app\user\userController.js" />
+    <Content Include="app\setting\setting.html" />
+    <Content Include="app\setting\settingApiService.js" />
+    <Content Include="app\setting\settingController.js" />
+    <Content Include="app\maintenance\maintenance.html" />
+    <Content Include="app\maintenance\maintenanceApiService.js" />
+    <Content Include="app\maintenance\maintenanceController.js" />
+    <Content Include="app\logs\logs.html" />
+    <Content Include="app\logs\logsApiService.js" />
+    <Content Include="app\logs\logsController.js" />
+    <Content Include="app\about\about.html" />
+    <Content Include="app\about\aboutController.js" />
+    <Content Include="app\content\css\angular-carousel.css" />
+    <Content Include="app\content\css\animate.css" />
+    <Content Include="app\content\css\app-responsive.css" />
+    <Content Include="app\content\css\bootstrap-switch.css" />
+    <Content Include="app\content\css\bootstrap.css" />
+    <Content Include="app\content\css\loading-bar.css" />
+    <Content Include="app\content\css\loadspinner.css" />
+    <Content Include="app\content\css\modern-responsive.css" />
+    <Content Include="app\content\css\modern.css" />
+    <Content Include="app\content\css\tweak-bootstrap.css" />
+    <Content Include="app\content\css\font-awesome.css" />
+    <Content Include="app\content\css\nv.d3.css" />
+    <Content Include="app\content\css\toastr.css" />
+    <Content Include="app\content\images\default.png" />
+    <Content Include="app\content\images\emergency_stop.png" />
+    <Content Include="app\content\images\offline.png" />
+    <Content Include="app\content\images\online.png" />
+    <Content Include="app\content\images\user.png" />
+    <Content Include="app\content\images\ajax-loader.gif" />
+    <Content Include="app\content\images\glyphicons-halflings-white.png" />
+    <Content Include="app\content\images\glyphicons-halflings.png" />
+    <Content Include="app\content\images\lang_de.png" />
+    <Content Include="app\content\images\lang_de_t.png" />
+    <Content Include="app\content\images\lang_en.png" />
+    <Content Include="app\content\images\lang_en_t.png" />
+    <Content Include="app\content\css\app.css" />
+    <Content Include="app\constants.js" />
+    <Content Include="app\infrastructure\maintenanceWarningDirective.js" />
+    <Content Include="app\offline\offlineApiService.js" />
+    <Content Include="app\offline\offlineController.js" />
+    <Content Include="app\offline\offline.html" />
+    <Content Include="app\start\startController.js" />
+    <Content Include="app\shell\statusController.js" />
+    <Content Include="app\infrastructure\serverValidationDirective.js" />
+    <Content Include="app\infrastructure\thinktecture.ng.SignalR.js" />
+    <Content Include="app\0lib\angular-animate.js" />
+    <Content Include="app\0lib\angular-bootstrap-switch.js" />
+    <Content Include="app\0lib\angular-cache.js" />
+    <Content Include="app\0lib\angular-carousel.js" />
+    <Content Include="app\0lib\angular-sanitize.js" />
+    <Content Include="app\0lib\angular-strap.js" />
+    <Content Include="app\0lib\angular-touch.js" />
+    <Content Include="app\0lib\angular.js" />
+    <Content Include="app\0lib\angularjs-nvd3-directives.js" />
+    <Content Include="app\0lib\bootstrap-filestyle.js" />
+    <Content Include="app\0lib\bootstrap-switch.js" />
+    <Content Include="app\0lib\bootstrap-.js" />
+    <Content Include="app\0lib\d3.v3.js" />
+    <Content Include="app\0lib\imageupload.js" />
+    <Content Include="app\0lib\ionic-angular.js" />
+    <Content Include="app\0lib\ionic.js" />
+    <Content Include="app\0lib\loading-bar.js" />
+    <Content Include="app\0lib\log4javascript.js" />
+    <Content Include="app\0lib\ngStorage.js" />
+    <Content Include="app\0lib\nv.d3.js" />
+    <Content Include="app\0lib\phonegap-geolocation.js" />
+    <Content Include="app\0lib\phonegap-ready.js" />
+    <Content Include="app\0lib\script.js" />
+    <Content Include="app\0lib\toastr.js" />
+    <Content Include="app\infrastructure\geoLocationTrackerService.js" />
+    <Content Include="app\shell\networkStatusService.js" />
+    <Content Include="app\infrastructure\thinktecture.ng.Dialog.js" />
+    <Content Include="app\infrastructure\routeResolverService.js" />
+    <Content Include="app\shell\personalizationService.js" />
+    <Content Include="app\font\fontawesome-webfont.svg" />
+    <Content Include="app\start\start.html" />
+    <Content Include="app\app.js" />
+    <Content Include="app\shell\navigationController.js" />
+    <Content Include="app\template\NgFilterHeaderTemplate.html" />
+    <Content Include="app\translations\translations-de.js" />
+    <Content Include="app\0lib\angular-translate-loader-static-files.js" />
+    <Content Include="app\0lib\angular-translate-loader-url.js" />
+    <Content Include="app\0lib\angular-translate-storage-cookie.js" />
+    <Content Include="app\0lib\angular-translate-storage-local.js" />
+    <Content Include="app\0lib\angular-translate-.js" />
+    <Content Include="app\0lib\fastclick.js" />
+    <Content Include="app\infrastructure\tools.js" />
+    <Content Include="app\infrastructure\baseUrlFilter.js" />
+    <Content Include="app\login\loginController.js" />
+    <Content Include="app\infrastructure\thinktecture.ng.Authentication.js" />
+    <Content Include="app\infrastructure\thinktecture.ng.Toast.js" />
+    <Content Include="app\infrastructure\dialog.html" />
+    <Content Include="app\login\login.html" />
+    <Content Include="app\font\fontawesome-webfont.eot" />
+    <Content Include="app\font\fontawesome-webfont.ttf" />
+    <Content Include="app\font\fontawesome-webfont.woff" />
+    <Content Include="app\font\FontAwesome.otf" />
+    <Content Include="favicon.ico" />
+    <Content Include="images\1.jpg" />
+    <Content Include="images\2.jpg" />
+    <Content Include="images\3.jpg" />
+    <Content Include="images\4.jpg" />
+    <Content Include="images\5.jpg" />
+    <Content Include="images\0.jpg" />
+    <Content Include="app\main.js" />
+    <Content Include="index.html" />
+    <Content Include="app\0lib\jquery-2.1.0.js" />
+    <Content Include="app\translations\locale-en.js" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="app\content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="app\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\WebFrameworkSPA - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\WebFrameworkSPA - Web Deploy.pubxml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>16197</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost/WebFrameworkSPA</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

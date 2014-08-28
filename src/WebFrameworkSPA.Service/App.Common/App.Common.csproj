@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2063FFB0-C405-4709-98AE-5DDC3B3B0E42}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>App.Common</RootNamespace>
+    <AssemblyName>App.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\ExceptionHandlerAttribute.cs" />
+    <Compile Include="Attributes\LogAttribute.cs" />
+    <Compile Include="Attributes\DependsOnAttribute.cs" />
+    <Compile Include="Caching\ContextCacheManager.cs" />
+    <Compile Include="Caching\ThreadContextCacheManager.cs" />
+    <Compile Include="Caching\WcfContextCacheManager.cs" />
+    <Compile Include="Caching\Extensions.cs" />
+    <Compile Include="Caching\ICacheManager.cs" />
+    <Compile Include="Caching\MemoryCacheManager.cs" />
+    <Compile Include="Caching\NullCache.cs" />
+    <Compile Include="Caching\PerRequestCacheManager.cs" />
+    <Compile Include="Check.cs" />
+    <Compile Include="Configuration\AppConfig.cs" />
+    <Compile Include="Configuration\ConfigManager.cs" />
+    <Compile Include="Configuration\ConfigurationSettings.cs" />
+    <Compile Include="Configuration\DefaultUnitOfWorkConfiguration.cs" />
+    <Compile Include="Configuration\FileWatchHandler.cs" />
+    <Compile Include="Configuration\HandlerBase.cs" />
+    <Compile Include="Configuration\IAppConfig.cs" />
+    <Compile Include="Configuration\IConfigManager.cs" />
+    <Compile Include="Configuration\IConfigurable.cs" />
+    <Compile Include="Configuration\IConfigurationSettings.cs" />
+    <Compile Include="Configuration\IDataConfiguration.cs" />
+    <Compile Include="Configuration\ICommonConfig.cs" />
+    <Compile Include="Configuration\IReportConfig.cs" />
+    <Compile Include="Configuration\IUnitOfWorkConfiguration.cs" />
+    <Compile Include="Configuration\CommonConfig.cs" />
+    <Compile Include="Configuration\ReadOnlyNameValueCollection.cs" />
+    <Compile Include="Configuration\ReportConfig.cs" />
+    <Compile Include="Contexts\Context.cs" />
+    <Compile Include="Contexts\IContext.cs" />
+    <Compile Include="Contexts\IInstanceContext.cs" />
+    <Compile Include="Contexts\InstanceContextWrapper.cs" />
+    <Compile Include="Contexts\IOperationContext.cs" />
+    <Compile Include="Contexts\IServiceHost.cs" />
+    <Compile Include="Contexts\OperationContextWrapper.cs" />
+    <Compile Include="Contexts\ServiceHostWrapper.cs" />
+    <Compile Include="Data\RepositoryBase.cs" />
+    <Compile Include="Data\ComparableObject.cs" />
+    <Compile Include="Data\DomainSignatureAttribute.cs" />
+    <Compile Include="Data\Entity.cs" />
+    <Compile Include="Data\IDbContext.cs" />
+    <Compile Include="Data\IEntity.cs" />
+    <Compile Include="Data\IPagedList.cs" />
+    <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\ITransactionManager.cs" />
+    <Compile Include="Data\IUnitOfWork.cs" />
+    <Compile Include="Data\IUnitOfWorkFactory.cs" />
+    <Compile Include="Data\IUnitOfWorkScope.cs" />
+    <Compile Include="Data\PagedList.cs" />
+    <Compile Include="Data\RepositoryWrapperBase.cs" />
+    <Compile Include="Data\TransactionManager.cs" />
+    <Compile Include="Data\TransactionMode.cs" />
+    <Compile Include="Data\TransactionScopeHelper.cs" />
+    <Compile Include="Data\UnitOfWorkManager.cs" />
+    <Compile Include="Data\UnitOfWorkScope.cs" />
+    <Compile Include="Data\UnitOfWorkSettings.cs" />
+    <Compile Include="Data\UnitOfWorkTransaction.cs" />
+    <Compile Include="Events\EntityDeleted.cs" />
+    <Compile Include="Events\EntityInserted.cs" />
+    <Compile Include="Events\EntityUpdated.cs" />
+    <Compile Include="Events\EventPublisher.cs" />
+    <Compile Include="Events\EventPublisherExtensions.cs" />
+    <Compile Include="Events\IConsumer.cs" />
+    <Compile Include="Events\IEventPublisher.cs" />
+    <Compile Include="Events\ISubscriptionService.cs" />
+    <Compile Include="Events\SubscriptionService.cs" />
+    <Compile Include="Expressions\ExpressionVisitor.cs" />
+    <Compile Include="Expressions\MemberAccessPathVisitor.cs" />
+    <Compile Include="Expressions\MemberAccessPropertyInfoVisitor.cs" />
+    <Compile Include="Extension\CollectionExtension.cs" />
+    <Compile Include="Extension\DateTimeExtension.cs" />
+    <Compile Include="Extension\Dynamic.cs" />
+    <Compile Include="Extension\GuidExtension.cs" />
+    <Compile Include="Extension\StringExtension.cs" />
+    <Compile Include="HttpModules\UnhandledExceptionModule.cs" />
+    <Compile Include="Security\IPasswordGenerator.cs" />
+    <Compile Include="Security\PasswordGenerator.cs" />
+    <Compile Include="SessionMessage\ISessionMessageFactory.cs" />
+    <Compile Include="SessionMessage\SessionMessageFactory.cs" />
+    <Compile Include="Tasks\StartupTaskManager.cs" />
+    <Compile Include="TypeFinder\AppDomainTypeFinder.cs" />
+    <Compile Include="TypeFinder\ITypeFinder.cs" />
+    <Compile Include="TypeFinder\WebAppTypeFinder.cs" />
+    <Compile Include="InversionOfControl\DependencyResolver.cs" />
+    <Compile Include="InversionOfControl\DependencyResolverFactory.cs" />
+    <Compile Include="InversionOfControl\IDependencyResolver.cs" />
+    <Compile Include="InversionOfControl\IDependencyResolverFactory.cs" />
+    <Compile Include="InversionOfControl\IoC.cs" />
+    <Compile Include="InversionOfControl\IServiceInjector.cs" />
+    <Compile Include="InversionOfControl\IServiceRegistrar.cs" />
+    <Compile Include="InversionOfControl\IServiceResolver.cs" />
+    <Compile Include="InversionOfControl\LifetimeType.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\ILog.cs" />
+    <Compile Include="Logging\ILogFactory.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LogType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AppCommon.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppCommon.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SessionMessage\CookieSessionMessageProvider.cs" />
+    <Compile Include="SessionMessage\ISessionMessageProvider.cs" />
+    <Compile Include="SessionMessage\SessionMessage.cs" />
+    <Compile Include="SessionMessage\SessionStateSessionMessageProvider.cs" />
+    <Compile Include="Tasks\IScheduleTaskService.cs" />
+    <Compile Include="Tasks\IStartupTask.cs" />
+    <Compile Include="Tasks\ITask.cs" />
+    <Compile Include="Tasks\ScheduleTask.cs" />
+    <Compile Include="Tasks\ScheduleTaskService.cs" />
+    <Compile Include="Tasks\Task.cs" />
+    <Compile Include="Tasks\TaskManager.cs" />
+    <Compile Include="Tasks\TaskThread.cs" />
+    <Compile Include="Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AppCommon.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppCommon.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
