@@ -41,10 +41,10 @@ packages
 [Oo]bj/
 [Dd]ebug/
 [Rr]elease/
-[Ll]ogs/
 [Pp]ublishProfiles/
 [Bb]uild/
 .nuget/
 *.suo
 *.user
 *.vspscc
+*.log
