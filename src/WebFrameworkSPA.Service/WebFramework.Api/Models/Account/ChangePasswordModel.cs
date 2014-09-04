@@ -8,6 +8,7 @@ namespace Web.Models
 {
     public class ChangePasswordModel
     {
+        public string UserName { get; set; }
         [Required]
         [DataType(DataType.Password)]
         public string OldPassword { get; set; }

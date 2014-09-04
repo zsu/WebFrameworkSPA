@@ -96,6 +96,11 @@ namespace Web
                 return;
             }
             var user = svc.GetByUsername(context.UserName);
+            if (user.RequiresPasswordReset || svc.IsPasswordExpired(user))
+            {
+                context.SetError("password_expired", "Password expired.");
+                return;
+            } 
             var claims = user.GetAllClaims();
             var id = new System.Security.Claims.ClaimsIdentity(claims, context.Options.AuthenticationType);
             IRoleService roleService = IoC.GetService<IRoleService>();

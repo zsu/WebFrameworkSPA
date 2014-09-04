@@ -9,6 +9,7 @@
             var deferred = $q.defer();
             var url = ttTools.baseUrl + "api/account/changepassword";
             var p = {
+                UserName:params.userName,
                 OldPassword: params.oldPassword,
                 NewPassword: params.newPassword,
                 NewPasswordConfirm: params.newPasswordConfirm

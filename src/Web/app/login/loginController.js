@@ -4,7 +4,7 @@
      * @param tokenAuthentication
      * @param {$app.Toast} toast
      */
-    function Controller($scope, tokenAuthentication, dialog, $translate) {
+    function Controller($scope, $location, tokenAuthentication, dialog, $translate) {
         $scope.login = {};
 
         $scope.login.username = "";
@@ -14,6 +14,11 @@
             tokenAuthentication.login($scope.login.username, $scope.login.password)
                 .error(function (data, status, headers, config) {
                     if (status === 400) {
+                        if (data.error == 'password_expired')
+                        {
+                            $location.path('/changepassword/'+$scope.login.username);
+                            return;
+                        }
                         dialog.showModalDialog({}, {
                             headerText: $translate("COMMON_ERROR"),
                             bodyText: $translate("LOGIN_FAILED"),
@@ -25,5 +30,5 @@
         };
     };
 
-    app.controller("LoginController", ["$scope", "tokenAuthentication", "dialog", "$translate", Controller]);
+    app.controller("LoginController", ["$scope","$location", "tokenAuthentication", "dialog", "$translate", Controller]);
 })();

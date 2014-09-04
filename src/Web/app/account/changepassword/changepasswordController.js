@@ -9,9 +9,10 @@
      * @param $translate
      * @param {$app.Personalization} personalization
      */
-    function Controller($scope, $location, signalRSubscribe, toast, dialog, $translate, common, personalization, changepasswordApi) {
+    function Controller($scope, $location, signalRSubscribe, toast, dialog, $translate, $stateParams, common, personalization, changepasswordApi) {
         $scope.changePasswordModel = {};
 
+        $scope.changePasswordModel.userName = $stateParams.name;
         $scope.changePasswordModel.oldPassword = "";
         $scope.changePasswordModel.newPassword = "";
         $scope.changePasswordModel.newPasswordConfirm = "";
@@ -53,5 +54,5 @@
     };
 
     app.controller("ChangePasswordController",
-        ["$scope", "$location", "signalRSubscribe", "toast", "dialog", "$translate", "common", "personalization","changepasswordApi", Controller]);
+        ["$scope", "$location", "signalRSubscribe", "toast", "dialog", "$translate", "$stateParams", "common", "personalization", "changepasswordApi", Controller]);
 })();

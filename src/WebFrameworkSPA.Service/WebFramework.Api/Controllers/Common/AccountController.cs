@@ -26,15 +26,29 @@ namespace Web.Controllers.Common
         }
         [Route("api/account/changepassword")]
         [HttpPut]
+        [AllowAnonymous]
         public IHttpActionResult ChangePassword([ModelBinder(typeof(Web.Infrastruture.FieldValueModelBinder))] ChangePasswordModel item)
         {
             StringBuilder message = new StringBuilder();
-            var user = HttpContext.Current.User;
-            var claimsIdentity = user == null ? null : user.Identity as ClaimsIdentity;
-            if (!User.HasUserID())
+            Guid userId=User==null || !User.HasUserID() || !User.Identity.IsAuthenticated?Guid.Empty:User.GetUserID();
+            NhUserAccount user = null;
+            if (string.IsNullOrEmpty(item.UserName) && User == null)
+                return BadRequest("User cannot be emapty.");
+            if (!string.IsNullOrEmpty(item.UserName))
             {
-                return Unauthorized();
+                user = _accountService.GetByUsername(item.UserName.Trim());
+                if (user == null)
+                    return BadRequest(string.Format("Invalid user name or password."));
+                userId = user.ID;
             }
+            else
+                item.UserName = User.Identity.Name;
+            if (userId == default(Guid))
+                return Unauthorized();
+            //if (!User.HasUserID())
+            //{
+            //    return Unauthorized();
+            //}
             if (item.NewPassword != item.NewPasswordConfirm)
             {
                 message.Append("New password and password confirm do not match.");
@@ -42,7 +56,7 @@ namespace Web.Controllers.Common
             }
             try
             {
-                _accountService.ChangePassword(user.GetUserID(), item.OldPassword, item.NewPassword);
+                _accountService.ChangePassword(userId, item.OldPassword, item.NewPassword);
             }
             catch (Exception ex)
             {
