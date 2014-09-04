@@ -37,8 +37,8 @@ namespace Web
             var appinfo = new Web.Infrastructure.MembershipRebootAppInfo(Util.ApplicationConfiguration.AppAcronym, Util.ApplicationConfiguration.SupportOrganization,
                 "Login/",
                 "confirmemail/",
-                "RegisterCancel/",
-                "PasswordResetConfirm/");
+                "cancelregister/",
+                "confirmpasswordreset/");
             var messageTemplateService=IoC.GetService<IMessageTemplateService>();
             var formatter = new CustomEmailMessageFormatter(appinfo,messageTemplateService);
 

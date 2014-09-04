@@ -208,6 +208,14 @@ app.config(["$urlRouterProvider", "$stateProvider", "$locationProvider", "$trans
               url: "/confirmemail/:id",
               templateUrl: viewBaseUrl + "account/confirmemail/confirmemail.html",
               controller: "ConfirmEmailController"
+          }).state("resetpassword", {
+              url: "/resetpassword",
+              templateUrl: viewBaseUrl + "account/resetpassword/resetpassword.html",
+              controller: "ResetPasswordController"
+          }).state("confirmpasswordreset", {
+              url: "/confirmpasswordreset/:key",
+              templateUrl: viewBaseUrl + "account/confirmpasswordreset/confirmpasswordreset.html",
+              controller: "ConfirmPasswordResetController"
           });
         $provide.factory("$stateProviderService", function () {
             return $stateProvider;

@@ -9,11 +9,11 @@
             var deferred = $q.defer();
             var url = ttTools.baseUrl + "api/account/confirmemail";
             var p = {
-                Password: params.Password,
+                Password: params.Email,
                 Key: params.Key
             };
             $http({
-                method: "PUT",
+                method: "POST",
                 url: url,
                 params:p
             }).success(function (response) {

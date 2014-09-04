@@ -25,7 +25,7 @@ namespace Web.Controllers.Common
             _accountService = IoC.GetService<UserAccountService<NhUserAccount>>();
         }
         [Route("api/account/changepassword")]
-        [HttpPut]
+        [HttpPost]
         [AllowAnonymous]
         public IHttpActionResult ChangePassword([ModelBinder(typeof(Web.Infrastruture.FieldValueModelBinder))] ChangePasswordModel item)
         {
@@ -63,11 +63,64 @@ namespace Web.Controllers.Common
                 message.Append(ex.Message);
                 return Json<object>(new { Success = false, Message = message.ToString() });
             }
-            message.Append("Password is changed successflly.");
+            message.Append("Password is changed successfully.");
+            return Json<object>(new { Success = true, Message = message.ToString() });
+        }
+        [Route("api/account/resetpassword")]
+        [HttpPost]
+        [AllowAnonymous]
+        public IHttpActionResult ResetPassword([ModelBinder(typeof(Web.Infrastruture.FieldValueModelBinder))] PasswordResetModel item)
+        {
+            StringBuilder message = new StringBuilder();
+            if(string.IsNullOrEmpty(item.Email))
+                return BadRequest("Email cannot be empty.");
+            var account = _accountService.GetByEmail(item.Email.Trim());
+            if (account == null)
+                return BadRequest("Invalid email.");
+            try
+            {
+                _accountService.ResetPassword(item.Email.Trim());
+            }
+            catch (Exception ex)
+            {
+                message.Append(ex.Message);
+                return Json<object>(new { Success = false, Message = message.ToString() });
+            }
+            message.Append("Password reset email has been sent out successfully.");
+            return Json<object>(new { Success = true, Message = message.ToString() });
+        }
+        [Route("api/account/confirmpasswordreset")]
+        [HttpPost]
+        [AllowAnonymous]
+        public IHttpActionResult ConfirmPasswordReset([ModelBinder(typeof(Web.Infrastruture.FieldValueModelBinder))] ResetPasswordConfirmModel item)
+        {
+            StringBuilder message = new StringBuilder();
+            if (string.IsNullOrEmpty(item.Key))
+                return BadRequest("Key cannot be empty.");
+            NhUserAccount account;
+            if (item.Password != item.ConfirmPassword)
+            {
+                message.Append("New password and password confirm do not match.");
+                return Json<object>(new { Success = false, Message = message.ToString() });
+            }
+            try
+            {
+                if(!_accountService.ChangePasswordFromResetKey(item.Key, item.Password, out account))
+                {
+                    message.Append("Failed to change password.");
+                    return Json<object>(new { Success = false, Message = message.ToString() });
+                }
+            }
+            catch (Exception ex)
+            {
+                message.Append(ex.Message);
+                return Json<object>(new { Success = false, Message = message.ToString() });
+            }
+            message.Append("Password was changed successfully.");
             return Json<object>(new { Success = true, Message = message.ToString() });
         }
         [Route("api/account/confirmemail")]
-        [HttpPut]
+        [HttpPost]
         public IHttpActionResult ConfirmEmail([ModelBinder(typeof(Web.Infrastruture.FieldValueModelBinder))] ChangeEmailFromKeyInputModel item)
         {
             StringBuilder message = new StringBuilder();

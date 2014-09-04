@@ -4,15 +4,14 @@
      * @param $q
      * @param $angularCacheFactory
      */
-    $app.ChangePasswordApi = function ($http, $q, $angularCacheFactory) {
+    $app.ConfirmPasswordResetApi = function ($http, $q, $angularCacheFactory) {
         this.changePassword = function (params) {
             var deferred = $q.defer();
-            var url = ttTools.baseUrl + "api/account/changepassword";
+            var url = ttTools.baseUrl + "api/account/confirmpasswordreset";
             var p = {
-                UserName:params.userName,
-                OldPassword: params.oldPassword,
-                NewPassword: params.newPassword,
-                NewPasswordConfirm: params.newPasswordConfirm
+                Key:params.key,
+                Password: params.newPassword,
+                ConfirmPassword: params.newPasswordConfirm
             };
             $http({
                 method: "POST",
@@ -28,5 +27,5 @@
         };
     };
 
-    app.service("changepasswordApi", ["$http", "$q", "$angularCacheFactory", $app.ChangePasswordApi]);
+    app.service("confirmpasswordresetApi", ["$http", "$q", "$angularCacheFactory", $app.ConfirmPasswordResetApi]);
 })();
