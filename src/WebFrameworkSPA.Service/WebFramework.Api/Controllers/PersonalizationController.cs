@@ -48,7 +48,7 @@ namespace Web.Controllers
             menuItems.Add(new FeatureItem { Module = "Logs", DisplayText = "Logs", Url = "/logs", MatchPattern = "/logs",Roles=new List<string>{Constants.ROLE_ADMIN} });
             menuItems.Add(new FeatureItem { Module = "User", DisplayText = "Users", Url = "/user", MatchPattern = "/user", Roles = new List<string> { Constants.ROLE_ADMIN,Constants.ROLE_USERADMIN,Constants.PERMISSION_EDIT_USER } });
             menuItems.Add(new FeatureItem { Module = "Maintenance", DisplayText = "Maintenance", Url = "/maintenance", MatchPattern = "/maintenance", Roles = new List<string> { Constants.ROLE_ADMIN } });
-            menuItems.Add(new FeatureItem { Module = "Profile", DisplayText = "Profile", Url = "/profile", MatchPattern = "/profile",Roles=new List<string> {"*"} });
+            menuItems.Add(new FeatureItem { Module = "Account", DisplayText = "Account", Url = "/account", MatchPattern = "/account",Roles=new List<string> {"*"} });
             List<string> roles = claimsIdentity.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToList();
             return menuItems.Where(m => m.Roles==null || m.Roles.Count==0 || (principal.Identity.IsAuthenticated && m.Roles.Contains("*")) || m.Roles.Intersect(roles, StringComparer.OrdinalIgnoreCase).Count() > 0 );
         }

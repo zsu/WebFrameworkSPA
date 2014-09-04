@@ -34,11 +34,11 @@ namespace Web
 
             var delivery = new SmtpMessageDelivery();
 
-            var appinfo = new AspNetApplicationInformation(Util.ApplicationConfiguration.AppAcronym, Util.ApplicationConfiguration.SupportOrganization,
-                "UserAccount/Login",
-                "UserAccount/ChangeEmail/Confirm/",
-                "UserAccount/Register/Cancel/",
-                "UserAccount/PasswordReset/Confirm/");
+            var appinfo = new Web.Infrastructure.MembershipRebootAppInfo(Util.ApplicationConfiguration.AppAcronym, Util.ApplicationConfiguration.SupportOrganization,
+                "Login/",
+                "confirmemail/",
+                "RegisterCancel/",
+                "PasswordResetConfirm/");
             var messageTemplateService=IoC.GetService<IMessageTemplateService>();
             var formatter = new CustomEmailMessageFormatter(appinfo,messageTemplateService);
 

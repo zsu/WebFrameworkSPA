@@ -9,7 +9,7 @@
      * @param $translate
      * @param {$app.Personalization} personalization
      */
-    function Controller($scope, $location, signalRSubscribe, toast, dialog, $translate, common, personalization, profileApi) {
+    function Controller($scope, $location, signalRSubscribe, toast, dialog, $translate, common, personalization, accountApi) {
         function showError(data) {
             dialog.showModalDialog({}, {
                 headerText: $translate("COMMON_ERROR"),
@@ -21,6 +21,6 @@
         };
     };
 
-    app.controller("ProfileController",
-        ["$scope", "$location", "signalRSubscribe", "toast", "dialog", "$translate", "common", "personalization","profileApi", Controller]);
+    app.controller("AccountController",
+        ["$scope", "$location", "signalRSubscribe", "toast", "dialog", "$translate", "common", "personalization","accountApi", Controller]);
 })();

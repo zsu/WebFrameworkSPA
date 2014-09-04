@@ -15,6 +15,7 @@ namespace Web
         public const string HIBERNATE_CONFIG_KEY_Log = "HibernateConfigLog";
         public const string HIBERNATE_CONFIG_KEY_App = "HibernateConfigApp";
         public const string APPSETTING_KEY_FILTER_BY_APP = "FilterByApp";
+        public const string APPSETTING_KEY_BASE_URL = "BaseUrl";
         #endregion AppSettingKeys
         #region ConnectionStringKeys
         public const string SECURITY_DB = App.Common.Util.SecurityDBConnectionStringName;

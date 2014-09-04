@@ -60,10 +60,12 @@ $script.ready("app", function () {
          "permission/permissionController.js",
          "roleuserlist/roleuserlistApiService.js",
          "roleuserlist/roleuserlistController.js",
-         "profile/profileApiService.js",
-         "profile/profileController.js",
-         "changepassword/changepasswordApiService.js",
-         "changepassword/changepasswordController.js"
+         "account/accountApiService.js",
+         "account/accountController.js",
+         "account/changepassword/changepasswordApiService.js",
+         "account/changepassword/changepasswordController.js",
+         "account/confirmemail/confirmemailApiService.js",
+         "account/confirmemail/confirmemailController.js"
     ], "bundle");
 
     $script.ready("bundle", function () {

@@ -53,6 +53,9 @@
     <Content Include="app\0lib\jstz.min.js" />
     <Content Include="app\0lib\ui-bootstrap-tpls-0_11_0.js" />
     <Content Include="app\0lib\ui-utils.min.js" />
+    <Content Include="app\account\confirmemail\confirmemail.html" />
+    <Content Include="app\account\confirmemail\confirmemailApiService.js" />
+    <Content Include="app\account\confirmemail\confirmemailController.js" />
     <Content Include="app\authenticationaudit\authenticationaudit.html" />
     <Content Include="app\authenticationaudit\authenticationauditApiService.js" />
     <Content Include="app\authenticationaudit\authenticationauditController.js" />
@@ -95,9 +98,9 @@
     <Content Include="app\permission\permission.html" />
     <Content Include="app\permission\permissionApiService.js" />
     <Content Include="app\permission\permissionController.js" />
-    <Content Include="app\profile\profile.html" />
-    <Content Include="app\profile\profileApiService.js" />
-    <Content Include="app\profile\profileController.js" />
+    <Content Include="app\account\account.html" />
+    <Content Include="app\account\accountApiService.js" />
+    <Content Include="app\account\accountController.js" />
     <Content Include="app\rolepermission\rolepermission.html" />
     <Content Include="app\rolepermission\rolepermissionApiService.js" />
     <Content Include="app\rolepermission\rolepermissionController.js" />

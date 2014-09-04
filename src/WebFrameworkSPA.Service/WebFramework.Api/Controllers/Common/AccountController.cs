@@ -17,18 +17,18 @@ using Web.Models;
 namespace Web.Controllers.Common
 {
     [Authorize]
-    public class ProfileController : ApiController
+    public class AccountController : ApiController
     {
         private UserAccountService<NhUserAccount> _accountService;
-        public ProfileController()
+        public AccountController()
         {
             _accountService = IoC.GetService<UserAccountService<NhUserAccount>>();
         }
-        [Route("api/password/change")]
+        [Route("api/account/changepassword")]
         [HttpPut]
         public IHttpActionResult ChangePassword([ModelBinder(typeof(Web.Infrastruture.FieldValueModelBinder))] ChangePasswordModel item)
         {
-            StringBuilder message=new StringBuilder();
+            StringBuilder message = new StringBuilder();
             var user = HttpContext.Current.User;
             var claimsIdentity = user == null ? null : user.Identity as ClaimsIdentity;
             if (!User.HasUserID())
@@ -44,13 +44,31 @@ namespace Web.Controllers.Common
             {
                 _accountService.ChangePassword(user.GetUserID(), item.OldPassword, item.NewPassword);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 message.Append(ex.Message);
                 return Json<object>(new { Success = false, Message = message.ToString() });
             }
             message.Append("Password is changed successflly.");
-            return Json<object>(new { Success = true, Message = message.ToString()});
+            return Json<object>(new { Success = true, Message = message.ToString() });
+        }
+        [Route("api/account/confirmemail")]
+        [HttpPut]
+        public IHttpActionResult ConfirmEmail([ModelBinder(typeof(Web.Infrastruture.FieldValueModelBinder))] ChangeEmailFromKeyInputModel item)
+        {
+            StringBuilder message = new StringBuilder();
+            NhUserAccount account;
+            try
+            {
+                _accountService.VerifyEmailFromKey(item.Key, item.Password, out account);
+            }
+            catch (Exception ex)
+            {
+                message.Append(ex.Message);
+                return Json<object>(new { Success = false, Message = message.ToString() });
+            }
+            message.Append("Email address was confirmed.");
+            return Json<object>(new { Success = true, Message = message.ToString() });
         }
     }
 }

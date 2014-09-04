@@ -191,14 +191,18 @@ app.config(["$urlRouterProvider", "$stateProvider", "$locationProvider", "$trans
               url: "/roleuserlist",
               templateUrl: viewBaseUrl + "roleuserlist/roleuserlist.html",
               controller: "RoleUserListController"
-          }).state("profile", {
-              url: "/profile",
-              templateUrl: viewBaseUrl + "profile/profile.html",
-              controller: "ProfileController"
+          }).state("account", {
+              url: "/account",
+              templateUrl: viewBaseUrl + "account/account.html",
+              controller: "AccountController"
           }).state("changepassword", {
               url: "/changepassword",
-              templateUrl: viewBaseUrl + "changepassword/changepassword.html",
+              templateUrl: viewBaseUrl + "account/changepassword/changepassword.html",
               controller: "ChangePasswordController"
+          }).state("confirmemail", {
+              url: "/confirmemail/:id",
+              templateUrl: viewBaseUrl + "account/confirmemail/confirmemail.html",
+              controller: "ConfirmEmailController"
           });
         $provide.factory("$stateProviderService", function () {
             return $stateProvider;
