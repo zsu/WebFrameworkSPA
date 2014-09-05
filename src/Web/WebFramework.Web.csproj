@@ -53,6 +53,12 @@
     <Content Include="app\0lib\jstz.min.js" />
     <Content Include="app\0lib\ui-bootstrap-tpls-0_11_0.js" />
     <Content Include="app\0lib\ui-utils.min.js" />
+    <Content Include="app\account\cancelverificationrequest\cancelverificationrequest.html" />
+    <Content Include="app\account\cancelverificationrequest\cancelverificationrequestApiService.js" />
+    <Content Include="app\account\cancelverificationrequest\cancelverificationrequestController.js" />
+    <Content Include="app\account\confirmpasswordreset\confirmpasswordreset.html" />
+    <Content Include="app\account\confirmpasswordreset\confirmpasswordresetApiService.js" />
+    <Content Include="app\account\confirmpasswordreset\confirmpasswordresetController.js" />
     <Content Include="app\account\resetpassword\resetpassword.html" />
     <Content Include="app\account\resetpassword\resetpasswordApiService.js" />
     <Content Include="app\account\resetpassword\resetpasswordController.js" />

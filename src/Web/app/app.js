@@ -216,6 +216,10 @@ app.config(["$urlRouterProvider", "$stateProvider", "$locationProvider", "$trans
               url: "/confirmpasswordreset/:key",
               templateUrl: viewBaseUrl + "account/confirmpasswordreset/confirmpasswordreset.html",
               controller: "ConfirmPasswordResetController"
+          }).state("cancelverificationrequest", {
+              url: "/cancelverificationrequest/:id",
+              templateUrl: viewBaseUrl + "account/cancelverificationrequest/cancelverificationrequest.html",
+              controller: "CancelVerificationRequestController"
           });
         $provide.factory("$stateProviderService", function () {
             return $stateProvider;

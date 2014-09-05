@@ -137,5 +137,24 @@ namespace Web.Controllers.Common
             message.Append("Email address was confirmed.");
             return Json<object>(new { Success = true, Message = message.ToString() });
         }
+        [Route("api/account/cancelverificationrequest")]
+        [HttpPost]
+        [AllowAnonymous]
+        public IHttpActionResult CancelVerificationRequest(string id)
+        {
+            StringBuilder message = new StringBuilder();
+            try
+            {
+                bool closed;
+                _accountService.CancelVerification(id, out closed);
+            }
+            catch (Exception ex)
+            {
+                message.Append(ex.Message);
+                return Json<object>(new { Success = false, Message = message.ToString() });
+            }
+            message.Append("The request that was emailed to you is now cancelled.");
+            return Json<object>(new { Success = true, Message = message.ToString() });
+        }
     }
 }
