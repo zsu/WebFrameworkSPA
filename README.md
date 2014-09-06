@@ -16,7 +16,7 @@ Some of the features of WebFrameworkSPA are:
 ###Live Demo: https://webframeworkspa.azurewebsites.net/
 Login: user1/Abc123
 
-#Getting started with WebFramework
+#Getting started with WebFrameworkSPA
 There are two web applications: WebFramework is the GUI web application using AngularJS; WebFramework.Service is the Web Service application using asp.net Web Api 2.
 ##Configure WebFramework.Service
   * Restore Nuget package
@@ -84,7 +84,7 @@ The encrypted connectionstrings in web.config also has three corresponding conne
 	<add name="AppDB" connectionString="Data Source=|DataDirectory|WebFramework.sdf;Enlist=false;" providerName="System.Data.SqlServerCe.4.0" />
 </connectionStrings>
 ```
-##Configure WebFramework
+##Configure WebFrameworkSPA
 Find the following in src\Web\app\infrastructure\tool.js:
 ttTools.cloudUrl = "WebFrameworkService/";
 Change the url to the one you used to host the WebFramework.Service;
