@@ -1,8 +1,8 @@
-#What is WebFramework
+#What is WebFrameworkSPA
 
-WebFramework is a Single Page Application(SPA) framework built on top of AngularJS, Web Api 2.
+WebFrameworkSPA is a Single Page Application(SPA) framework built on top of AngularJS, Web Api.
 
-Some of the features of WebFramework are:
+Some of the features of WebFrameworkSPA are:
 
   * User managment(authentication, authorization)
   * Claim based authorization with two level Role/Permission management
