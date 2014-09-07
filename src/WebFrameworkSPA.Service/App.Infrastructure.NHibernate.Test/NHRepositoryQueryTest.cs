@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using App.Data;
 using App.Infrastructure.NHibernate.Test.OrdersDomain;
 using App.Infrastructure.NHibernate.Test.HRDomain.Domain;
-using System.Data.SQLite;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate.Tool.hbm2ddl;
