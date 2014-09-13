@@ -128,6 +128,26 @@
                             window.location = '#/rolepermission?id=' + $(grid).jqGrid('getCell', rowid, 'Id') + '&name=' + $(grid).jqGrid('getCell', rowid, 'Name');
                         }
                     });
+                    $(grid).jqGrid('navButtonAdd', "#pager",
+                    {                        
+                        caption: ""/*"Show"*/, buttonicon: "ui-icon-disk", title: "Export to Excel",
+                        onClickButton: function () {
+                            var postData = $(grid).jqGrid('getGridParam', 'postData');
+                            var url = API_URL + "exporttoexcel/?";
+                            $.each(postData, function (key, value) {
+                                url += ((url.substr(-1) === "?" ? "" : "&") + key + "=" + encodeURIComponent(value));
+                            });
+                            var scope = angular.element(document.getElementById("mainContainer")).scope();
+                            if (scope) {
+                                var tokenData = scope.getToken();
+                                if (tokenData) {
+                                    var btoken = "bearerToken=" + encodeURIComponent(tokenData.access_token);
+                                    url += ((url.substr(-1) === "?" ? "" : "&") + btoken);
+                                }
+                            }
+                            window.open(url, '_blank', '');
+                        }
+                    });
                     $.extend($.jgrid.edit, {
                         afterSubmit: function (response, postdata) {
                             var res = $.parseJSON(response.responseText);

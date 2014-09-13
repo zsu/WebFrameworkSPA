@@ -85,7 +85,9 @@ namespace App.Common
         }
         public static string MakeValidFileName(string name)
         {
-            string fileName = name;
+            if (string.IsNullOrWhiteSpace(name))
+                return null;
+            string fileName = name.Trim(); ;
             foreach (char c in System.IO.Path.GetInvalidFileNameChars())
             {
                 fileName = fileName.Replace(c, '_');

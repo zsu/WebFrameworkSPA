@@ -208,6 +208,10 @@
     <Compile Include="Hubs\ClientNotificationHub.cs" />
     <Compile Include="Hubs\LogHub.cs" />
     <Compile Include="Infrastructure\Exceptions\JavascriptException.cs" />
+    <Compile Include="Infrastructure\Exporter\CsvExporter.cs" />
+    <Compile Include="Infrastructure\Exporter\ExporterManager.cs" />
+    <Compile Include="Infrastructure\Exporter\ExporterType.cs" />
+    <Compile Include="Infrastructure\Exporter\IExporter.cs" />
     <Compile Include="Infrastructure\Extensions\DateTimeExtension.cs" />
     <Compile Include="Infrastructure\Extensions\PrincipleExtension.cs" />
     <Compile Include="Infrastructure\FieldValueModelBinder.cs" />

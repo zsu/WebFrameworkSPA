@@ -15,6 +15,8 @@ using App.Common.SessionMessage;
 using Web.Infrastructure.JqGrid;
 using WebFramework.Data.Domain;
 using App.Common;
+using Web.Infrastructure;
+using System.IO;
 
 namespace Web.Controllers
 {
@@ -42,7 +44,35 @@ namespace Web.Controllers
                 Items = dataList.Select(x => new { x.Id, x.Name, x.BccEmailAddresses, x.Subject, x.Body, x.IsActive }).ToArray()
             };
         }
+        [Route("api/messagetemplate/exporttoexcel")]
+        [HttpGet]
+        public dynamic ExportToExcel([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
+        {
+            var query = _service.Query();
+            if (Constants.SHOULD_FILTER_BY_APP)
+                query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
+            searchModel.rows = 0;
+            var data = Web.Infrastructure.Util.GetGridData<MessageTemplate>(searchModel, query);
+            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.BccEmailAddresses, x.Subject, x.Body, x.IsActive }).ToList();
+            string filePath = ExporterManager.Export("messagetemplate", ExporterType.CSV, dataList, "");
+            HttpResponseMessage result = null;
 
+            if (!File.Exists(filePath))
+            {
+                result = Request.CreateResponse(HttpStatusCode.Gone);
+            }
+            else
+            {
+                result = Request.CreateResponse(HttpStatusCode.OK);
+                result.Content = new StreamContent(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                result.Content.Headers.ContentDisposition.FileName = Path.GetFileName(filePath);
+                result.Content.Headers.ContentLength = new FileInfo(filePath).Length;
+
+            }
+            return result;
+        }
         // GET api/MessageTemplate/5
         public IHttpActionResult Get(Guid id)
         {
@@ -162,8 +192,8 @@ namespace Web.Controllers
                 }
             }
 
-            msg = msg.Replace("{applicationName}", Util.ApplicationConfiguration.AppAcronym);
-            msg = msg.Replace("{emailSignature}", Util.ApplicationConfiguration.SupportOrganization);
+            msg = msg.Replace("{applicationName}", App.Common.Util.ApplicationConfiguration.AppAcronym);
+            msg = msg.Replace("{emailSignature}", App.Common.Util.ApplicationConfiguration.SupportOrganization);
             msg = msg.Replace("{loginUrl}", baseUrl+loginUrl);
 
             msg = msg.Replace("{confirmPasswordResetUrl}", baseUrl + confirmPasswordResetUrl + verificationKey);

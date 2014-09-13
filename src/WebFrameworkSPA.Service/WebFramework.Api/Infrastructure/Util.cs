@@ -175,7 +175,7 @@ namespace Web.Infrastructure
                 return new GridModel<T> { TotalNumber = 0, Items = new List<T>().AsQueryable<T>() };
             }
         }
-        public static GridModel<T> GetGridData<T>([System.Web.Http.FromUri] JqGridSearchModel searchModel, IQueryable<T> query)
+        public static GridModel<T> GetGridData<T>([System.Web.Http.FromUri] JqGridSearchModel searchModel, IQueryable<T> query,long maxRecords=100000)
         {
             int totalRecords;
             int startRow = (searchModel.page * searchModel.rows) + 1;
@@ -192,12 +192,13 @@ namespace Web.Infrastructure
                     data = data.Where(whereClause.Clause, whereClause.FormatObjects);
             }
             totalRecords = data.Count();
-            if (searchModel.rows == 0 && totalRecords > 50000)
+            if (searchModel.rows == 0 && totalRecords > maxRecords)
                 throw new Exception("Too many records returned.");
             if (!string.IsNullOrWhiteSpace(searchModel.sidx))
                 data = data.OrderBy(searchModel.sidx + " " + searchModel.sord);
             data = data.Skip(skip);
-            data = data.Take(searchModel.rows == 0 ? totalRecords : searchModel.rows);
+            if(totalRecords>0)
+                data = data.Take(searchModel.rows == 0 ? totalRecords : searchModel.rows);
             var totalPages = (int)Math.Ceiling((float)totalRecords / searchModel.rows);
 
             return new GridModel<T>

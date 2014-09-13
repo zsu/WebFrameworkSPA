@@ -12,6 +12,7 @@ using System.Text;
 using Web.Infrastructure.JqGrid;
 using WebFramework.Data.Domain;
 using Web.Infrastructure;
+using System.IO;
 
 namespace Web.Controllers
 {
@@ -39,7 +40,35 @@ namespace Web.Controllers
                 Items = dataList.Select(x => new { x.Id, x.Name, x.Value }).ToArray()
             };
         }
+        [Route("api/setting/exporttoexcel")]
+        [HttpGet]
+        public dynamic ExportToExcel([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
+        {
+            var query = _service.Query();
+            if (Constants.SHOULD_FILTER_BY_APP)
+                query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
+            searchModel.rows = 0;
+            var data = Util.GetGridData<Setting>(searchModel, query);
+            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Value }).ToList();
+            string filePath = ExporterManager.Export("setting", ExporterType.CSV, dataList.ToList(), "");
+            HttpResponseMessage result = null;
 
+            if (!File.Exists(filePath))
+            {
+                result = Request.CreateResponse(HttpStatusCode.Gone);
+            }
+            else
+            {
+                result = Request.CreateResponse(HttpStatusCode.OK);
+                result.Content = new StreamContent(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                result.Content.Headers.ContentDisposition.FileName = Path.GetFileName(filePath);
+                result.Content.Headers.ContentLength = new FileInfo(filePath).Length;
+
+            }
+            return result;
+        }
         // GET api/setting/5
         public IHttpActionResult Get(Guid id)
         {

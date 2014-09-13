@@ -67,6 +67,15 @@ namespace Web
             HttpContext context = app.Context;
             // Attempt to peform first request initialization
             FirstRequestInitialization.Initialize(context);
+            if (Request.Headers["Authorization"] == null)
+            {
+                var bearerToken = Request.QueryString["bearerToken"];
+
+                if (!String.IsNullOrEmpty(bearerToken))
+                {
+                    Request.Headers.Add("Authorization", "Bearer " + HttpUtility.UrlDecode(bearerToken));
+                }
+            }
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

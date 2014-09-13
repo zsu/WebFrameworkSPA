@@ -10,6 +10,8 @@ using System.Linq.Dynamic;
 using App.Common.InversionOfControl;
 using System.Text;
 using Web.Infrastructure.JqGrid;
+using Web.Infrastructure;
+using System.IO;
 
 namespace Web.Controllers.Api
 {
@@ -36,7 +38,34 @@ namespace Web.Controllers.Api
                 Items = dataList.Select(x => new { x.Id, x.Name, x.Description }).ToArray()
             };
         }
+        [Route("api/permission/exporttoexcel")]
+        [HttpGet]
+        public dynamic ExportToExcel([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
+        {
+            var query = _permissionService.Query();
+            //query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
+            searchModel.rows = 0;
+            var data = Web.Infrastructure.Util.GetGridData<Permission>(searchModel, query);
+            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Description }).ToList();
+            string filePath = ExporterManager.Export("permission", ExporterType.CSV, dataList.ToList(), "");
+            HttpResponseMessage result = null;
 
+            if (!File.Exists(filePath))
+            {
+                result = Request.CreateResponse(HttpStatusCode.Gone);
+            }
+            else
+            {
+                result = Request.CreateResponse(HttpStatusCode.OK);
+                result.Content = new StreamContent(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                result.Content.Headers.ContentDisposition.FileName = Path.GetFileName(filePath);
+                result.Content.Headers.ContentLength = new FileInfo(filePath).Length;
+
+            }
+            return result;
+        }
         // GET api/permission/5
         public IHttpActionResult Get(Guid id)
         {

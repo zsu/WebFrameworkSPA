@@ -13,6 +13,8 @@ using System.Web.Http.ModelBinding;
 using Web.Infrastructure.JqGrid;
 using Web.Infrastruture;
 using Web.Areas.Admin.Models;
+using System.IO;
+using Web.Infrastructure;
 
 namespace Web.Controllers.Api
 {
@@ -43,7 +45,34 @@ namespace Web.Controllers.Api
                 Items = dataList.Select(x => new { x.Id, x.Name, x.Description }).ToArray()
             };
         }
+        [Route("api/role/exporttoexcel")]
+        [HttpGet]
+        public dynamic ExportToExcel([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
+        {
+            var query = _roleService.Query();
+            //query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
+            searchModel.rows = 0;
+            var data = Web.Infrastructure.Util.GetGridData<Role>(searchModel, query);
+            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Description }).ToList();
+            string filePath = ExporterManager.Export("role", ExporterType.CSV, dataList.ToList(), "");
+            HttpResponseMessage result = null;
 
+            if (!File.Exists(filePath))
+            {
+                result = Request.CreateResponse(HttpStatusCode.Gone);
+            }
+            else
+            {
+                result = Request.CreateResponse(HttpStatusCode.OK);
+                result.Content = new StreamContent(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                result.Content.Headers.ContentDisposition.FileName = Path.GetFileName(filePath);
+                result.Content.Headers.ContentLength = new FileInfo(filePath).Length;
+
+            }
+            return result;
+        }
         // GET api/role/5
         public IHttpActionResult Get(Guid id)
         {
@@ -148,7 +177,6 @@ namespace Web.Controllers.Api
         {
             if (id == default(Guid))
                 return BadRequest("Role id cannot be empty.");
-            int totalRecords;
             int startRow = (searchModel.page * searchModel.rows) + 1;
             int skip = (searchModel.page > 0 ? searchModel.page - 1 : 0) * searchModel.rows;
             Role role = _roleService.GetById(id);
@@ -188,38 +216,53 @@ namespace Web.Controllers.Api
 
             //return grid;
         }
-        [Route("api/roleuserlist")]
-        public dynamic GetRoleUserList([FromUri] JqGridSearchModel searchModel)
+        [Route("api/rolepermissions/exporttoexcel")]
+        [HttpGet]
+        public dynamic ExportToExcelRolePermissions(Guid id, [FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
         {
-            int totalRecords;
+            if (id == default(Guid))
+                return BadRequest("Role id cannot be empty.");
+            searchModel.rows = 0;
             int startRow = (searchModel.page * searchModel.rows) + 1;
             int skip = (searchModel.page > 0 ? searchModel.page - 1 : 0) * searchModel.rows;
-
-
-            // note - these queries require "using System.Dynamic.Linq" library
-            IQueryable<Role> data = _roleService.Query();
-            if (searchModel._search && !String.IsNullOrEmpty(searchModel.filters))
+            Role role = _roleService.GetById(id);
+            List<Permission> allPermission = _permissionService.GetAllPermissions();
+            List<RolePermissionModel> rolePermissions = new List<RolePermissionModel>();
+            foreach (var permission in allPermission)
             {
-                var whereClause = searchModel.GenerateWhereClause(typeof(Role));
-                if(!string.IsNullOrEmpty(whereClause.Clause))
-                    data = data.Where(whereClause.Clause, whereClause.FormatObjects);
+                bool hasPermission = role.Permissions.AsQueryable().Any(x => x.Id == permission.Id);
+                rolePermissions.Add(new RolePermissionModel { Id = permission.Id, Name = permission.Name, Description = permission.Description, HasPermission = hasPermission });
+            }
+            //note - these queries require "using System.Dynamic.Linq" library
+            IQueryable<RolePermissionModel> query = rolePermissions.AsQueryable();
+            var data = Web.Infrastructure.Util.GetGridData<RolePermissionModel>(searchModel, query);
+            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Description, x.HasPermission }).ToList();
+            string filePath = ExporterManager.Export("rolepermissions", ExporterType.CSV, dataList, "");
+            HttpResponseMessage result = null;
 
-                totalRecords = data.Count();
-
-                data = data
-                    .OrderBy(searchModel.sidx + " " + searchModel.sord)
-                    .Skip(skip)
-                    .Take(searchModel.rows);
-
+            if (!File.Exists(filePath))
+            {
+                result = Request.CreateResponse(HttpStatusCode.Gone);
             }
             else
             {
-                totalRecords = data.Count();
-                data = data
-                    .OrderBy(searchModel.sidx + " " + searchModel.sord)
-                    .Skip(skip)
-                    .Take(searchModel.rows);
+                result = Request.CreateResponse(HttpStatusCode.OK);
+                result.Content = new StreamContent(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                result.Content.Headers.ContentDisposition.FileName = Path.GetFileName(filePath);
+                result.Content.Headers.ContentLength = new FileInfo(filePath).Length;
+
             }
+            return result;
+        }
+        [Route("api/roleuserlist")]
+        public dynamic GetRoleUserList([FromUri] JqGridSearchModel searchModel)
+        {
+            var query = _roleService.Query();
+            var gridData = Util.GetGridData<Role>(searchModel, query);
+            int totalRecords = gridData.TotalNumber;
+            var data = gridData.Items;
 
             var dataListTemp = data.SelectMany(u=>_userService.Query(),(r,u)=>new {r,u})
                 .Where(x=>x.u.Roles.Contains(x.r)).OrderBy(x=>x.r.Id).Select(x => new { x.r.Id, x.r.Name, x.r.Description,x.u }).ToList();
@@ -241,15 +284,48 @@ namespace Web.Controllers.Api
                 TotalItems = totalRecords,
                 Items = dataList.Select(x => new { x.Id, x.Name, x.Description, x.Users }).ToArray()
             };
-            //var grid = new JqGridModel
-            //{
-            //    total = totalPages,
-            //    page = searchModel.page,
-            //    records = totalRecords,
-            //    rows = dataList.Select(x => new { id = x.Id, cell = new object[] { x.Id, x.Name, x.Description,x.Users } }).ToArray()
-            //};
+        }
+        [Route("api/roleuserlist/exporttoexcel")]
+        [HttpGet]
+        public dynamic ExportToExcelRoleUserList([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
+        {
+            var query = _roleService.Query();
+            searchModel.rows = 0;
+            var gridData = Util.GetGridData<Role>(searchModel, query);
+            int totalRecords = gridData.TotalNumber;
+            var data = gridData.Items;
 
-            //return grid;
+            var dataListTemp = data.SelectMany(u => _userService.Query(), (r, u) => new { r, u })
+                .Where(x => x.u.Roles.Contains(x.r)).OrderBy(x => x.r.Id).Select(x => new { x.r.Id, x.r.Name, x.r.Description, x.u }).ToList();
+            var roles = data.ToList();
+            List<RoleUserModel> dataList = new List<RoleUserModel>();
+            foreach (Role role in roles)
+            {
+                RoleUserModel roleUser = new RoleUserModel { Id = role.Id, Description = role.Description, Name = role.Name };
+                var users = dataListTemp.Where(x => x.Id == role.Id).Select(x => x.u).ToList();
+                foreach (var user in users)
+                    roleUser.Users.Add(new RoleUserModel.User { Id = user.ID, UserName = user.Username, FirstName = user.FirstName, LastName = user.LastName });
+                dataList.Add(roleUser);
+            }
+            var dataList1 = dataList.Select(x => new { x.Id, x.Description, Users = string.Join(", ", x.Users.Select(y => y.UserName)) }).ToList();
+            string filePath = ExporterManager.Export("roleuserlist", ExporterType.CSV, dataList1, "");
+            HttpResponseMessage result = null;
+
+            if (!File.Exists(filePath))
+            {
+                result = Request.CreateResponse(HttpStatusCode.Gone);
+            }
+            else
+            {
+                result = Request.CreateResponse(HttpStatusCode.OK);
+                result.Content = new StreamContent(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                result.Content.Headers.ContentDisposition.FileName = Path.GetFileName(filePath);
+                result.Content.Headers.ContentLength = new FileInfo(filePath).Length;
+
+            }
+            return result;
         }
         // DELETE api/role/5/RemoveUser/3
         [Route("api/roleuserlist/remove/{rid}/{uid}")]
