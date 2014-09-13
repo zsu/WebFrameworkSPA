@@ -127,7 +127,6 @@ namespace Web.Controllers.Api
             var data = Web.Infrastructure.Util.GetGridData<NhUserAccount>(searchModel, query);
             var dataList = data.Items.Select(x => new
             {
-                x.ID,
                 x.Tenant,
                 x.Username,
                 x.Email,
@@ -420,7 +419,7 @@ namespace Web.Controllers.Api
 
             var query = userRoles.AsQueryable();
             var data = Web.Infrastructure.Util.GetGridData<UserRoleModel>(searchModel, query);
-            var dataList = data.Items.ToList();
+            var dataList = data.Items.Select(x=>new {x.Name,x.Description,x.HasRole}).ToList();
 
             string filePath = ExporterManager.Export("userroles", ExporterType.CSV, dataList, "");
             HttpResponseMessage result = null;

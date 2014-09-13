@@ -49,7 +49,7 @@ namespace Web.Controllers
                 query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
             searchModel.rows = 0;
             var data = Util.GetGridData<Setting>(searchModel, query);
-            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Value }).ToList();
+            var dataList = data.Items.Select(x => new { x.Name, x.Value }).ToList();
             string filePath = ExporterManager.Export("setting", ExporterType.CSV, dataList.ToList(), "");
             HttpResponseMessage result = null;
 

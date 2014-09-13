@@ -53,7 +53,7 @@ namespace Web.Controllers
                 query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
             searchModel.rows = 0;
             var data = Web.Infrastructure.Util.GetGridData<MessageTemplate>(searchModel, query);
-            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.BccEmailAddresses, x.Subject, x.Body, x.IsActive }).ToList();
+            var dataList = data.Items.Select(x => new {x.Name, x.BccEmailAddresses, x.Subject, x.Body, x.IsActive }).ToList();
             string filePath = ExporterManager.Export("messagetemplate", ExporterType.CSV, dataList, "");
             HttpResponseMessage result = null;
 

@@ -46,7 +46,7 @@ namespace Web.Controllers.Api
             //query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
             searchModel.rows = 0;
             var data = Web.Infrastructure.Util.GetGridData<Permission>(searchModel, query);
-            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Description }).ToList();
+            var dataList = data.Items.Select(x => new {x.Name, x.Description }).ToList();
             string filePath = ExporterManager.Export("permission", ExporterType.CSV, dataList.ToList(), "");
             HttpResponseMessage result = null;
 

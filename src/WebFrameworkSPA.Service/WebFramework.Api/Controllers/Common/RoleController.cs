@@ -53,7 +53,7 @@ namespace Web.Controllers.Api
             //query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
             searchModel.rows = 0;
             var data = Web.Infrastructure.Util.GetGridData<Role>(searchModel, query);
-            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Description }).ToList();
+            var dataList = data.Items.Select(x => new {x.Name, x.Description }).ToList();
             string filePath = ExporterManager.Export("role", ExporterType.CSV, dataList.ToList(), "");
             HttpResponseMessage result = null;
 
@@ -236,7 +236,7 @@ namespace Web.Controllers.Api
             //note - these queries require "using System.Dynamic.Linq" library
             IQueryable<RolePermissionModel> query = rolePermissions.AsQueryable();
             var data = Web.Infrastructure.Util.GetGridData<RolePermissionModel>(searchModel, query);
-            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Description, x.HasPermission }).ToList();
+            var dataList = data.Items.Select(x => new { x.Name, x.Description, x.HasPermission }).ToList();
             string filePath = ExporterManager.Export("rolepermissions", ExporterType.CSV, dataList, "");
             HttpResponseMessage result = null;
 
@@ -307,7 +307,7 @@ namespace Web.Controllers.Api
                     roleUser.Users.Add(new RoleUserModel.User { Id = user.ID, UserName = user.Username, FirstName = user.FirstName, LastName = user.LastName });
                 dataList.Add(roleUser);
             }
-            var dataList1 = dataList.Select(x => new { x.Id, x.Description, Users = string.Join(", ", x.Users.Select(y => y.UserName)) }).ToList();
+            var dataList1 = dataList.Select(x => new { x.Description, Users = string.Join(", ", x.Users.Select(y => y.UserName)) }).ToList();
             string filePath = ExporterManager.Export("roleuserlist", ExporterType.CSV, dataList1, "");
             HttpResponseMessage result = null;
 

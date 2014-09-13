@@ -68,13 +68,18 @@ namespace Web.Infrastructure
             //Get property collection and set selected property list
             PropertyInfo[] props = typeof(T).GetProperties();
             List<PropertyInfo> propList = GetSelectedProperties(props, includeProperties, excludeProperties);
-
+            string formatQuoteWithComma="\"{0}\",",formatComma="{0},",formatQuote="\"{0}\"",format="{0}";
             for (int i = 0; i < propList.Count; i++)
             {
+                string value=HandleSpecialChars(propList[i].Name);
+                bool hasSYLKSymbol=i==0 && value!=null && value.StartsWith("ID");//Handle SYLK file symbol
                 if (i < propList.Count - 1)
-                    output.AppendFormat("{0},", HandleSpecialChars(propList[i].Name));
+                    output.AppendFormat(hasSYLKSymbol ? formatQuoteWithComma : formatQuote, value);
                 else
-                    output.AppendFormat("{0}" + Environment.NewLine, HandleSpecialChars(propList[i].Name));
+                {
+                    output.AppendFormat(format, value);
+                    output.AppendLine();
+                }
 
             }
 
@@ -83,9 +88,12 @@ namespace Web.Infrastructure
                 for (int j = 0; j < propList.Count; j++)
                 {
                     if (j < propList.Count - 1)
-                        output.AppendFormat("{0},", HandleSpecialChars(propList[j].GetValue(data[i], null) == null ? string.Empty : propList[j].GetValue(data[i], null).ToString(), propList[j].PropertyType));
+                        output.AppendFormat(formatComma, HandleSpecialChars(propList[j].GetValue(data[i], null) == null ? string.Empty : propList[j].GetValue(data[i], null).ToString(), propList[j].PropertyType));
                     else
-                        output.AppendFormat("{0}" + Environment.NewLine, HandleSpecialChars(propList[j].GetValue(data[i], null) == null ? string.Empty : propList[j].GetValue(data[i], null).ToString(), propList[j].PropertyType));
+                    {
+                        output.AppendFormat(format, HandleSpecialChars(propList[j].GetValue(data[i], null) == null ? string.Empty : propList[j].GetValue(data[i], null).ToString(), propList[j].PropertyType));
+                        output.AppendLine();
+                    }
                 }
             }
             if (addTimeStamp)
@@ -98,15 +106,21 @@ namespace Web.Infrastructure
             //Get property collection and set selected property list
             PropertyInfo[] props = typeof(T).GetProperties();
             List<PropertyInfo> propList = GetSelectedProperties(props, includeProperties, excludeProperties);
+            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
 
             using (StreamWriter file = new StreamWriter(filePath))
             {
                 for (int i = 0; i < propList.Count; i++)
                 {
+                    string value = HandleSpecialChars(propList[i].Name);
+                    bool hasSYLKSymbol = i==0 && value != null && value.StartsWith("ID");//Handle SYLK file symbol
                     if (i < propList.Count - 1)
-                        output.AppendFormat("{0},", HandleSpecialChars(propList[i].Name));
+                        output.AppendFormat(hasSYLKSymbol ? formatQuoteWithComma : formatComma, value);
                     else
-                        output.AppendFormat("{0}" + Environment.NewLine, HandleSpecialChars(propList[i].Name));
+                    {
+                        output.AppendFormat(format, value);
+                        output.AppendLine();
+                    }
 
                 }
                 file.Write(output.ToString());
@@ -116,10 +130,11 @@ namespace Web.Infrastructure
                     for (int j = 0; j < propList.Count; j++)
                     {
                         if (j < propList.Count - 1)
-                            output.AppendFormat("{0},", HandleSpecialChars(propList[j].GetValue(data[i], null) == null ? string.Empty : propList[j].GetValue(data[i], null).ToString(), propList[j].PropertyType));
+                            output.AppendFormat(formatComma, HandleSpecialChars(propList[j].GetValue(data[i], null) == null ? string.Empty : propList[j].GetValue(data[i], null).ToString(), propList[j].PropertyType));
                         else
                         {
-                            output.AppendFormat("{0}" + Environment.NewLine, HandleSpecialChars(propList[j].GetValue(data[i], null) == null ? string.Empty : propList[j].GetValue(data[i], null).ToString(), propList[j].PropertyType));
+                            output.AppendFormat(format, HandleSpecialChars(propList[j].GetValue(data[i], null) == null ? string.Empty : propList[j].GetValue(data[i], null).ToString(), propList[j].PropertyType));
+                            output.AppendLine();
                             file.Write(output.ToString());
                             output.Clear();
                         }
@@ -163,14 +178,20 @@ namespace Web.Infrastructure
         private StringBuilder ExportDataSet(DataSet data, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
         {
             StringBuilder output = new StringBuilder();
+            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
             foreach (DataTable dt in data.Tables)
             {
                 for (int i = 0; i < dt.Columns.Count; i++)
                 {
+                    string value = HandleSpecialChars(dt.Columns[i].ColumnName);
+                    bool hasSYLKSymbol = i == 0 && value != null && value.StartsWith("ID");//Handle SYLK file symbol
                     if (i < dt.Columns.Count - 1)
-                        output.AppendFormat("{0},", HandleSpecialChars(dt.Columns[i].ColumnName));
+                        output.AppendFormat(hasSYLKSymbol ? formatQuoteWithComma : formatComma, value);
                     else
-                        output.AppendFormat("{0}" + Environment.NewLine, HandleSpecialChars(dt.Columns[i].ColumnName));
+                    {
+                        output.AppendFormat(format, value);
+                        output.AppendLine();
+                    }
 
                 }
 
@@ -180,9 +201,12 @@ namespace Web.Infrastructure
                     {
 
                         if (j < dt.Columns.Count - 1)
-                            output.AppendFormat("{0},", HandleSpecialChars(dt.Rows[i][j] == null ? string.Empty : dt.Rows[i][j].ToString()));
+                            output.AppendFormat(formatComma, HandleSpecialChars(dt.Rows[i][j] == null ? string.Empty : dt.Rows[i][j].ToString()));
                         else
-                            output.AppendFormat("{0}" + Environment.NewLine, HandleSpecialChars(dt.Rows[i][j] == null ? string.Empty : dt.Rows[i][j].ToString()));
+                        {
+                            output.AppendFormat(format, HandleSpecialChars(dt.Rows[i][j] == null ? string.Empty : dt.Rows[i][j].ToString()));
+                            output.AppendLine();
+                        }
                     }
                 }
             }
@@ -195,16 +219,22 @@ namespace Web.Infrastructure
         private void ExportDataSet(DataSet data, string filePath, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
         {
             StringBuilder output = new StringBuilder();
+            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
             using (StreamWriter file = new StreamWriter(filePath))
             {
                 foreach (DataTable dt in data.Tables)
                 {
                     for (int i = 0; i < dt.Columns.Count; i++)
                     {
+                        string value = HandleSpecialChars(dt.Columns[i].ColumnName);
+                        bool hasSYLKSymbol = i == 0 && value != null && value.StartsWith("ID");//Handle SYLK file symbol
                         if (i < dt.Columns.Count - 1)
-                            output.AppendFormat("{0},", HandleSpecialChars(dt.Columns[i].ColumnName));
+                            output.AppendFormat(hasSYLKSymbol ? formatQuoteWithComma : formatComma, value);
                         else
-                            output.AppendFormat("{0}" + Environment.NewLine, HandleSpecialChars(dt.Columns[i].ColumnName));
+                        {
+                            output.AppendFormat(format, value);
+                            output.AppendLine();
+                        }
                     }
                     file.Write(output.ToString());
                     output.Clear();
@@ -215,10 +245,11 @@ namespace Web.Infrastructure
                         {
 
                             if (j < dt.Columns.Count - 1)
-                                output.AppendFormat("{0},", HandleSpecialChars(dt.Rows[i][j] == null ? string.Empty : dt.Rows[i][j].ToString()));
+                                output.AppendFormat(formatComma, HandleSpecialChars(dt.Rows[i][j] == null ? string.Empty : dt.Rows[i][j].ToString()));
                             else
                             {
-                                output.AppendFormat("{0}" + Environment.NewLine, HandleSpecialChars(dt.Rows[i][j] == null ? string.Empty : dt.Rows[i][j].ToString()));
+                                output.AppendFormat(format, HandleSpecialChars(dt.Rows[i][j] == null ? string.Empty : dt.Rows[i][j].ToString()));
+                                output.AppendLine();
                                 file.Write(output.ToString());
                                 output.Clear();
                             }

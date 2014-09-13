@@ -77,17 +77,39 @@
                                         name: 'Name',
                                         editable: true,
                                         edittype: 'text',
-                                        eidtoptions: { maxlength: 200 },
+                                        editoptions: { maxlength: 200 },
                                         editrules: { required: true },
-                                        index: 'Name',
-                                        width:50
+                                        index: 'Name'
                                     }, {
-                                        name: 'Value',
+                                        name: 'BccEmailAddresses',
                                         editable: true,
                                         edittype: 'text',
-                                        editoptions: { maxlength: 2000 },
+                                        eidtoptions: {},
                                         editrules: { required: false },
-                                        index: 'Value'
+                                        index: 'BccEmailAddresses'
+                                    }, {
+                                        name: 'Subject',
+                                        editable: true,
+                                        edittype: 'text',
+                                        editoptions: { maxlength: 1000},
+                                        editrules: { required: false },
+                                        index: 'Subject'
+                                    }, {
+                                        name: 'Body',
+                                        editable: true,
+                                        edittype: 'textarea',
+                                        editoptions: {rows: "10", cols: "50" },
+                                        editrules: { required: false },
+                                        index: 'Body'
+                                    }, {
+                                        name: 'IsActive',
+                                        editable: true,
+                                        edittype: 'checkbox',
+                                        editoptions: { value: "true:false" },
+                                        formatter: 'checkbox',
+                                        searchoptions: { sopt: ['eq'], value: "true:true;false:false" },
+                                        stype: 'select',
+                                        index: 'IsActive'
                                     }
                         ], jsonReader: {
                             root: "Items",
