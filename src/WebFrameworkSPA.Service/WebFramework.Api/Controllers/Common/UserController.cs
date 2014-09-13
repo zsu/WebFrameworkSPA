@@ -127,7 +127,7 @@ namespace Web.Controllers.Api
             var data = Web.Infrastructure.Util.GetGridData<NhUserAccount>(searchModel, query);
             var dataList = data.Items.Select(x => new
             {
-                x.Tenant,
+                Application=x.Tenant,
                 x.Username,
                 x.Email,
                 x.FirstName,
