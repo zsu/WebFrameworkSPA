@@ -92,14 +92,23 @@ namespace Web.Controllers
         [HttpGet]
         public dynamic ExportToExcel([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
         {
-            var query = _service.Query();
-            if (Constants.SHOULD_FILTER_BY_APP)
-                query = query.Where(x => x.Application == App.Common.Util.ApplicationConfiguration.AppAcronym);
-            searchModel.rows = 0;
-            var data = Util.GetGridData<Logs>(searchModel, query);
-            var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message, x.Host, x.SessionId }).ToList();
-            string filePath = ExporterManager.Export("Logs", ExporterType.CSV, dataList.ToList(), "");
+            string filePath=null;
             HttpResponseMessage result = null;
+            try
+            {
+                var query = _service.Query();
+                if (Constants.SHOULD_FILTER_BY_APP)
+                    query = query.Where(x => x.Application == App.Common.Util.ApplicationConfiguration.AppAcronym);
+                searchModel.rows = 0;
+                var data = Util.GetGridData<Logs>(searchModel, query);
+                var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message, x.Host, x.SessionId }).ToList();
+
+                filePath = ExporterManager.Export("Logs", ExporterType.CSV, dataList.ToList(), "");
+            }
+            catch (Exception ex)
+            {
+                return Util.DisplayExportError(ex);
+            }
 
             if (!File.Exists(filePath))
             {

@@ -43,13 +43,20 @@ namespace Web.Controllers.Api
         [HttpGet]
         public dynamic ExportToExcel([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
         {
-            var query = _service.Query();
-            searchModel.rows = 0;
-            var data = Web.Infrastructure.Util.GetGridData<ScheduleTask>(searchModel, query);
-            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Seconds, x.Type, x.Enabled, x.StopOnError, x.LastStartUtc, x.LastEndUtc, x.LastSuccessUtc }).ToList();
-            string filePath = ExporterManager.Export("task", ExporterType.CSV, dataList.ToList(), "");
+            string filePath = null;
             HttpResponseMessage result = null;
-
+            try
+            {
+                var query = _service.Query();
+                searchModel.rows = 0;
+                var data = Web.Infrastructure.Util.GetGridData<ScheduleTask>(searchModel, query);
+                var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Seconds, x.Type, x.Enabled, x.StopOnError, x.LastStartUtc, x.LastEndUtc, x.LastSuccessUtc }).ToList();
+                filePath = ExporterManager.Export("task", ExporterType.CSV, dataList.ToList(), "");
+            }
+            catch (Exception ex)
+            {
+                return Web.Infrastructure.Util.DisplayExportError(ex);
+            }
             if (!File.Exists(filePath))
             {
                 result = Request.CreateResponse(HttpStatusCode.Gone);
@@ -99,7 +106,7 @@ namespace Web.Controllers.Api
             StringBuilder message = new StringBuilder();
             if (id == default(Guid))
                 return BadRequest("Task id cannot be empty.");
-            if (item==null)
+            if (item == null)
             {
                 return BadRequest("Task cannot be empty.");
             }
@@ -111,7 +118,7 @@ namespace Web.Controllers.Api
             item.Name = item.Name.Trim();
             _service.Update(item);
             message.AppendFormat("Task {0}  is saved successflly.", item.Name);
-            return Json<object>(new { Success = true, Message = message.ToString(), RowId=item.Id });
+            return Json<object>(new { Success = true, Message = message.ToString(), RowId = item.Id });
 
         }
 

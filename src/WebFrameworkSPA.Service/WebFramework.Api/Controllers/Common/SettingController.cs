@@ -29,7 +29,7 @@ namespace Web.Controllers
         {
             var query = _service.Query();
             if (Constants.SHOULD_FILTER_BY_APP)
-                query = query.Where(x => x.Name.StartsWith(string.Format("{0}.",App.Common.Util.ApplicationConfiguration.AppAcronym)));
+                query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
             var data = Util.GetGridData<Setting>(searchModel, query);
             var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Value }).ToList();
             return new
@@ -44,15 +44,22 @@ namespace Web.Controllers
         [HttpGet]
         public dynamic ExportToExcel([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
         {
-            var query = _service.Query();
-            if (Constants.SHOULD_FILTER_BY_APP)
-                query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
-            searchModel.rows = 0;
-            var data = Util.GetGridData<Setting>(searchModel, query);
-            var dataList = data.Items.Select(x => new { x.Name, x.Value }).ToList();
-            string filePath = ExporterManager.Export("setting", ExporterType.CSV, dataList.ToList(), "");
+            string filePath = null;
             HttpResponseMessage result = null;
-
+            try
+            {
+                var query = _service.Query();
+                if (Constants.SHOULD_FILTER_BY_APP)
+                    query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
+                searchModel.rows = 0;
+                var data = Util.GetGridData<Setting>(searchModel, query);
+                var dataList = data.Items.Select(x => new { x.Name, x.Value }).ToList();
+                filePath = ExporterManager.Export("setting", ExporterType.CSV, dataList.ToList(), "");
+            }
+            catch (Exception ex)
+            {
+                return Web.Infrastructure.Util.DisplayExportError(ex);
+            }
             if (!File.Exists(filePath))
             {
                 result = Request.CreateResponse(HttpStatusCode.Gone);
@@ -92,7 +99,7 @@ namespace Web.Controllers
                 return BadRequest("Setting value cannot be empty.");
             item.Name = item.Name.Trim();
             if (Constants.SHOULD_FILTER_BY_APP && !item.Name.StartsWith(App.Common.Util.ApplicationConfiguration.AppAcronym))
-                return BadRequest(string.Format("Name must start with '{0}.'",App.Common.Util.ApplicationConfiguration.AppAcronym));
+                return BadRequest(string.Format("Name must start with '{0}.'", App.Common.Util.ApplicationConfiguration.AppAcronym));
             item.Value = string.IsNullOrEmpty(item.Value) ? null : item.Value.Trim();
             if (_service.SettingExists(item.Name))
                 return BadRequest(string.Format("Permission {0} already exists.", item.Name));
@@ -107,7 +114,7 @@ namespace Web.Controllers
             StringBuilder message = new StringBuilder();
             if (id == default(Guid))
                 return BadRequest("Setting id cannot be empty.");
-            if (item==null)
+            if (item == null)
             {
                 return BadRequest("Setting cannot be empty.");
             }
@@ -121,10 +128,10 @@ namespace Web.Controllers
             }
             item.Id = id;
             item.Name = item.Name.Trim();
-            item.Value=string.IsNullOrEmpty(item.Value)?null:item.Value.Trim();
+            item.Value = string.IsNullOrEmpty(item.Value) ? null : item.Value.Trim();
             _service.UpdateSetting(item);
             message.AppendFormat("Setting {0}  is saved successflly.", item.Name);
-            return Json<object>(new { Success = true, Message = message.ToString(), RowId=item.Id });
+            return Json<object>(new { Success = true, Message = message.ToString(), RowId = item.Id });
 
         }
 

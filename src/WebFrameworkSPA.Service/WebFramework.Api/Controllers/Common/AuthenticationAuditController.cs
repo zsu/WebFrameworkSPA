@@ -45,15 +45,22 @@ namespace Web.Controllers
         [HttpGet]
         public dynamic ExportToExcel([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
         {
-            var query = _service.Query();
-            if (Constants.SHOULD_FILTER_BY_APP)
-                query = query.Where(x => x.Application == App.Common.Util.ApplicationConfiguration.AppAcronym);
-            searchModel.rows = 0;
-            var data = Util.GetGridData<AuthenticationAudit>(searchModel, query);
-            var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.Activity, x.Detail, x.UserName, x.ClientIP }).ToList();
-            string filePath = ExporterManager.Export("authenticationaudit", ExporterType.CSV, dataList.ToList(), "");
+            string filePath = null;
             HttpResponseMessage result = null;
-
+            try
+            {
+                var query = _service.Query();
+                if (Constants.SHOULD_FILTER_BY_APP)
+                    query = query.Where(x => x.Application == App.Common.Util.ApplicationConfiguration.AppAcronym);
+                searchModel.rows = 0;
+                var data = Util.GetGridData<AuthenticationAudit>(searchModel, query);
+                var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.Activity, x.Detail, x.UserName, x.ClientIP }).ToList();
+                filePath = ExporterManager.Export("authenticationaudit", ExporterType.CSV, dataList.ToList(), "");
+            }
+            catch (Exception ex)
+            {
+                return Util.DisplayExportError(ex);
+            }
             if (!File.Exists(filePath))
             {
                 result = Request.CreateResponse(HttpStatusCode.Gone);

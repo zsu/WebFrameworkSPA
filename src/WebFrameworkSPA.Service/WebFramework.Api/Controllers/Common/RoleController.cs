@@ -49,14 +49,21 @@ namespace Web.Controllers.Api
         [HttpGet]
         public dynamic ExportToExcel([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
         {
-            var query = _roleService.Query();
-            //query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
-            searchModel.rows = 0;
-            var data = Web.Infrastructure.Util.GetGridData<Role>(searchModel, query);
-            var dataList = data.Items.Select(x => new {x.Name, x.Description }).ToList();
-            string filePath = ExporterManager.Export("role", ExporterType.CSV, dataList.ToList(), "");
+            string filePath = null;
             HttpResponseMessage result = null;
-
+            try
+            {
+                var query = _roleService.Query();
+                //query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
+                searchModel.rows = 0;
+                var data = Web.Infrastructure.Util.GetGridData<Role>(searchModel, query);
+                var dataList = data.Items.Select(x => new { x.Name, x.Description }).ToList();
+                filePath = ExporterManager.Export("role", ExporterType.CSV, dataList.ToList(), "");
+            }
+            catch (Exception ex)
+            {
+                return Web.Infrastructure.Util.DisplayExportError(ex);
+            }
             if (!File.Exists(filePath))
             {
                 result = Request.CreateResponse(HttpStatusCode.Gone);
@@ -108,7 +115,7 @@ namespace Web.Controllers.Api
             StringBuilder message = new StringBuilder();
             if (id == default(Guid))
                 return BadRequest("Role id cannot be empty.");
-            if (item==null)
+            if (item == null)
             {
                 return BadRequest("Role cannot be empty.");
             }
@@ -118,13 +125,13 @@ namespace Web.Controllers.Api
             }
             item.Id = id;
             item.Name = item.Name.Trim();
-            item.Description=string.IsNullOrEmpty(item.Description)?null:item.Description.Trim();
+            item.Description = string.IsNullOrEmpty(item.Description) ? null : item.Description.Trim();
             //if (_roleService.RoleExists(item.Name))
             //    return BadRequest(string.Format("Role {0} already exists.", item.Name));
             //Role role = new Role() { Id = item.Id, Name = item.Name, Description = item.Description };
             _roleService.UpdateRole(item);
             message.AppendFormat("Role {0}  is saved successflly.", item.Name);
-            return Json<object>(new { Success = true, Message = message.ToString(), RowId=item.Id });
+            return Json<object>(new { Success = true, Message = message.ToString(), RowId = item.Id });
 
         }
 
@@ -190,7 +197,7 @@ namespace Web.Controllers.Api
             //note - these queries require "using System.Dynamic.Linq" library
             IQueryable<RolePermissionModel> query = rolePermissions.AsQueryable();
             var data = Web.Infrastructure.Util.GetGridData<RolePermissionModel>(searchModel, query);
-            var dataList = data.Items.Select(x => new {x.Id,x.Name,x.Description,x.HasPermission}).ToList();
+            var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Description, x.HasPermission }).ToList();
             return new
             {
                 total = searchModel.page > 0 ? (int)Math.Ceiling((float)data.TotalNumber / searchModel.rows) : 1,
@@ -220,26 +227,33 @@ namespace Web.Controllers.Api
         [HttpGet]
         public dynamic ExportToExcelRolePermissions(Guid id, [FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
         {
-            if (id == default(Guid))
-                return BadRequest("Role id cannot be empty.");
-            searchModel.rows = 0;
-            int startRow = (searchModel.page * searchModel.rows) + 1;
-            int skip = (searchModel.page > 0 ? searchModel.page - 1 : 0) * searchModel.rows;
-            Role role = _roleService.GetById(id);
-            List<Permission> allPermission = _permissionService.GetAllPermissions();
-            List<RolePermissionModel> rolePermissions = new List<RolePermissionModel>();
-            foreach (var permission in allPermission)
-            {
-                bool hasPermission = role.Permissions.AsQueryable().Any(x => x.Id == permission.Id);
-                rolePermissions.Add(new RolePermissionModel { Id = permission.Id, Name = permission.Name, Description = permission.Description, HasPermission = hasPermission });
-            }
-            //note - these queries require "using System.Dynamic.Linq" library
-            IQueryable<RolePermissionModel> query = rolePermissions.AsQueryable();
-            var data = Web.Infrastructure.Util.GetGridData<RolePermissionModel>(searchModel, query);
-            var dataList = data.Items.Select(x => new { x.Name, x.Description, x.HasPermission }).ToList();
-            string filePath = ExporterManager.Export("rolepermissions", ExporterType.CSV, dataList, "");
+            string filePath = null;
             HttpResponseMessage result = null;
-
+            try
+            {
+                if (id == default(Guid))
+                    return BadRequest("Role id cannot be empty.");
+                searchModel.rows = 0;
+                int startRow = (searchModel.page * searchModel.rows) + 1;
+                int skip = (searchModel.page > 0 ? searchModel.page - 1 : 0) * searchModel.rows;
+                Role role = _roleService.GetById(id);
+                List<Permission> allPermission = _permissionService.GetAllPermissions();
+                List<RolePermissionModel> rolePermissions = new List<RolePermissionModel>();
+                foreach (var permission in allPermission)
+                {
+                    bool hasPermission = role.Permissions.AsQueryable().Any(x => x.Id == permission.Id);
+                    rolePermissions.Add(new RolePermissionModel { Id = permission.Id, Name = permission.Name, Description = permission.Description, HasPermission = hasPermission });
+                }
+                //note - these queries require "using System.Dynamic.Linq" library
+                IQueryable<RolePermissionModel> query = rolePermissions.AsQueryable();
+                var data = Web.Infrastructure.Util.GetGridData<RolePermissionModel>(searchModel, query);
+                var dataList = data.Items.Select(x => new { x.Name, x.Description, x.HasPermission }).ToList();
+                filePath = ExporterManager.Export("rolepermissions", ExporterType.CSV, dataList, "");
+            }
+            catch (Exception ex)
+            {
+                return Web.Infrastructure.Util.DisplayExportError(ex);
+            }
             if (!File.Exists(filePath))
             {
                 result = Request.CreateResponse(HttpStatusCode.Gone);
@@ -264,16 +278,16 @@ namespace Web.Controllers.Api
             int totalRecords = gridData.TotalNumber;
             var data = gridData.Items;
 
-            var dataListTemp = data.SelectMany(u=>_userService.Query(),(r,u)=>new {r,u})
-                .Where(x=>x.u.Roles.Contains(x.r)).OrderBy(x=>x.r.Id).Select(x => new { x.r.Id, x.r.Name, x.r.Description,x.u }).ToList();
+            var dataListTemp = data.SelectMany(u => _userService.Query(), (r, u) => new { r, u })
+                .Where(x => x.u.Roles.Contains(x.r)).OrderBy(x => x.r.Id).Select(x => new { x.r.Id, x.r.Name, x.r.Description, x.u }).ToList();
             var roles = data.ToList();
             List<RoleUserModel> dataList = new List<RoleUserModel>();
-            foreach(Role role in roles)
+            foreach (Role role in roles)
             {
-                RoleUserModel roleUser = new RoleUserModel{Id=role.Id,Description=role.Description,Name=role.Name};
-                var users=dataListTemp.Where(x => x.Id == role.Id).Select(x=>x.u).ToList();
+                RoleUserModel roleUser = new RoleUserModel { Id = role.Id, Description = role.Description, Name = role.Name };
+                var users = dataListTemp.Where(x => x.Id == role.Id).Select(x => x.u).ToList();
                 foreach (var user in users)
-                    roleUser.Users.Add(new RoleUserModel.User { Id=user.ID,UserName=user.Username,FirstName = user.FirstName, LastName = user.LastName });
+                    roleUser.Users.Add(new RoleUserModel.User { Id = user.ID, UserName = user.Username, FirstName = user.FirstName, LastName = user.LastName });
                 dataList.Add(roleUser);
             }
             var totalPages = (int)Math.Ceiling((float)totalRecords / searchModel.rows);
@@ -289,28 +303,35 @@ namespace Web.Controllers.Api
         [HttpGet]
         public dynamic ExportToExcelRoleUserList([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
         {
-            var query = _roleService.Query();
-            searchModel.rows = 0;
-            var gridData = Util.GetGridData<Role>(searchModel, query);
-            int totalRecords = gridData.TotalNumber;
-            var data = gridData.Items;
-
-            var dataListTemp = data.SelectMany(u => _userService.Query(), (r, u) => new { r, u })
-                .Where(x => x.u.Roles.Contains(x.r)).OrderBy(x => x.r.Id).Select(x => new { x.r.Id, x.r.Name, x.r.Description, x.u }).ToList();
-            var roles = data.ToList();
-            List<RoleUserModel> dataList = new List<RoleUserModel>();
-            foreach (Role role in roles)
-            {
-                RoleUserModel roleUser = new RoleUserModel { Id = role.Id, Description = role.Description, Name = role.Name };
-                var users = dataListTemp.Where(x => x.Id == role.Id).Select(x => x.u).ToList();
-                foreach (var user in users)
-                    roleUser.Users.Add(new RoleUserModel.User { Id = user.ID, UserName = user.Username, FirstName = user.FirstName, LastName = user.LastName });
-                dataList.Add(roleUser);
-            }
-            var dataList1 = dataList.Select(x => new { x.Description, Users = string.Join(", ", x.Users.Select(y => y.UserName)) }).ToList();
-            string filePath = ExporterManager.Export("roleuserlist", ExporterType.CSV, dataList1, "");
+            string filePath = null;
             HttpResponseMessage result = null;
+            try
+            {
+                var query = _roleService.Query();
+                searchModel.rows = 0;
+                var gridData = Util.GetGridData<Role>(searchModel, query);
+                int totalRecords = gridData.TotalNumber;
+                var data = gridData.Items;
 
+                var dataListTemp = data.SelectMany(u => _userService.Query(), (r, u) => new { r, u })
+                    .Where(x => x.u.Roles.Contains(x.r)).OrderBy(x => x.r.Id).Select(x => new { x.r.Id, x.r.Name, x.r.Description, x.u }).ToList();
+                var roles = data.ToList();
+                List<RoleUserModel> dataList = new List<RoleUserModel>();
+                foreach (Role role in roles)
+                {
+                    RoleUserModel roleUser = new RoleUserModel { Id = role.Id, Description = role.Description, Name = role.Name };
+                    var users = dataListTemp.Where(x => x.Id == role.Id).Select(x => x.u).ToList();
+                    foreach (var user in users)
+                        roleUser.Users.Add(new RoleUserModel.User { Id = user.ID, UserName = user.Username, FirstName = user.FirstName, LastName = user.LastName });
+                    dataList.Add(roleUser);
+                }
+                var dataList1 = dataList.Select(x => new { x.Description, Users = string.Join(", ", x.Users.Select(y => y.UserName)) }).ToList();
+                filePath = ExporterManager.Export("roleuserlist", ExporterType.CSV, dataList1, "");
+            }
+            catch (Exception ex)
+            {
+                return Web.Infrastructure.Util.DisplayExportError(ex);
+            }
             if (!File.Exists(filePath))
             {
                 result = Request.CreateResponse(HttpStatusCode.Gone);
@@ -329,7 +350,7 @@ namespace Web.Controllers.Api
         }
         // DELETE api/role/5/RemoveUser/3
         [Route("api/roleuserlist/remove/{rid}/{uid}")]
-        public IHttpActionResult DeleteUser(Guid rid,Guid uid)
+        public IHttpActionResult DeleteUser(Guid rid, Guid uid)
         {
             if (rid == default(Guid))
                 return BadRequest("Role id cannot be empty.");

@@ -193,7 +193,7 @@ namespace Web.Infrastructure
             }
             totalRecords = data.Count();
             if (searchModel.rows == 0 && totalRecords > maxRecords)
-                throw new Exception("Too many records returned.");
+                throw new Exception("Too many records returned. Please refine your query.");
             if (!string.IsNullOrWhiteSpace(searchModel.sidx))
                 data = data.OrderBy(searchModel.sidx + " " + searchModel.sord);
             data = data.Skip(skip);
@@ -226,6 +226,34 @@ namespace Web.Infrastructure
             }
             //Logger.Log(LogLevel.Error, string.Format("Invalid timezone {0}", timezoneId));
             return null;
+        }
+        public static System.Net.Http.HttpResponseMessage DisplayExportError(Exception ex)
+        {
+            if (!ex.Message.StartsWith("Too many records returned."))
+            {
+                Logger.Log(LogLevel.Error, ex);
+            }
+            StringBuilder message = new StringBuilder();
+            message.AppendLine(@"<style type='text/css'>
+                        .well {
+                        background-image: -webkit-linear-gradient(top, #e8e8e8 0%, #f5f5f5 100%);
+                        background-image: linear-gradient(to bottom, #e8e8e8 0%, #f5f5f5 100%);
+                        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe8e8e8', endColorstr='#fff5f5f5', GradientType=0);
+                        background-repeat: repeat-x;
+                        border-color: #dcdcdc;
+                        -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, .05), 0 1px 0 rgba(255, 255, 255, .1);
+                        box-shadow: inset 0 1px 3px rgba(0, 0, 0, .05), 0 1px 0 rgba(255, 255, 255, .1);
+                        }
+                        </style>
+                        <center class='well'><div><h1>Error</h1></div>");
+            message.AppendFormat("<div>{0}</div><br/>", ex.Message);
+            message.AppendLine("<input type='button' value='Close' onClick='javascript:self.close();'></center>");
+            return new System.Net.Http.HttpResponseMessage()
+            {
+                Content = new System.Net.Http.StringContent(message.ToString(),
+                    Encoding.UTF8,
+                    "text/html")
+            };
         }
         //This will return the Windows zone that matches the IANA zone, if one exists.
         private static string IanaToWindows(string ianaZoneId)

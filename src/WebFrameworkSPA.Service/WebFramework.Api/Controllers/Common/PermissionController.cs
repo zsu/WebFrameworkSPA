@@ -42,13 +42,21 @@ namespace Web.Controllers.Api
         [HttpGet]
         public dynamic ExportToExcel([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
         {
-            var query = _permissionService.Query();
-            //query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
-            searchModel.rows = 0;
-            var data = Web.Infrastructure.Util.GetGridData<Permission>(searchModel, query);
-            var dataList = data.Items.Select(x => new {x.Name, x.Description }).ToList();
-            string filePath = ExporterManager.Export("permission", ExporterType.CSV, dataList.ToList(), "");
+            string filePath = null;
             HttpResponseMessage result = null;
+            try
+            {
+                var query = _permissionService.Query();
+                //query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
+                searchModel.rows = 0;
+                var data = Web.Infrastructure.Util.GetGridData<Permission>(searchModel, query);
+                var dataList = data.Items.Select(x => new { x.Name, x.Description }).ToList();
+                filePath = ExporterManager.Export("permission", ExporterType.CSV, dataList.ToList(), "");
+            }
+            catch (Exception ex)
+            {
+                return Web.Infrastructure.Util.DisplayExportError(ex);
+            }
 
             if (!File.Exists(filePath))
             {
@@ -100,7 +108,7 @@ namespace Web.Controllers.Api
             StringBuilder message = new StringBuilder();
             if (id == default(Guid))
                 return BadRequest("Permission id cannot be empty.");
-            if (item==null)
+            if (item == null)
             {
                 return BadRequest("Permission cannot be empty.");
             }
@@ -110,10 +118,10 @@ namespace Web.Controllers.Api
             }
             item.Id = id;
             item.Name = item.Name.Trim();
-            item.Description=string.IsNullOrEmpty(item.Description)?null:item.Description.Trim();
+            item.Description = string.IsNullOrEmpty(item.Description) ? null : item.Description.Trim();
             _permissionService.UpdatePermission(item);
             message.AppendFormat("Permission {0}  is saved successflly.", item.Name);
-            return Json<object>(new { Success = true, Message = message.ToString(), RowId=item.Id });
+            return Json<object>(new { Success = true, Message = message.ToString(), RowId = item.Id });
 
         }
 
