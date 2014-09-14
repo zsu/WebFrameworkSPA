@@ -220,6 +220,10 @@ app.config(["$urlRouterProvider", "$stateProvider", "$locationProvider", "$trans
               url: "/cancelverificationrequest/:id",
               templateUrl: viewBaseUrl + "account/cancelverificationrequest/cancelverificationrequest.html",
               controller: "CancelVerificationRequestController"
+          }).state("register", {
+              url: "/register",
+              templateUrl: viewBaseUrl + "account/register/register.html",
+              controller: "RegisterController"
           });
         $provide.factory("$stateProviderService", function () {
             return $stateProvider;

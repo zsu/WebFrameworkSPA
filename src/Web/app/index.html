@@ -66,6 +66,13 @@
                         </ul>
                         <ul class="nav navbar-nav navbar-right" ng-show="menuVisible">
                             <li>
+                                <div class="menu" ng-controller="StatusController" ng-if="!tt.authentication.userLoggedIn">
+                                    <span>
+                                        <a href="#/register">Register</a>
+                                    </span>
+                                </div>
+                            </li>
+                            <li>
                                 <div class="menu" ng-controller="StatusController">
                                     <img ng-if="status.isOnline" src="content/images/online.png" title="Browser connection online" />
                                     <img ng-if="!status.isOnline" src="content/images/offline.png" title="Browser connection offline" />
@@ -103,7 +110,8 @@
                     </span>
                 </span>-->
                 <span>Build Version: {{status.serverVersion}}</span>
-                <a href="#" class="pull-right">© <script>document.write(new Date().getFullYear());</script> ZSU</a>
+                <a href="#" class="pull-right">©
+                <script>document.write(new Date().getFullYear());</script> ZSU</a>
             </div>
         </footer>
 
@@ -133,7 +141,7 @@
     <script src="0lib/angular-translate-storage-cookie.js"></script>
     <script src="0lib/angular-translate-storage-local.js"></script>
     <script src="0lib/angular-ui-router.js"></script>
-    <script src="0lib/ui-utils.min.js"></script>    
+    <script src="0lib/ui-utils.min.js"></script>
     <script src="0lib/ngStorage.js"></script>
     <script src="0lib/angularjs-nvd3-directives.js"></script>
     <script src="0lib/script.js"></script>

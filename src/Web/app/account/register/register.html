@@ -1,0 +1,62 @@
+﻿<br />
+<br />
+<div class="disable-select">
+    <div class="modal-body">
+        <div class="center col-md-7 well">
+            <div class="tab-content">
+                <div class="tab-pane active in" id="changepassword" ng-controller="RegisterController">
+                    <form name="form" novalidate class="form-horizontal">
+                        <fieldset>
+                            <div id="legend">
+                                <legend class="">Register</legend>
+                            </div>
+                            <maintenance-warning></maintenance-warning>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="username">Username</label>
+                                <div class="col-md-6">
+                                    <input type="text" required ng-model="registerModel.Username" id="username" name="username" placeholder="Username" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="email">Email</label>
+                                <div class="col-md-6">
+                                    <input type="email" required ng-model="registerModel.Email" id="email" name="email" placeholder="Email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="password">Password</label>
+                                <div class="col-md-6">
+                                    <input type="password" required ng-model="registerModel.Password" id="password" name="password" placeholder="Password" class="form-control">
+                                </div>
+                            </div><div class="form-group">
+                                <label class="col-md-2 control-label" for="confirmpassword">Confirm Password</label>
+                                <div class="col-md-6">
+                                    <input type="password" required ng-model="registerModel.ConfirmPassword" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" class="form-control" ui-validate=" '$value==registerModel.Password' "
+                                           ui-validate-watch=" 'registerModel.Password' ">
+                                    <span class="alert-danger" ng-show="form.confirmpassword.$error.validator">Passwords do not match!</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="firstname">First Name</label>
+                                <div class="col-md-6">
+                                    <input type="text" required ng-model="registerModel.FirstName" id="firstname" name="firstname" placeholder="First Name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="lastname">Last Name</label>
+                                <div class="col-md-6">
+                                    <input type="text" required ng-model="registerModel.LastName" id="lastname" name="lastname" placeholder="Last Name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button ng-click="register()" ng-disabled="form.$invalid" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

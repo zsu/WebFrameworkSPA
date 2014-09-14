@@ -71,7 +71,9 @@ $script.ready("app", function () {
          "account/confirmpasswordreset/confirmpasswordresetApiService.js",
          "account/confirmpasswordreset/confirmpasswordresetController.js",
          "account/cancelverificationrequest/cancelverificationrequestApiService.js",
-         "account/cancelverificationrequest/cancelverificationrequestController.js"
+         "account/cancelverificationrequest/cancelverificationrequestController.js",
+         "account/register/registerApiService.js",
+         "account/register/registerController.js"
     ], "bundle");
 
     $script.ready("bundle", function () {

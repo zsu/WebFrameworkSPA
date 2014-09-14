@@ -4,13 +4,17 @@
      * @param $q
      * @param $angularCacheFactory
      */
-    $app.ConfirmEmailApi = function ($http, $q, $angularCacheFactory) {
-        this.confirmEmail = function (params) {
+    $app.RegisterApi = function ($http, $q, $angularCacheFactory) {
+        this.register = function (params) {
             var deferred = $q.defer();
-            var url = ttTools.baseUrl + "api/account/confirmemail";
+            var url = ttTools.baseUrl + "api/account/register";
             var p = {
+                Username: params.Username,
+                Email:params.Email,
                 Password: params.Password,
-                Key: params.Key
+                ConfirmPassword: params.ConfirmPassword,
+                FirstName: params.FirstName,
+                LastName:params.LastName
             };
             $http({
                 method: "POST",
@@ -26,5 +30,5 @@
         };
     };
 
-    app.service("confirmemailApi", ["$http", "$q", "$angularCacheFactory", $app.ConfirmEmailApi]);
+    app.service("registerApi", ["$http", "$q", "$angularCacheFactory", $app.RegisterApi]);
 })();

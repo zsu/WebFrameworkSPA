@@ -242,6 +242,7 @@
     <Compile Include="Infrastructure\NgWhereClauseGenerator.cs" />
     <Compile Include="Models\Account\ChangeEmailFromKeyInputModel.cs" />
     <Compile Include="Models\Account\ChangePasswordModel.cs" />
+    <Compile Include="Models\Account\RegisterInputModel.cs" />
     <Compile Include="Models\Account\ResetPasswordConfirmModel.cs" />
     <Compile Include="Models\Account\ResetPasswordModel.cs" />
     <Compile Include="Models\EntitySearchModel.cs" />

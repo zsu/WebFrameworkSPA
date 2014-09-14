@@ -15,5 +15,11 @@ namespace Service
         bool Delete(Guid id);
         NhUserAccount CreateAccountWithTempPassword(NhUserAccount item);
         NhUserAccount CreateAccount(NhUserAccount item);
+        void ResetPassword(Guid id);
+       void ResetPassword(string email);
+        void ChangePassword(Guid id, string oldPassword, string newPassword);
+        bool ChangePasswordFromResetKey(string key, string newPassword, out NhUserAccount account);
+        void VerifyEmailFromKey(string key, string password, out NhUserAccount account);
+        void CancelVerification(string key, out bool accountClosed);
     }
 }

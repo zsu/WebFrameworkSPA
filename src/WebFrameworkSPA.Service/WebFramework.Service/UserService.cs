@@ -194,5 +194,55 @@ namespace Service
             }
             return newAccount;
         }
+        public virtual void ResetPassword(Guid id)
+        {
+            using (var scope = new UnitOfWorkScope())
+            {
+                _userAccountService.ResetPassword(id);
+                scope.Commit();
+            }
+        }
+        public virtual void ResetPassword(string email)
+        {
+            using (var scope = new UnitOfWorkScope())
+            {
+                _userAccountService.ResetPassword(email);
+                scope.Commit();
+            }
+        }
+        public virtual void ChangePassword(Guid id, string oldPassword, string newPassword)
+        {
+            using (var scope = new UnitOfWorkScope())
+            {
+                _userAccountService.ChangePassword(id,oldPassword,newPassword);
+                scope.Commit();
+            }
+        }
+        public bool ChangePasswordFromResetKey(string key, string newPassword, out NhUserAccount account)
+        {
+            bool success;
+            using (var scope = new UnitOfWorkScope())
+            {
+                success=_userAccountService.ChangePasswordFromResetKey(key,newPassword,out account);
+                scope.Commit();
+            }
+            return success;
+        }
+        public void VerifyEmailFromKey(string key, string password, out NhUserAccount account)
+        {
+            using (var scope = new UnitOfWorkScope())
+            {
+                _userAccountService.VerifyEmailFromKey(key, password, out account);
+                scope.Commit();
+            }
+        }
+        public void CancelVerification(string key, out bool accountClosed)
+        {
+            using (var scope = new UnitOfWorkScope())
+            {
+                _userAccountService.CancelVerification(key,out accountClosed);
+                scope.Commit();
+            }
+        }
     }
 }
