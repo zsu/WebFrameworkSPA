@@ -54,7 +54,7 @@ namespace Web.Controllers
                     query = query.Where(x => x.Application == App.Common.Util.ApplicationConfiguration.AppAcronym);
                 searchModel.rows = 0;
                 var data = Util.GetGridData<AuthenticationAudit>(searchModel, query);
-                var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.Activity, x.Detail, x.UserName, x.ClientIP }).ToList();
+                var dataList = data.Items.Select(x => new { x.Application, x.CreatedDate, x.Activity, x.Detail, x.UserName, x.ClientIP }).ToList();
                 filePath = ExporterManager.Export("authenticationaudit", ExporterType.CSV, dataList.ToList(), "");
             }
             catch (Exception ex)
