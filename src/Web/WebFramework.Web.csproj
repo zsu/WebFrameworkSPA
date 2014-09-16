@@ -56,6 +56,9 @@
     <Content Include="app\account\cancelverificationrequest\cancelverificationrequest.html" />
     <Content Include="app\account\cancelverificationrequest\cancelverificationrequestApiService.js" />
     <Content Include="app\account\cancelverificationrequest\cancelverificationrequestController.js" />
+    <Content Include="app\account\register\register.html" />
+    <Content Include="app\account\register\registerApiService.js" />
+    <Content Include="app\account\register\registerController.js" />
     <Content Include="app\account\confirmpasswordreset\confirmpasswordreset.html" />
     <Content Include="app\account\confirmpasswordreset\confirmpasswordresetApiService.js" />
     <Content Include="app\account\confirmpasswordreset\confirmpasswordresetController.js" />
