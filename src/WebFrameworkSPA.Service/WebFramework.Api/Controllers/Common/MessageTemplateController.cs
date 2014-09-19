@@ -31,10 +31,7 @@ namespace Web.Controllers
         // GET api/MessageTemplate
         public dynamic GetGridData([FromUri] JqGridSearchModel searchModel)
         {
-            var query = _service.Query();
-            if (Constants.SHOULD_FILTER_BY_APP)
-                query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
-            var data = Web.Infrastructure.Util.GetGridData<MessageTemplate>(searchModel, query);
+            var data = GetQuery(searchModel);
             var dataList = data.Items.Select(x => new { x.Id, x.Name, x.BccEmailAddresses, x.Subject, x.Body, x.IsActive }).ToList();
             return new
             {
@@ -52,11 +49,8 @@ namespace Web.Controllers
             HttpResponseMessage result = null;
             try
             {
-                var query = _service.Query();
-                if (Constants.SHOULD_FILTER_BY_APP)
-                    query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
                 searchModel.rows = 0;
-                var data = Web.Infrastructure.Util.GetGridData<MessageTemplate>(searchModel, query);
+                var data = GetQuery(searchModel);
                 var dataList = data.Items.Select(x => new { x.Name, x.BccEmailAddresses, x.Subject, x.Body, x.IsActive }).ToList();
                 filePath = ExporterManager.Export("messagetemplate", ExporterType.CSV, dataList, "");
             }
@@ -212,6 +206,14 @@ namespace Web.Controllers
             msg = msg.Replace("{ProviderName}", providerName);
 
             return msg;
+        }
+        private GridModel<MessageTemplate> GetQuery([FromUri] JqGridSearchModel searchModel, int maxRecords = Constants.DEFAULT_MAX_RECORDS_RETURN)
+        {
+            var query = _service.Query();
+            if (Constants.SHOULD_FILTER_BY_APP)
+                query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
+            var data = Web.Infrastructure.Util.GetGridData<MessageTemplate>(searchModel, query);
+            return data;
         }
     }
 }

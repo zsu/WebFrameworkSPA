@@ -45,5 +45,6 @@ namespace Web
         public static readonly string SETTING_KEYS_MAINTENANCE_WARNING_LEAD = (SHOULD_FILTER_BY_APP ? Util.ApplicationConfiguration.AppAcronym + "." : String.Empty) + "maintenance.warninglead";
         public static readonly string SETTING_KEYS_MAINTENANCE_WARNING_MESSAGE = (SHOULD_FILTER_BY_APP ? Util.ApplicationConfiguration.AppAcronym + "." : String.Empty) + "maintenance.warningmessage";
         #endregion Setting Keys
+        public const int DEFAULT_MAX_RECORDS_RETURN = 100000;
     }
 }

@@ -27,9 +27,7 @@ namespace Web.Controllers.Api
         // GET api/task
         public dynamic GetGridData([FromUri] JqGridSearchModel searchModel)
         {
-            var query = _service.Query();
-            //query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
-            var data = Web.Infrastructure.Util.GetGridData<ScheduleTask>(searchModel, query);
+            var data = GetQuery(searchModel);
             var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Seconds, x.Type, x.Enabled, x.StopOnError, x.LastStartUtc, x.LastEndUtc, x.LastSuccessUtc }).ToList();
             return new
             {
@@ -47,9 +45,8 @@ namespace Web.Controllers.Api
             HttpResponseMessage result = null;
             try
             {
-                var query = _service.Query();
                 searchModel.rows = 0;
-                var data = Web.Infrastructure.Util.GetGridData<ScheduleTask>(searchModel, query);
+                var data = GetQuery(searchModel);
                 var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Seconds, x.Type, x.Enabled, x.StopOnError, x.LastStartUtc, x.LastEndUtc, x.LastSuccessUtc }).ToList();
                 filePath = ExporterManager.Export("task", ExporterType.CSV, dataList.ToList(), "");
             }
@@ -132,6 +129,12 @@ namespace Web.Controllers.Api
             else
                 return NotFound();
         }
-
+        private GridModel<ScheduleTask> GetQuery([FromUri] JqGridSearchModel searchModel, int maxRecords = Constants.DEFAULT_MAX_RECORDS_RETURN)
+        {
+            var query = _service.Query();
+            //query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
+            var data = Web.Infrastructure.Util.GetGridData<ScheduleTask>(searchModel, query);
+            return data;
+        }
     }
 }

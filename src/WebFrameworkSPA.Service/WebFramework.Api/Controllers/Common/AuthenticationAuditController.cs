@@ -28,10 +28,7 @@ namespace Web.Controllers
 
         public dynamic GetGridData([FromUri] JqGridSearchModel searchModel)
         {
-            var query = _service.Query();
-            if (Constants.SHOULD_FILTER_BY_APP)
-                query = query.Where(x => x.Application == App.Common.Util.ApplicationConfiguration.AppAcronym);
-            var data = Util.GetGridData<AuthenticationAudit>(searchModel, query);
+            var data = GetQuery(searchModel);
             var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.Activity, x.Detail, x.UserName, x.ClientIP }).ToList();
             return new
             {
@@ -49,11 +46,8 @@ namespace Web.Controllers
             HttpResponseMessage result = null;
             try
             {
-                var query = _service.Query();
-                if (Constants.SHOULD_FILTER_BY_APP)
-                    query = query.Where(x => x.Application == App.Common.Util.ApplicationConfiguration.AppAcronym);
                 searchModel.rows = 0;
-                var data = Util.GetGridData<AuthenticationAudit>(searchModel, query);
+                var data = GetQuery(searchModel);
                 var dataList = data.Items.Select(x => new { x.Application, x.CreatedDate, x.Activity, x.Detail, x.UserName, x.ClientIP }).ToList();
                 filePath = ExporterManager.Export("authenticationaudit", ExporterType.CSV, dataList.ToList(), "");
             }
@@ -77,6 +71,14 @@ namespace Web.Controllers
             }
 
             return result;
+        }
+        private GridModel<AuthenticationAudit> GetQuery([FromUri] JqGridSearchModel searchModel, int maxRecords = Constants.DEFAULT_MAX_RECORDS_RETURN)
+        {
+            var query = _service.Query();
+            if (Constants.SHOULD_FILTER_BY_APP)
+                query = query.Where(x => x.Application == App.Common.Util.ApplicationConfiguration.AppAcronym);
+            var data = Util.GetGridData<AuthenticationAudit>(searchModel, query);
+            return data;
         }
     }
 }
