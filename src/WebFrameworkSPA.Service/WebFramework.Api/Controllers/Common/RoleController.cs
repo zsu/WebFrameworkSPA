@@ -33,7 +33,7 @@ namespace Web.Controllers.Api
         // GET api/role
         public dynamic GetGridData([FromUri] JqGridSearchModel searchModel)
         {
-            var data = GetRoleQuery(searchModel);
+            var data = GetRoleQuery(_roleService.Query(),searchModel);
             var dataList = data.Items.Select(x => new { x.Id, x.Name, x.Description }).ToList();
             return new
             {
@@ -52,7 +52,7 @@ namespace Web.Controllers.Api
             try
             {
                 searchModel.rows = 0;
-                var data = GetRoleQuery(searchModel);
+                var data = GetRoleQuery(Util.GetStatelessQuery<Role>(), searchModel);
                 var dataList = data.Items.Select(x => new { x.Name, x.Description }).ToList();
                 filePath = ExporterManager.Export("role", ExporterType.CSV, dataList.ToList(), "");
             }
@@ -344,9 +344,8 @@ namespace Web.Controllers.Api
             totalNumber=totalRecords;
             return dataList;
         }
-        private GridModel<Role> GetRoleQuery([FromUri] JqGridSearchModel searchModel, int maxRecords = Constants.DEFAULT_MAX_RECORDS_RETURN)
+        private GridModel<Role> GetRoleQuery(IQueryable<Role> query,[FromUri] JqGridSearchModel searchModel, int maxRecords = Constants.DEFAULT_MAX_RECORDS_RETURN)
         {
-            var query = _roleService.Query();
             //query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
             var data = Web.Infrastructure.Util.GetGridData<Role>(searchModel, query);
             return data;

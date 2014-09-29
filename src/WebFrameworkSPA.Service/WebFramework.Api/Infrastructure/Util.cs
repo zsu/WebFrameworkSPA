@@ -12,6 +12,11 @@ using WebFramework.Data.Domain;
 using System.Linq.Dynamic;
 using Web.Infrastructure.JqGrid;
 using System.Text;
+using NHibernate;
+using NHibernate.Engine;
+using NHibernate.Linq;
+using NHibernate.Hql.Ast.ANTLR;
+using System.Data;
 namespace Web.Infrastructure
 {
     public class Util
@@ -206,6 +211,12 @@ namespace Web.Infrastructure
                 Items = data
             };
         }
+        public static IQueryable<T> GetStatelessQuery<T>()
+        {
+            var session = ((App.Infrastructure.NHibernate.NHUnitOfWork)App.Data.UnitOfWorkManager.CurrentUnitOfWork).GetStatelessSession<T>();
+            return session.Query<T>();
+        }
+
         public static string GetClientTimeZone()
         {
             string timezoneId = null;

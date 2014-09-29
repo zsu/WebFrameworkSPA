@@ -47,7 +47,13 @@ namespace App.Infrastructure.NHibernate
             _openSessions.Add(sessionKey, session);
             return session;
         }
-
+        public IStatelessSession GetStatelessSession<T>()
+        {
+            var sessionFactory = _sessionResolver.GetFactoryFor<T>();
+            //Opening a new session...
+            var session = sessionFactory.OpenStatelessSession();
+            return session;
+        }
         /// <summary>
         /// Flushes the changes made in the unit of work to the data store.
         /// </summary>

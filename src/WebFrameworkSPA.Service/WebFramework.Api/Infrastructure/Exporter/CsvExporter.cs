@@ -12,10 +12,26 @@ namespace Web.Infrastructure
 {
     public class CsvExporter : IExporter
     {
+        public string Export(string reportName, IDataReader data, List<string> includeProperties = null, List<string> excludeProperties = null, bool addTimeStamp = true)
+        {
+            StringBuilder output = null;
+            output = DoExport(data, includeProperties, excludeProperties, addTimeStamp);
+            return output.ToString();
+        }
+        public string Export(string reportName, IDataReader data, string outputFilePath, List<string> includeProperties = null, List<string> excludePropertie = null, bool addTimeStamp = true)
+        {
+            string filePath = outputFilePath;
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                filePath = Path.Combine(Path.GetTempPath(), string.Format("{0}_{1}_{2}.csv", App.Common.Util.MakeValidFileName(reportName), DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), App.Common.Util.GenerateRandomDigitCode(4)));
+            }
+            DoExport(data, filePath, includeProperties, excludePropertie, addTimeStamp);
+            return filePath;
+        }
         public string Export<T>(string reportName, IList<T> data, List<string> includeProperties = null, List<string> excludeProperties = null, bool addTimeStamp = true)
         {
             StringBuilder output = null;
-            output = ExportList<T>(data, includeProperties, excludeProperties, addTimeStamp);
+            output = DoExport<T>(data, includeProperties, excludeProperties, addTimeStamp);
             return output.ToString();
         }
         public string Export<T>(string reportName, IList<T> data, string outputFilePath, List<string> includeProperties = null, List<string> excludePropertie = null, bool addTimeStamp = true)
@@ -25,13 +41,13 @@ namespace Web.Infrastructure
             {
                 filePath = Path.Combine(Path.GetTempPath(), string.Format("{0}_{1}_{2}.csv", App.Common.Util.MakeValidFileName(reportName), DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss"), App.Common.Util.GenerateRandomDigitCode(4)));
             }
-            ExportList<T>(data, filePath, includeProperties, excludePropertie, addTimeStamp);
+            DoExport<T>(data, filePath, includeProperties, excludePropertie, addTimeStamp);
             return filePath;
         }
         public string Export(string reportName, DataSet data, List<string> includeProperties = null, List<string> excludeProperties = null, bool addTimeStamp = true)
         {
             StringBuilder output = null;
-            output = ExportDataSet(data, includeProperties, excludeProperties, addTimeStamp);
+            output = DoExport(data, includeProperties, excludeProperties, addTimeStamp);
             return output.ToString();
         }
         public string Export(string reportName, DataSet data, string outputFilePath, List<string> includeProperties = null, List<string> excludePropertie = null, bool addTimeStamp = true)
@@ -39,16 +55,16 @@ namespace Web.Infrastructure
             string filePath = outputFilePath;
             if (string.IsNullOrWhiteSpace(filePath))
             {
-                filePath = Path.Combine(Path.GetTempPath(), string.Format("{0}_{1}_{2}.csv", App.Common.Util.MakeValidFileName(reportName)), DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), App.Common.Util.GenerateRandomDigitCode(4));
+                filePath = Path.Combine(Path.GetTempPath(), string.Format("{0}_{1}_{2}.csv", App.Common.Util.MakeValidFileName(reportName), DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), App.Common.Util.GenerateRandomDigitCode(4)));
             }
-            ExportDataSet(data, filePath, includeProperties, excludePropertie, addTimeStamp);
+            DoExport(data, filePath, includeProperties, excludePropertie, addTimeStamp);
             return filePath;
         }
         private string HandleSpecialChars(string s)
         {
             if (s == null)
                 return "";
-            return s.Contains(",") ? String.Format("\"{0}\"", s.Replace("\"", "\"\"")) : s;
+            return s.Contains(",") ? String.Concat("\"", s.Replace("\"", "\"\""), "\"") : s;
         }
         private string HandleSpecialChars(string s, Type columnType)
         {
@@ -56,23 +72,140 @@ namespace Web.Infrastructure
                 return "";
             if (columnType == typeof(string))
             {
-                s = string.Format("\"{0}\"", s.Contains("\"") ? s.Replace("\"", "\"\"") : s);
+                s = String.Concat("\"", s.Replace("\"", "\"\""), "\"");
             }
             else
-                s = s.Contains(",") ? String.Format("\"{0}\"", s.Replace("\"", "\"\"")) : s;
+                s = s.Contains(",") ? String.Concat("\"", s.Replace("\"", "\"\""), "\"") : s;
             return s;
         }
-        private StringBuilder ExportList<T>(IList<T> data, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
+        private StringBuilder DoExport(IDataReader data, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
+        {
+            StringBuilder output = new StringBuilder();
+            //Get property collection and set selected property list
+            List<int> propList = GetSelectedProperties(data, includeProperties, excludeProperties);
+            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
+
+
+            foreach (int i in propList)
+            {
+                string columnName = data.GetName(i);
+                string value = HandleSpecialChars(columnName);
+                bool hasSYLKSymbol = i == propList[0] && value != null && value.StartsWith("ID");//Handle SYLK file symbol
+                if (i < propList.Count - 1)
+                    output.AppendFormat(hasSYLKSymbol ? formatQuoteWithComma : formatComma, value);
+                else
+                {
+                    output.AppendFormat(format, value);
+                    output.AppendLine();
+                }
+
+            }
+            while (data.Read())
+            {
+                for (int i = 0; i < propList.Count; i++)
+                {
+                    if (!data.IsDBNull(propList[i]))
+                    {
+                        string columnValue = Convert.ToString(data.GetValue(propList[i]));
+                        if (i < propList.Count - 1)
+                            output.AppendFormat(formatComma, HandleSpecialChars(columnValue == null ? string.Empty : columnValue, data.GetFieldType(propList[i])));
+                        else
+                        {
+                            output.AppendFormat(format, HandleSpecialChars(columnValue == null ? string.Empty : columnValue, data.GetFieldType(propList[i])));
+                            output.AppendLine();
+                        }
+                    }
+                    else
+                    {
+                        if (i == propList[propList.Count - 1])
+                        {
+                            output.AppendLine();
+                        }
+                        else
+                            output.Append(",");
+                    }
+                }
+                if (addTimeStamp)
+                {
+                    output.AppendFormat(Environment.NewLine + "This report was generated on {0}" + Environment.NewLine, HandleSpecialChars(DateTime.UtcNow.ToClientTime()));
+                }
+            }
+            return output;
+        }
+        private void DoExport(IDataReader data, string filePath, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
+        {
+            StringBuilder output = new StringBuilder();
+            //Get property collection and set selected property list
+            List<int> propList = GetSelectedProperties(data, includeProperties, excludeProperties);
+            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
+
+            using (StreamWriter file = new StreamWriter(filePath))
+            {
+                foreach (int i in propList)
+                {
+                    string columnName = data.GetName(i);
+                    string value = HandleSpecialChars(columnName);
+                    bool hasSYLKSymbol = i == propList[0] && value != null && value.StartsWith("ID");//Handle SYLK file symbol
+                    if (i < propList.Count - 1)
+                        output.AppendFormat(hasSYLKSymbol ? formatQuoteWithComma : formatComma, value);
+                    else
+                    {
+                        output.AppendFormat(format, value);
+                        output.AppendLine();
+                    }
+
+                }
+                file.Write(output.ToString());
+                output.Clear();
+                while (data.Read())
+                {
+                    for (int i = 0; i < propList.Count; i++)
+                    {
+                        if (!data.IsDBNull(propList[i]))
+                        {
+                            string columnValue = Convert.ToString(data.GetValue(propList[i]));
+                            if (i < propList.Count - 1)
+                                output.AppendFormat(formatComma, HandleSpecialChars(columnValue == null ? string.Empty : columnValue, data.GetFieldType(propList[i])));
+                            else
+                            {
+                                output.AppendFormat(format, HandleSpecialChars(columnValue == null ? string.Empty : columnValue, data.GetFieldType(propList[i])));
+                                output.AppendLine();
+                                file.Write(output.ToString());
+                                output.Clear();
+                            }
+                        }
+                        else
+                        {
+                            if (i == propList[propList.Count - 1])
+                            {
+                                output.AppendLine();
+                                file.Write(output.ToString());
+                                output.Clear();
+                            }
+                            else
+                                output.Append(",");
+                        }
+                    }
+                }
+                if (addTimeStamp)
+                {
+                    output.AppendFormat(Environment.NewLine + "This report was generated on {0}" + Environment.NewLine, HandleSpecialChars(DateTime.UtcNow.ToClientTime()));
+                    file.Write(output.ToString());
+                    output.Clear();
+                }
+            }
+        }
+        private StringBuilder DoExport<T>(IList<T> data, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
         {
             StringBuilder output = new StringBuilder();
             //Get property collection and set selected property list
             PropertyInfo[] props = typeof(T).GetProperties();
             List<PropertyInfo> propList = GetSelectedProperties(props, includeProperties, excludeProperties);
-            string formatQuoteWithComma="\"{0}\",",formatComma="{0},",formatQuote="\"{0}\"",format="{0}";
+            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
             for (int i = 0; i < propList.Count; i++)
             {
-                string value=HandleSpecialChars(propList[i].Name);
-                bool hasSYLKSymbol=i==0 && value!=null && value.StartsWith("ID");//Handle SYLK file symbol
+                string value = HandleSpecialChars(propList[i].Name);
+                bool hasSYLKSymbol = i == 0 && value != null && value.StartsWith("ID");//Handle SYLK file symbol
                 if (i < propList.Count - 1)
                     output.AppendFormat(hasSYLKSymbol ? formatQuoteWithComma : formatQuote, value);
                 else
@@ -100,7 +233,7 @@ namespace Web.Infrastructure
                 output.AppendFormat(Environment.NewLine + "This report was generated on {0}" + Environment.NewLine, HandleSpecialChars(DateTime.UtcNow.ToClientTime()));
             return output;
         }
-        private void ExportList<T>(IList<T> data, string filePath, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
+        private void DoExport<T>(IList<T> data, string filePath, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
         {
             StringBuilder output = new StringBuilder();
             //Get property collection and set selected property list
@@ -113,7 +246,7 @@ namespace Web.Infrastructure
                 for (int i = 0; i < propList.Count; i++)
                 {
                     string value = HandleSpecialChars(propList[i].Name);
-                    bool hasSYLKSymbol = i==0 && value != null && value.StartsWith("ID");//Handle SYLK file symbol
+                    bool hasSYLKSymbol = i == 0 && value != null && value.StartsWith("ID");//Handle SYLK file symbol
                     if (i < propList.Count - 1)
                         output.AppendFormat(hasSYLKSymbol ? formatQuoteWithComma : formatComma, value);
                     else
@@ -155,7 +288,7 @@ namespace Web.Infrastructure
             {
                 foreach (var item in props)
                 {
-                    var propName = include.Where(a => a == item.Name.ToLower()).FirstOrDefault();
+                    var propName = include.Where(a => a.ToLower() == item.Name.ToLower()).FirstOrDefault();
                     if (!string.IsNullOrEmpty(propName))
                         propList.Add(item);
                 }
@@ -164,7 +297,7 @@ namespace Web.Infrastructure
             {
                 foreach (var item in props)
                 {
-                    var propName = exclude.Where(a => a == item.Name.ToLower()).FirstOrDefault();
+                    var propName = exclude.Where(a => a.ToLower() == item.Name.ToLower()).FirstOrDefault();
                     if (string.IsNullOrEmpty(propName))
                         propList.Add(item);
                 }
@@ -175,7 +308,37 @@ namespace Web.Infrastructure
             }
             return propList;
         }
-        private StringBuilder ExportDataSet(DataSet data, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
+        private List<int> GetSelectedProperties(IDataReader data, List<string> include, List<string> exclude)
+        {
+            List<int> propList = new List<int>();
+            if (include != null && include.Count > 0) //Do include first
+            {
+                for (int i = 0; i < data.FieldCount; i++)
+                {
+                    var propName = include.Where(a => a.ToLower() == data.GetName(i).ToLower()).FirstOrDefault();
+                    if (!string.IsNullOrEmpty(propName))
+                        propList.Add(i);
+                }
+            }
+            else if (exclude != null && exclude.Count > 0) //Then do exclude
+            {
+                for (int i = 0; i < data.FieldCount; i++)
+                {
+                    var propName = exclude.Where(a => a.ToLower() == data.GetName(i).ToLower()).FirstOrDefault();
+                    if (string.IsNullOrEmpty(propName))
+                        propList.Add(i);
+                }
+            }
+            else //Default
+            {
+                for (int i = 0; i < data.FieldCount; i++)
+                {
+                    propList.Add(i);
+                }
+            }
+            return propList;
+        }
+        private StringBuilder DoExport(DataSet data, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
         {
             StringBuilder output = new StringBuilder();
             string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
@@ -216,7 +379,7 @@ namespace Web.Infrastructure
             }
             return output;
         }
-        private void ExportDataSet(DataSet data, string filePath, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
+        private void DoExport(DataSet data, string filePath, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
         {
             StringBuilder output = new StringBuilder();
             string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";

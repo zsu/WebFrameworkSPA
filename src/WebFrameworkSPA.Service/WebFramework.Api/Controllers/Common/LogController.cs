@@ -14,6 +14,7 @@ using Web.Infrastructure;
 using Web.Infrastructure.Exceptions;
 using Web.Infrastructure.JqGrid;
 using System.IO;
+using System.Data;
 
 namespace Web.Controllers
 {
@@ -73,7 +74,7 @@ namespace Web.Controllers
         }
         public dynamic GetGridData([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
         {
-            var data = GetQuery(searchModel);
+            var data = GetQuery(_service.Query(),searchModel);
             var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message, x.Host, x.SessionId }).ToList();
             return new
             {
@@ -94,10 +95,9 @@ namespace Web.Controllers
             try
             {
                 searchModel.rows = 0;
-                var data = GetQuery(searchModel);
-                var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message, x.Host, x.SessionId }).ToList();
-
-                filePath = ExporterManager.Export("Logs", ExporterType.CSV, dataList.ToList(), "");
+                var data = GetQuery(Util.GetStatelessQuery<Logs>(), searchModel);
+                var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message, x.Host, x.SessionId });
+                filePath = ExporterManager.Export("Logs", ExporterType.CSV, data.Items.ToList(), "");
             }
             catch (Exception ex)
             {
@@ -128,9 +128,8 @@ namespace Web.Controllers
             var item = _service.GetById(id);
             return Ok(item);
         }
-        private GridModel<Logs> GetQuery([FromUri] JqGridSearchModel searchModel, int maxRecords = Constants.DEFAULT_MAX_RECORDS_RETURN)
+        private GridModel<Logs> GetQuery(IQueryable<Logs> query, [FromUri] JqGridSearchModel searchModel, int maxRecords = Constants.DEFAULT_MAX_RECORDS_RETURN)
         {
-            var query = _service.Query();
             if (Constants.SHOULD_FILTER_BY_APP)
                 query = query.Where(x => x.Application == App.Common.Util.ApplicationConfiguration.AppAcronym);
             var data = Util.GetGridData<Logs>(searchModel, query);
