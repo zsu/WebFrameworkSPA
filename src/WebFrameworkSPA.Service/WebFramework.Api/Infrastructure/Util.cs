@@ -12,10 +12,7 @@ using WebFramework.Data.Domain;
 using System.Linq.Dynamic;
 using Web.Infrastructure.JqGrid;
 using System.Text;
-using NHibernate;
-using NHibernate.Engine;
 using NHibernate.Linq;
-using NHibernate.Hql.Ast.ANTLR;
 using System.Data;
 namespace Web.Infrastructure
 {

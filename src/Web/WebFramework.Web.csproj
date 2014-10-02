@@ -44,6 +44,7 @@
   <ItemGroup>
     <Content Include="app\0lib\angular-cookie.min.js" />
     <Content Include="app\0lib\angular-ui-router.js" />
+    <Content Include="app\0lib\autofill-event.js" />
     <Content Include="app\0lib\bootstrap-confirmation.js" />
     <Content Include="app\0lib\i18n\grid.locale-en.js" />
     <Content Include="app\0lib\jquery-ui-1.10.4.min.js" />
