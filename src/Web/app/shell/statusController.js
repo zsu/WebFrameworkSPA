@@ -11,6 +11,7 @@
             cache = $angularCacheFactory("statusCache", {});
         $scope.status = {};
         $scope.status.isOnline = networkStatus.isOnline();
+        $scope.status.currentyear = new Date().getFullYear();
         getServerVersion();
         function getServerVersion() {
             var cacheKey = "serverVersion";

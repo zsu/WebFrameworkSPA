@@ -97,6 +97,7 @@
     <Content Include="app\content\css\ui.jqgrid.css" />
     <Content Include="app\content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="app\content\images\logo.gif" />
+    <Content Include="app\admin.html" />
     <Content Include="app\infrastructure\common.js" />
     <Content Include="app\infrastructure\infoDialog.html" />
     <Content Include="app\logDetail\logDetail.html" />

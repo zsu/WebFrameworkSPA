@@ -4,7 +4,7 @@ var app;
 if (ttMobile) {
     app = angular.module("myApp", ["ui.router", "ngTouch", "ngAnimate", "ngSanitize", "Thinktecture.Dialog", "Thinktecture.Toast", "Thinktecture.SignalR", "Thinktecture.Authentication", "ipCookie", "pascalprecht.translate", "routeResolverServices", "ngStorage", "nvd3ChartDirectives", "jmdobry.angular-cache", "ionic", "angular-loading-bar", "btford.phonegap.ready", "btford.phonegap.geolocation", "common"]);
 } else {
-    app = angular.module("myApp", ["ui.router", "ngTouch", "ngAnimate", "ngSanitize", "Thinktecture.Dialog", "Thinktecture.Toast", "$strap.directives", "ui.bootstrap","ui.utils", "Thinktecture.SignalR", "Thinktecture.Authentication", "ipCookie", "pascalprecht.translate", "routeResolverServices", "angular-carousel", "frapontillo.bootstrap-switch", "ngStorage", "imageupload", "nvd3ChartDirectives", "jmdobry.angular-cache", "angular-loading-bar", "btford.phonegap.ready", "btford.phonegap.geolocation", "common"]);
+    app = angular.module("myApp", ["ui.router", "ngTouch", "ngAnimate", "ngSanitize", "Thinktecture.Dialog", "Thinktecture.Toast", "$strap.directives", "ui.bootstrap", "ui.utils", "Thinktecture.SignalR", "Thinktecture.Authentication", "ipCookie", "pascalprecht.translate", "routeResolverServices", "angular-carousel", "frapontillo.bootstrap-switch", "ngStorage", "imageupload", "nvd3ChartDirectives", "jmdobry.angular-cache", "angular-loading-bar", "btford.phonegap.ready", "btford.phonegap.geolocation", "common"]);
 }
 var keyCodes = {
     backspace: 8,
@@ -56,7 +56,7 @@ app.factory('CommonHttpInterceptor', function ($q, $injector) {
             //});
             var tokenData = tt.getToken();
             if (tokenData) {
-                config.headers["Authorization"]="Bearer " + tokenData.access_token;
+                config.headers["Authorization"] = "Bearer " + tokenData.access_token;
             }
             // Return the config or wrap it in a promise if blank.
             return config || $q.when(config);
@@ -122,106 +122,135 @@ app.config(["$urlRouterProvider", "$stateProvider", "$locationProvider", "$trans
         $urlRouterProvider.otherwise("/");
 
         $stateProvider
-          .state("login", {
-              url: "/login",
-              templateUrl: viewBaseUrl + "login/login.html",
-              controller: "LoginController"
-          })
+           .state('admin', {
+               templateUrl: viewBaseUrl + 'admin.html',
+               controller:"NavigationController",
+               abstract: true,
+           })
+           .state("login", {
+                url: "/login",
+                parent: 'admin',
+                templateUrl: viewBaseUrl + "login/login.html",
+                controller: "LoginController"
+            })
           .state("start", {
               url: "/",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "start/start.html",
               controller: "StartController"
           }).state("about", {
               url: "/about",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "about/about.html",
               controller: "AboutController"
           }).state("logDetail", {
               url: "/logDetail",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "logDetail/logDetail.html",
               controller: "LogDetailController"
           }).state("logs", {
               url: "/logs",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "logs/logs.html",
               controller: "LogsController"
           }).state("maintenance", {
               url: "/maintenance",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "maintenance/maintenance.html",
               controller: "MaintenanceController"
           }).state("offline", {
               url: "/offline",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "offline/offline.html",
               controller: "OfflineController"
           }).state("setting", {
               url: "/setting",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "setting/setting.html",
               controller: "SettingController"
           }).state("activitylog", {
               url: "/activitylog",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "activitylog/activitylog.html",
               controller: "ActivityLogController"
           }).state("authenticationaudit", {
               url: "/authenticationaudit",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "authenticationaudit/authenticationaudit.html",
               controller: "AuthenticationAuditController"
           }).state("messagetemplate", {
               url: "/messagetemplate",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "messagetemplate/messagetemplate.html",
               controller: "MessageTemplateController"
           }).state("user", {
               url: "/user",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "user/user.html",
               controller: "UserController"
           }).state("userrole", {
               url: "/userrole",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "userrole/userrole.html",
               controller: "UserRoleController"
           }).state("role", {
               url: "/role",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "role/role.html",
               controller: "RoleController"
           }).state("rolepermission", {
               url: "/rolepermission",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "rolepermission/rolepermission.html",
               controller: "RolePermissionController"
           }).state("permission", {
               url: "/permission",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "permission/permission.html",
               controller: "PermissionController"
           }).state("roleuserlist", {
               url: "/roleuserlist",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "roleuserlist/roleuserlist.html",
               controller: "RoleUserListController"
           }).state("account", {
               url: "/account",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "account/account.html",
               controller: "AccountController"
           }).state("changepassword", {
               url: "/changepassword/:name",
               params: {
-                  name:{
+                  name: {
                       value: null
                   }
               },
+              parent: 'admin',
               templateUrl: viewBaseUrl + "account/changepassword/changepassword.html",
               controller: "ChangePasswordController"
           }).state("confirmemail", {
               url: "/confirmemail/:id",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "account/confirmemail/confirmemail.html",
               controller: "ConfirmEmailController"
           }).state("resetpassword", {
               url: "/resetpassword",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "account/resetpassword/resetpassword.html",
               controller: "ResetPasswordController"
           }).state("confirmpasswordreset", {
               url: "/confirmpasswordreset/:key",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "account/confirmpasswordreset/confirmpasswordreset.html",
               controller: "ConfirmPasswordResetController"
           }).state("cancelverificationrequest", {
               url: "/cancelverificationrequest/:id",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "account/cancelverificationrequest/cancelverificationrequest.html",
               controller: "CancelVerificationRequestController"
           }).state("register", {
               url: "/register",
+              parent: 'admin',
               templateUrl: viewBaseUrl + "account/register/register.html",
               controller: "RegisterController"
           });
@@ -251,8 +280,8 @@ app.config(["$urlRouterProvider", "$stateProvider", "$locationProvider", "$trans
 
     }]);
 
-app.run(["$localStorage", "$stateProviderService", "$state", "$http", "$templateCache", "$rootScope", "$location", "$translate", "toast", "dialog", "routeResolver", "personalization", "geoLocationTracker", "appAuth","common",
-    function ($localStorage, $stateProviderService, $state, $http, $templateCache, $rootScope, $location, $translate, toast, dialog, routeResolver, personalization, geoLocationTracker, appAuth,common) {
+app.run(["$localStorage", "$stateProviderService", "$state", "$http", "$templateCache", "$rootScope", "$location", "$translate", "toast", "dialog", "routeResolver", "personalization", "geoLocationTracker", "appAuth", "common",
+    function ($localStorage, $stateProviderService, $state, $http, $templateCache, $rootScope, $location, $translate, toast, dialog, routeResolver, personalization, geoLocationTracker, appAuth, common) {
         geoLocationTracker.startSendPosition(10000, function (pos) { });
         common.setTimezoneCookie();
 
