@@ -227,6 +227,7 @@ namespace Web.Controllers.Api
                     return BadRequest(string.Format("Email {0} is already used.", item.Email));
                 }
             }
+            item.IsLoginAllowed = true;
             NhUserAccount newUser = _userService.CreateAccountWithTempPassword(item);
             message.AppendFormat("User {0}  is saved successflly.", item.Username);
             return Json<object>(new { Success = true, Message = message.ToString(), RowId = newUser.ID });

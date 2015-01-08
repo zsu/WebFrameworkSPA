@@ -48,7 +48,7 @@ namespace BrockAllen.MembershipReboot
                 {
                     //Change by: Zhicheng Su
                     //val.Add(UserAccountValidation<TAccount>.UsernameDoesNotContainAtSign);
-                    val.Add(UserAccountValidation<TAccount>.UsernameOnlyContainsLettersAndDigits);
+                    val.Add(UserAccountValidation<TAccount>.UsernameOnlyContainsLettersAndDigitsOrIsEmail);
                 }
                 val.Add(UserAccountValidation<TAccount>.UsernameMustNotAlreadyExist);
                 val.Add(configuration.UsernameValidator);
@@ -452,7 +452,7 @@ namespace BrockAllen.MembershipReboot
             return account;
         }
         //Changed by: Zhicheng Su
-        public virtual TAccount CreateAccountWithTempPassword(string tenant, string username, string password, string email,string firstname, string lastname)
+        public virtual TAccount CreateAccountWithTempPassword(string tenant, string username, string password, string email,string firstname, string lastname,bool isLoginAllowed,bool isAccountVerified)
         {
             if (Configuration.EmailIsUsername)
             {
@@ -470,7 +470,8 @@ namespace BrockAllen.MembershipReboot
 
             var account = userRepository.Create();
             string key=Init(account, tenant, username, password, email);
-            account.IsLoginAllowed = true;
+            account.IsLoginAllowed = isLoginAllowed;
+            account.IsAccountVerified = isAccountVerified;
             account.PasswordChanged = new DateTime(1900,1,1);
             account.FirstName = firstname;
             account.LastName = lastname;

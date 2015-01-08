@@ -252,6 +252,9 @@
   <data name="UsernameOnlyContainLettersAndDigits" xml:space="preserve">
     <value>Username can only contain letters and digits.</value>
   </data>
+  <data name="UsernameOnlyContainLettersAndDigitsOrIsEmail" xml:space="preserve">
+    <value>Username can only contain letters and digits or is email.</value>
+  </data>
   <data name="UsernameRequired" xml:space="preserve">
     <value>Username is required.</value>
   </data>

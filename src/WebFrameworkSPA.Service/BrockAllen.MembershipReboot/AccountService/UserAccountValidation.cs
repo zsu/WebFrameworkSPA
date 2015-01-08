@@ -6,6 +6,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace BrockAllen.MembershipReboot
 {
@@ -36,6 +37,18 @@ namespace BrockAllen.MembershipReboot
                 return null;
             });
 
+        //Added: Zhicheng Su
+        public static readonly IValidator<TAccount> UsernameOnlyContainsLettersAndDigitsOrIsEmail =
+        new DelegateValidator<TAccount>((service, account, value) =>
+        {
+            if (!value.All(x => Char.IsLetterOrDigit(x)) && !IsEmail(value))
+            {
+                Tracing.Verbose("[UserAccountValidation.UsernameOnlyContainsLettersAndDigitsOrIsEmail] validation failed: {0}, {1}, {2}", account.Tenant, account.Username, value);
+
+                return new ValidationResult(service.GetValidationMessage("UsernameOnlyContainLettersAndDigitsOrIsEmail"));
+            }
+            return null;
+        });
         public static readonly IValidator<TAccount> UsernameMustNotAlreadyExist =
             new DelegateValidator<TAccount>((service, account, value) =>
             {
@@ -112,5 +125,10 @@ namespace BrockAllen.MembershipReboot
             }
             return null;
         });
+        private static readonly Regex EmailExpression = new Regex(@"^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$", RegexOptions.Singleline | RegexOptions.Compiled);
+        private static bool IsEmail(string target)
+        {
+            return !string.IsNullOrEmpty(target) && EmailExpression.IsMatch(target);
+        }
     }
 }

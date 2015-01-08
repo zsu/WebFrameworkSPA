@@ -256,6 +256,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SLib\SLib.csproj">
+      <Project>{4ea940f8-c52d-4374-8ce5-0062e7e0fd7b}</Project>
+      <Name>SLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WebFramework.Data.Mapping.Log\WebFramework.Data.Mappings.Log.csproj">
       <Project>{66ebcd12-7cf5-4bb6-bde4-3949f1ebb39a}</Project>
       <Name>WebFramework.Data.Mappings.Log</Name>
@@ -291,10 +295,6 @@
     <ProjectReference Include="..\WebFramework.Service\WebFramework.Service.csproj">
       <Project>{325619c8-0126-4edd-9d6b-f66fd3428a22}</Project>
       <Name>WebFramework.Service</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SLib\SLib.csproj">
-      <Project>{4ea940f8-c52d-4374-8ce5-0062e7e0fd7b}</Project>
-      <Name>SLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

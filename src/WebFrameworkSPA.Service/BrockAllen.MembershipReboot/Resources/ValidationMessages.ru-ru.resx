@@ -252,6 +252,9 @@
   <data name="UsernameOnlyContainLettersAndDigits" xml:space="preserve">
     <value>Имя пользователя может содержать только буквы и цифры.</value>
   </data>
+  <data name="UsernameOnlyContainLettersAndDigitsOrIsEmail" xml:space="preserve">
+    <value>Имя пользователя может содержать только буквы и цифры.</value>
+  </data>
   <data name="UsernameRequired" xml:space="preserve">
     <value>Необходимо указать имя пользователя.</value>
   </data>

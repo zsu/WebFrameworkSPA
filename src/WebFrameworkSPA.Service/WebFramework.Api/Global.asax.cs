@@ -172,11 +172,12 @@ namespace Web
             if (!string.IsNullOrWhiteSpace(userEmail))
             {
                 IUserService userService = IoC.GetService<IUserService>();
-                string username = userEmail.Substring(0, userEmail.IndexOf('@') > 0 ? userEmail.IndexOf('@') : userEmail.Length);
+                //string username = userEmail.Substring(0, userEmail.IndexOf('@') > 0 ? userEmail.IndexOf('@') : userEmail.Length);
+                string username = userEmail;
                 var account = userService.FindBy(x => x.Username == username || x.Email==userEmail);
                 if (account == null)
                 {
-                    NhUserAccount user = new NhUserAccount() { Username = username, Email = userEmail, HashedPassword = "Abc123", FirstName = "Admin"};
+                    NhUserAccount user = new NhUserAccount() { Username = username, Email = userEmail, HashedPassword = "Abc123", FirstName = "Admin",IsLoginAllowed=true,IsAccountVerified=true};
                     account = userService.CreateAccountWithTempPassword(user);
                 }
 

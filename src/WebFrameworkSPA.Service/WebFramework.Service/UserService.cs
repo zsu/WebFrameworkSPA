@@ -174,7 +174,7 @@ namespace Service
             NhUserAccount newAccount;
             using (var scope = new UnitOfWorkScope())
             {
-                newAccount = _userAccountService.CreateAccountWithTempPassword(item.Tenant, item.Username, item.HashedPassword, item.Email, item.FirstName, item.LastName);
+                newAccount = _userAccountService.CreateAccountWithTempPassword(item.Tenant, item.Username, item.HashedPassword, item.Email, item.FirstName, item.LastName,item.IsLoginAllowed,item.IsAccountVerified);
                 scope.Commit();
             }
             using (var scope = new UnitOfWorkScope())
