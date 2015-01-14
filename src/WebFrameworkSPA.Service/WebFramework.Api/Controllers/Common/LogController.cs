@@ -75,7 +75,7 @@ namespace Web.Controllers
         public dynamic GetGridData([FromUri]Web.Infrastructure.JqGrid.JqGridSearchModel searchModel)
         {
             var data = GetQuery(_service.Query(),searchModel);
-            var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message, x.Host, x.SessionId }).ToList();
+            var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message, x.ClientIP,x.Host, x.SessionId }).ToList();
             return new
             {
                 total = searchModel.page > 0 ? (int)Math.Ceiling((float)data.TotalNumber / searchModel.rows) : 1,
@@ -83,7 +83,7 @@ namespace Web.Controllers
                 //records = data.TotalNumber,
                 //rows = dataList.Select(x => new { id = x.FundReqId, cell = new object[] { x.FundReqId, x.Year, x.ApplFormCode, x.FundReqStatusCd, x.FundReqReceiptNtfctnDt, x.CmmtmntNtfctnDt, x.CrtfctnRecvdDt, x.PiaCertificationCutoffDt } }).ToArray()
                 TotalItems = data.TotalNumber,
-                Items = dataList.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message, x.Host, x.SessionId }).ToArray()
+                Items = dataList.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message,x.ClientIP, x.Host, x.SessionId }).ToArray()
             };
         }
         [Route("api/log/exporttoexcel")]
@@ -96,7 +96,7 @@ namespace Web.Controllers
             {
                 searchModel.rows = 0;
                 var data = GetQuery(Util.GetStatelessQuery<Logs>(), searchModel);
-                var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message, x.Host, x.SessionId });
+                var dataList = data.Items.Select(x => new { x.Id, x.Application, x.CreatedDate, x.LogLevel, x.UserName, x.Message,x.ClientIP, x.Host, x.SessionId });
                 filePath = ExporterManager.Export("Logs", ExporterType.CSV, data.Items.ToList(), "");
             }
             catch (Exception ex)
