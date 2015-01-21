@@ -118,9 +118,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Shadow Include="Test References\App.Infrastructure.NHibernate.accessor" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Configuration\Log.config">
       <SubType>Designer</SubType>
     </Content>
