@@ -22,7 +22,9 @@
         $scope.$on(tt.authentication.logoutConfirmed, function () {
             $scope.navigation.navigationItems = null;
         });
-
+        $scope.$on(tt.authentication.loggedIn, function () {
+            $scope.menuVisible = true;
+        });
         $scope.navigation.changeLanguage = function (langKey) {
             $scope.navigation.currentLanguage = langKey;
             $translate.uses(langKey);

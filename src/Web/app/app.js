@@ -280,8 +280,8 @@ app.config(["$urlRouterProvider", "$stateProvider", "$locationProvider", "$trans
 
     }]);
 
-app.run(["$localStorage", "$stateProviderService", "$state", "$http", "$templateCache", "$rootScope", "$location", "$translate", "toast", "dialog", "routeResolver", "personalization", "geoLocationTracker", "appAuth", "common",
-    function ($localStorage, $stateProviderService, $state, $http, $templateCache, $rootScope, $location, $translate, toast, dialog, routeResolver, personalization, geoLocationTracker, appAuth, common) {
+app.run(["$localStorage", "$stateProviderService", "$state", "$http", "$templateCache", "$rootScope", "$location", "$translate", "$angularCacheFactory", "toast", "dialog", "routeResolver", "personalization", "geoLocationTracker", "appAuth", "common",
+    function ($localStorage, $stateProviderService, $state, $http, $templateCache, $rootScope, $location, $translate,$angularCacheFactory, toast, dialog, routeResolver, personalization, geoLocationTracker, appAuth, common) {
         geoLocationTracker.startSendPosition(10000, function (pos) { });
         common.setTimezoneCookie();
 
@@ -332,6 +332,10 @@ app.run(["$localStorage", "$stateProviderService", "$state", "$http", "$template
                     } catch (e) {
                     }
                 });
+                var maintenanceCache = $angularCacheFactory.get("offlineCache");
+                var offlineCacheKey = "offlineMessage";
+                if (maintenanceCache)
+                { maintenanceCache.remove(offlineCacheKey); }
 
                 $rootScope.$broadcast(tt.personalization.dataLoaded);
                 //$location.path(currentPath);

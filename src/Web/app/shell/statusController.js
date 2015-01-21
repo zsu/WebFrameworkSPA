@@ -9,10 +9,17 @@
         var cache = $angularCacheFactory.get("statusCache");
         if (!cache)
             cache = $angularCacheFactory("statusCache", {});
-        $scope.status = {};
+        var statusCacheKey = "status";
+        if (cache.get(statusCacheKey)) {
+            $scope.status = cache.get(statusCacheKey);
+        }
+        else {
+            $scope.status = {};
+            $scope.status.currentyear = new Date().getFullYear();
+            cache.put(statusCacheKey, $scope.status);
+            getServerVersion();
+        }
         $scope.status.isOnline = networkStatus.isOnline();
-        $scope.status.currentyear = new Date().getFullYear();
-        getServerVersion();
         function getServerVersion() {
             var cacheKey = "serverVersion";
             var deferred = $q.defer();

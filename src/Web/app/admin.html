@@ -13,7 +13,7 @@
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
                     </button>
-                    <span class="navbar-brand">
+                    <span class="navbar-brand" style="padding-top:0">
                         <img src="content/images/logo.gif" alt="WebFramework" style="height:3em;width:6em;border:0" />
                         <label>WebFramework</label>
                     </span>
@@ -24,7 +24,7 @@
                             <a ng-show="ni.DisplayText" ng-click="navigation.isCollapsed=true" ng-href="#{{ ni.Url }}" translate>{{ ni.DisplayText }}</a>
                         </li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right" ng-show="menuVisible">
+                    <ul class="nav navbar-nav navbar-right" ng-show="menuVisible || tt.authentication.userLoggedIn">
                         <li>
                             <div class="menu" ng-controller="StatusController" ng-if="!tt.authentication.userLoggedIn">
                                 <span>
