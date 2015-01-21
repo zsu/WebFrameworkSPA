@@ -6,7 +6,11 @@
      * @param {$app.Personalization} personalization
      */
     function Controller($http, $rootScope, $scope, $translate, dialog, personalization, tokenAuthentication, common, appAuth) {
-        $scope.navigation = {};
+        if (!$scope.navigation) {
+            $scope.navigation = {};
+            if(personalization && personalization.data)
+                $scope.navigation.navigationItems = personalization.data.Features;
+        }
         $scope.navigation.isCollapsed = true;
 
         $scope.navigation.currentLanguage = $translate.preferredLanguage() || $translate.proposedLanguage();

@@ -332,11 +332,6 @@ app.run(["$localStorage", "$stateProviderService", "$state", "$http", "$template
                     } catch (e) {
                     }
                 });
-                var maintenanceCache = $angularCacheFactory.get("offlineCache");
-                var offlineCacheKey = "offlineMessage";
-                if (maintenanceCache)
-                { maintenanceCache.remove(offlineCacheKey); }
-
                 $rootScope.$broadcast(tt.personalization.dataLoaded);
                 //$location.path(currentPath);
                 appAuth.redirectToAttemptedUrl();
@@ -350,6 +345,10 @@ app.run(["$localStorage", "$stateProviderService", "$state", "$http", "$template
             appAuth.gotoLogin();
         });
         $rootScope.$on(tt.authentication.loginConfirmed, function () {
+            var maintenanceCache = $angularCacheFactory.get("offlineCache");
+            var offlineCacheKey = "offlineMessage";
+            if (maintenanceCache)
+            { maintenanceCache.remove(offlineCacheKey); }
             //$location.path("/");
             appAuth.redirectToAttemptedUrl();
 
