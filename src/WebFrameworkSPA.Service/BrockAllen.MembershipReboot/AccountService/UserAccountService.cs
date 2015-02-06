@@ -1366,6 +1366,7 @@ namespace BrockAllen.MembershipReboot
 
             ClearVerificationKey(account);
             SetPassword(account, newPassword);
+            account.FailedLoginCount = 0;
             Update(account);
 
             return true;

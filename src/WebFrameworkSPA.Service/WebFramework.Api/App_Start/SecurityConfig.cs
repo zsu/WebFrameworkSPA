@@ -27,7 +27,7 @@ namespace Web
             settings.MultiTenant = false;
 
             var config = new MembershipRebootConfiguration<NhUserAccount>(settings);
-            config.RegisterPasswordValidator(new PasswordValidator());
+            //config.RegisterPasswordValidator(new PasswordValidator());
             config.ConfigurePasswordComplexity(5, 3);
 
             config.AddCommandHandler(new CustomClaimsMapper());
