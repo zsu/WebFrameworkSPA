@@ -50,6 +50,9 @@ namespace BrockAllen.MembershipReboot.Nh.Service
             Init(account, tenant, username, password, email);
             account.FirstName = firstname;
             account.LastName = lastname;
+            ValidateEmail(account, email);
+            ValidateUsername(account, username);
+            ValidatePassword(account, password);
             _eventBusUserRepository.Add(account);
             return account;
         }
@@ -77,7 +80,9 @@ namespace BrockAllen.MembershipReboot.Nh.Service
             account.PasswordChanged = new DateTime(1900, 1, 1);
             account.FirstName = firstname;
             account.LastName = lastname;
-
+            ValidateEmail(account, email);
+            ValidateUsername(account, username);
+            ValidatePassword(account, password);
             Tracing.Verbose("[UserAccountService.CreateAccountWithTempPassword] success");
 
             _eventBusUserRepository.Add(account);
