@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BrockAllen.MembershipReboot">
+      <HintPath>..\packages\BrockAllen.MembershipReboot.8.2.1\lib\net45\BrockAllen.MembershipReboot.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -43,6 +46,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -80,10 +84,6 @@
     <ProjectReference Include="..\BrockAllen.MembershipReboot.Nh\BrockAllen.MembershipReboot.Nh.csproj">
       <Project>{e53d1e50-194f-445f-9477-fcbc3e6da824}</Project>
       <Name>BrockAllen.MembershipReboot.Nh</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BrockAllen.MembershipReboot\BrockAllen.MembershipReboot.csproj">
-      <Project>{a33fe01f-ae9b-4bde-b521-ab13916b1cfa}</Project>
-      <Name>BrockAllen.MembershipReboot</Name>
     </ProjectReference>
     <ProjectReference Include="..\WebFramework.Data\WebFramework.Data.csproj">
       <Project>{b7f19cd7-1a9a-4790-a9de-04f9ae8eaef7}</Project>

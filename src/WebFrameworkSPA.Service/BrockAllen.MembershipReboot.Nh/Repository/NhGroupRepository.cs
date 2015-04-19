@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using App.Data;
 
     public class NhGroupRepository<TGroup> : QueryableGroupRepository<TGroup>
         where TGroup : NhGroup
@@ -30,20 +31,29 @@
 
         public override void Add(TGroup item)
         {
-            this.groupRepository.Add(item);//.Save(item);
+            using (var scope = new UnitOfWorkScope())
+            {
+                this.groupRepository.Add(item);//.Save(item);
+                scope.Commit();
+            }
         }
 
         public override void Remove(TGroup item)
         {
-            this.groupRepository.Delete(item);
-
+            using (var scope = new UnitOfWorkScope())
+            {
+                this.groupRepository.Delete(item);
+                scope.Commit();
+            }
         }
 
         public override void Update(TGroup item)
         {
-
-            this.groupRepository.Update(item);
-
+            using (var scope = new UnitOfWorkScope())
+            {
+                this.groupRepository.Update(item);
+                scope.Commit();
+            }
         }
 
         public override IEnumerable<TGroup> GetByChildID(Guid childGroupID)

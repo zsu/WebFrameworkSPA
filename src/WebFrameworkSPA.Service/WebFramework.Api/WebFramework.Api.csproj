@@ -40,11 +40,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BrockAllen.MembershipReboot.WebHost">
-      <HintPath>..\libs\BrockAllen.MembershipReboot.WebHost.dll</HintPath>
+    <Reference Include="BrockAllen.MembershipReboot, Version=8.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BrockAllen.MembershipReboot.8.2.1\lib\net45\BrockAllen.MembershipReboot.dll</HintPath>
     </Reference>
-    <Reference Include="BrockAllen.OAuth2">
-      <HintPath>..\libs\BrockAllen.OAuth2.dll</HintPath>
+    <Reference Include="BrockAllen.MembershipReboot.WebHost, Version=7.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BrockAllen.MembershipReboot.WebHost.7.1.0\lib\net45\BrockAllen.MembershipReboot.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="BrockAllen.OAuth2, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BrockAllen.OAuth2.2.3.0\lib\net45\BrockAllen.OAuth2.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -108,6 +114,7 @@
       <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Services" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -147,6 +154,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Thinktecture.IdentityModel">
+      <HintPath>..\packages\Thinktecture.IdentityModel.2.4.2\lib\net45\Thinktecture.IdentityModel.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\WebFramework.sdf" />
@@ -256,6 +266,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BrockAllen.MembershipReboot.Nh\BrockAllen.MembershipReboot.Nh.csproj">
+      <Project>{e53d1e50-194f-445f-9477-fcbc3e6da824}</Project>
+      <Name>BrockAllen.MembershipReboot.Nh</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SLib\SLib.csproj">
       <Project>{4ea940f8-c52d-4374-8ce5-0062e7e0fd7b}</Project>
       <Name>SLib</Name>
@@ -283,14 +297,6 @@
     <ProjectReference Include="..\App.Infrastructure.NHibernate\App.Infrastructure.NHibernate.csproj">
       <Project>{c1b60e5c-3f01-42c0-9a97-d4e562550bad}</Project>
       <Name>App.Infrastructure.NHibernate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BrockAllen.MembershipReboot.Nh\BrockAllen.MembershipReboot.Nh.csproj">
-      <Project>{e53d1e50-194f-445f-9477-fcbc3e6da824}</Project>
-      <Name>BrockAllen.MembershipReboot.Nh</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BrockAllen.MembershipReboot\BrockAllen.MembershipReboot.csproj">
-      <Project>{a33fe01f-ae9b-4bde-b521-ab13916b1cfa}</Project>
-      <Name>BrockAllen.MembershipReboot</Name>
     </ProjectReference>
     <ProjectReference Include="..\WebFramework.Service\WebFramework.Service.csproj">
       <Project>{325619c8-0126-4edd-9d6b-f66fd3428a22}</Project>

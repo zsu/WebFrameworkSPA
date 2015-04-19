@@ -23,6 +23,7 @@ using App.Common.Security;
 using App.Common.Data;
 using App.Common.Events;
 using App.Common.Tasks;
+using BrockAllen.MembershipReboot.Nh.Service;
 namespace Web
 {
     public static class IoCConfig
@@ -71,6 +72,7 @@ namespace Web
                 .ConfigureData<NHConfiguration>(x => x.WithSessionFactory(NHibernateConfig.SecurityDomainFactory).WithSessionFactory(NHibernateConfig.LogDomainFactory)
                     .WithSessionFactory(NHibernateConfig.AppDomainFactory))
                 .ConfigureUnitOfWork<DefaultUnitOfWorkConfiguration>();//x => x.AutoCompleteScope());
+            container.Register(Component.For<NhUserAccountService<NhUserAccount>>().LifestyleTransient());
             container.Register(Component.For<UserAccountService<NhUserAccount>>().LifestyleTransient());
             container.Register(Component.For<AuthenticationService<NhUserAccount>>().ImplementedBy<SamAuthenticationService<NhUserAccount>>().LifestyleTransient());
             IoC.RegisterType(null, typeof(IRepository<,>), typeof(NHRepository<,>), LifetimeType.Transient);

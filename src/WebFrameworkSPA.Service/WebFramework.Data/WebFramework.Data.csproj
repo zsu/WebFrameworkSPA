@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BrockAllen.MembershipReboot">
+      <HintPath>..\packages\BrockAllen.MembershipReboot.8.2.1\lib\net45\BrockAllen.MembershipReboot.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
@@ -46,6 +49,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -59,7 +63,6 @@
     <Compile Include="Domain\ElmahLog.cs" />
     <Compile Include="Domain\Log.cs" />
     <Compile Include="Domain\MessageTemplate.cs" />
-    <Compile Include="Domain\PasswordHistory.cs" />
     <Compile Include="Domain\Setting.cs" />
     <Compile Include="Mappings\MessageTemplatesMap.cs" />
     <Compile Include="Mappings\ScheduleTaskMap.cs" />
@@ -76,10 +79,6 @@
     <ProjectReference Include="..\BrockAllen.MembershipReboot.Nh\BrockAllen.MembershipReboot.Nh.csproj">
       <Project>{e53d1e50-194f-445f-9477-fcbc3e6da824}</Project>
       <Name>BrockAllen.MembershipReboot.Nh</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BrockAllen.MembershipReboot\BrockAllen.MembershipReboot.csproj">
-      <Project>{a33fe01f-ae9b-4bde-b521-ab13916b1cfa}</Project>
-      <Name>BrockAllen.MembershipReboot</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

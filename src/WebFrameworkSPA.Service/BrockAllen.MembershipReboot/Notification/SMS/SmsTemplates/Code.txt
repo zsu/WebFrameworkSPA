@@ -1,1 +1,0 @@
-﻿Your {applicationName} verification code is {code}.

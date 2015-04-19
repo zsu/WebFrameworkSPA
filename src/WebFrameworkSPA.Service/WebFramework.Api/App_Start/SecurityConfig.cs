@@ -16,6 +16,8 @@ using System.Web;
 using WebFramework.Data.Domain;
 using Service;
 using System.Text;
+using System.Linq.Expressions;
+using BrockAllen.MembershipReboot.Nh.Service;
 
 namespace Web
 {
@@ -28,49 +30,108 @@ namespace Web
 
             var config = new MembershipRebootConfiguration<NhUserAccount>(settings);
             //config.RegisterPasswordValidator(new PasswordValidator());
-            config.ConfigurePasswordComplexity(5, 3);
+            config.ConfigurePasswordComplexity(7, 4);
 
-            config.AddCommandHandler(new CustomClaimsMapper());
+            config.AddCommandHandler(new CustomClaimsMapper<NhUserAccount>());
 
             var delivery = new SmtpMessageDelivery();
 
             var appinfo = new Web.Infrastructure.MembershipRebootAppInfo(Util.ApplicationConfiguration.AppAcronym, Util.ApplicationConfiguration.SupportOrganization,
-                "Login/",
+                "login",
                 "confirmemail/",
                 "cancelverificationrequest/",
                 "confirmpasswordreset/");
-            var messageTemplateService=IoC.GetService<IMessageTemplateService>();
-            var formatter = new CustomEmailMessageFormatter(appinfo,messageTemplateService);
+            var messageTemplateService = IoC.GetService<IMessageTemplateService>();
+            var formatter = new CustomEmailMessageFormatter<NhUserAccount>(appinfo, messageTemplateService);
 
             config.AddEventHandler(new EmailAccountEventsHandler<NhUserAccount>(formatter, delivery));
-            config.AddEventHandler(new AuthenticationAuditEventHandler());
-            config.AddEventHandler(new NotifyAccountOwnerWhenTooManyFailedLoginAttempts());
+            config.AddEventHandler(new AuthenticationAuditEventHandler<NhUserAccount>());
+            config.AddEventHandler(new NotifyAccountOwnerWhenTooManyFailedLoginAttempts<NhUserAccount>());
 
-            config.AddValidationHandler(new PasswordChanging());
-            config.AddEventHandler(new PasswordChanged());
+            config.AddValidationHandler(new PasswordChanging<NhUserAccount>());
+            config.AddEventHandler(new PasswordChanged<NhUserAccount>());
+            config.AddEventHandler(new PasswordGeneratedEventHandler<NhUserAccount>());
 
             return config;
         }
     }
-    public class PasswordValidator : IValidator<NhUserAccount>
+    public class PasswordGeneratedEventHandler<T> : IEventHandler<PasswordGeneratedEvent<T>> where T : UserAccount
     {
-        public ValidationResult Validate(UserAccountService<NhUserAccount> service, NhUserAccount account, string value)
+        private IMessageTemplateService messageTemplateServce = IoC.GetService<IMessageTemplateService>();
+        public void Handle(PasswordGeneratedEvent<T> evt)
         {
-            if (value.Contains("R"))
-            {
-                return new ValidationResult("You can't use an 'R' in your password (for some reason)");
-            }
+            StringBuilder body = new StringBuilder();
+            body.AppendLine("Your temporary password for {applicationName} is: {InitialPassword}");
+            body.AppendLine();
+            body.AppendLine("Please click here to confirm your email address:");
+            body.AppendLine();
+            body.AppendLine("{confirmChangeEmailUrl}");
+            body.AppendLine();
+            body.AppendLine("If this was in error or not requested then click to cancel the request:");
+            body.AppendLine();
+            body.AppendLine("{cancelVerificationUrl}");
+            body.AppendLine();
+            body.AppendLine("Thanks!");
+            body.AppendLine();
+            body.AppendLine("{emailSignature}");
+            var appinfo = new Web.Infrastructure.MembershipRebootAppInfo(Util.ApplicationConfiguration.AppAcronym, Util.ApplicationConfiguration.SupportOrganization,
+                "login",
+                "confirmemail/",
+                "cancelverificationrequest/",
+                "confirmpasswordreset/");
+            string msgBody = body.ToString(), msgSubject = "[{applicationName}] Temporary Password";
 
-            return null;
+            string templateName = CleanGenericName(evt.GetType());
+            MessageTemplate template = messageTemplateServce.GetByName(templateName);
+            if (template != null)
+            {
+                msgBody = template.Body;
+                msgSubject = template.Subject;
+            }
+            var tokenizer = new EmailMessageFormatter<T>.Tokenizer();
+            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("InitialPassword", evt.InitialPassword);
+            parameters.Add("VerificationKey", evt.VerificationKey);
+            msgBody = tokenizer.Tokenize(evt, appinfo, msgBody, parameters);
+            msgSubject = tokenizer.Tokenize(evt, appinfo, msgSubject, parameters);
+            var smtp = new SmtpMessageDelivery();
+            var msg = new Message
+            {
+                To = evt.Account.Email,
+                Subject = msgSubject,
+                Body = msgBody
+            };
+            smtp.Send(msg);
+        }
+        private string CleanGenericName(Type type)
+        {
+            var name = type.Name;
+            var idx = name.IndexOf('`');
+            if (idx > 0)
+            {
+                name = name.Substring(0, idx);
+            }
+            return name;
         }
     }
+    //public class PasswordValidator : IValidator<NhUserAccount>
+    //{
+    //    public ValidationResult Validate(UserAccountService<NhUserAccount> service, NhUserAccount account, string value)
+    //    {
+    //        if (value.Contains("R"))
+    //        {
+    //            return new ValidationResult("You can't use an 'R' in your password (for some reason)");
+    //        }
 
+    //        return null;
+    //    }
+    //}
 
-    public class AuthenticationAuditEventHandler :
-        IEventHandler<SuccessfulLoginEvent<NhUserAccount>>,
-        IEventHandler<FailedLoginEvent<NhUserAccount>>
+    public class AuthenticationAuditEventHandler<T> :
+        IEventHandler<SuccessfulLoginEvent<T>>,
+        IEventHandler<FailedLoginEvent<T>> where T : UserAccount
     {
-        public void Handle(SuccessfulLoginEvent<NhUserAccount> evt)
+        public void Handle(SuccessfulLoginEvent<T> evt)
         {
             //var db = IoC.GetService<IRepository<AuthenticationAudit, Guid>>();
             //using (var scope = new UnitOfWorkScope())
@@ -92,14 +153,14 @@ namespace Web
                 UserName = evt.Account.Username,
                 CreatedDate = DateTime.UtcNow,
                 Activity = "LoginSuccess",
-                Detail = string.Format("User {0} login successfully.",evt.Account.Username),
+                Detail = string.Format("User {0} login successfully.", evt.Account.Username),
                 ClientIP = HttpContext.Current.Request.UserHostAddress,
             };
             var authenticationAuditService = IoC.GetService<IAuthenticationAuditService>();
             authenticationAuditService.Add(audit);
         }
 
-        public void Handle(FailedLoginEvent<NhUserAccount> evt)
+        public void Handle(FailedLoginEvent<T> evt)
         {
             //var db = IoC.GetService<IRepository<AuthenticationAudit, Guid>>();
             //using (var scope = new UnitOfWorkScope())
@@ -117,7 +178,7 @@ namespace Web
             //}
             var audit = new AuthenticationAudit
             {
-                Application=Util.ApplicationConfiguration.AppAcronym,
+                Application = Util.ApplicationConfiguration.AppAcronym,
                 UserName = evt.Account.Username,
                 CreatedDate = DateTime.UtcNow,
                 Activity = "LoginFailed",
@@ -130,10 +191,10 @@ namespace Web
         }
     }
 
-    public class NotifyAccountOwnerWhenTooManyFailedLoginAttempts
-        : IEventHandler<TooManyRecentPasswordFailuresEvent<NhUserAccount>>
+    public class NotifyAccountOwnerWhenTooManyFailedLoginAttempts<T>
+        : IEventHandler<TooManyRecentPasswordFailuresEvent<T>> where T : UserAccount
     {
-        public void Handle(TooManyRecentPasswordFailuresEvent<NhUserAccount> evt)
+        public void Handle(TooManyRecentPasswordFailuresEvent<T> evt)
         {
             var smtp = new SmtpMessageDelivery();
             var msg = new Message
@@ -146,14 +207,14 @@ namespace Web
         }
     }
 
-    public class PasswordChanging :
-        IEventHandler<PasswordChangedEvent<NhUserAccount>>
+    public class PasswordChanging<T> :
+        IEventHandler<PasswordChangedEvent<T>> where T : UserAccount
     {
-        public void Handle(PasswordChangedEvent<NhUserAccount> evt)
+        public void Handle(PasswordChangedEvent<T> evt)
         {
             //BrockAllen.MembershipReboot.Nh.Repository.IRepository<BrockAllen.MembershipReboot.Nh.PasswordHistory> userRepository = IoC.GetService<BrockAllen.MembershipReboot.Nh.Repository.IRepository<BrockAllen.MembershipReboot.Nh.PasswordHistory>>();
 
-            var db = IoC.GetService<IRepository<WebFramework.Data.Domain.PasswordHistory, Guid>>();
+            var db = IoC.GetService<IRepository<PasswordHistory, Guid>>();
             var oldEntires =
                 db.Query.Where(x => x.User.ID == evt.Account.ID).OrderByDescending(x => x.DateChanged).ToArray();
             for (var i = 0; i < 3 && oldEntires.Length > i; i++)
@@ -167,11 +228,11 @@ namespace Web
         }
     }
 
-    public class PasswordChanged :
-        IEventHandler<AccountCreatedEvent<NhUserAccount>>,
-        IEventHandler<PasswordChangedEvent<NhUserAccount>>
+    public class PasswordChanged<T> :
+        IEventHandler<AccountCreatedEvent<T>>,
+        IEventHandler<PasswordChangedEvent<T>> where T : NhUserAccount
     {
-        public void Handle(AccountCreatedEvent<NhUserAccount> evt)
+        public void Handle(AccountCreatedEvent<T> evt)
         {
             if (evt.InitialPassword != null)
             {
@@ -184,35 +245,35 @@ namespace Web
             activityLogService.Add(activityItem);
         }
 
-        public void Handle(PasswordChangedEvent<NhUserAccount> evt)
+        public void Handle(PasswordChangedEvent<T> evt)
         {
             AddPasswordHistoryEntry(evt.Account, evt.NewPassword);
         }
 
-        private static void AddPasswordHistoryEntry(NhUserAccount user, string password)
+        private static void AddPasswordHistoryEntry(T user, string password)
         {
-            var db = IoC.GetService<IRepository<WebFramework.Data.Domain.PasswordHistory, Guid>>();
+            var db = IoC.GetService<IRepository<PasswordHistory, Guid>>();
             using (var scope = new UnitOfWorkScope())
             {
-            //App.Common.Data.IRepository<WebFramework.Data.Domain.PasswordHistory,Guid> userRepository = IoC.GetService<App.Common.Data.IRepository<WebFramework.Data.Domain.PasswordHistory,Guid>>();
+                //App.Common.Data.IRepository<WebFramework.Data.Domain.PasswordHistory,Guid> userRepository = IoC.GetService<App.Common.Data.IRepository<WebFramework.Data.Domain.PasswordHistory,Guid>>();
 
-            var pw = new WebFramework.Data.Domain.PasswordHistory
+                var pw = new PasswordHistory
                 {
                     User = user,
                     Username = user.Username,
                     DateChanged = DateTime.UtcNow,
                     PasswordHash = new DefaultCrypto().HashPassword(password, 1000)
                 };
-            //userRepository.Add(pw);
-            db.Add(pw);
-            scope.Commit();
+                //userRepository.Add(pw);
+                db.Add(pw);
+                scope.Commit();
             }
 
         }
     }
 
     // customize default email messages
-    public class CustomEmailMessageFormatter : EmailMessageFormatter<NhUserAccount>
+    public class CustomEmailMessageFormatter<T> : EmailMessageFormatter<T> where T : UserAccount
     {
         private IMessageTemplateService _messageTemplateServce;
         public CustomEmailMessageFormatter(ApplicationInformation info, IMessageTemplateService messageTemplateService)
@@ -221,7 +282,7 @@ namespace Web
             _messageTemplateServce = messageTemplateService;
         }
 
-        protected override string GetBody(UserAccountEvent<NhUserAccount> evt, IDictionary<string, string> values)
+        protected override string GetBody(UserAccountEvent<T> evt, IDictionary<string, string> values)
         {
             //if (evt is EmailVerifiedEvent<NhUserAccount>)
             //{
@@ -235,7 +296,7 @@ namespace Web
             return base.GetBody(evt, values);
 
         }
-        protected override string LoadSubjectTemplate(UserAccountEvent<NhUserAccount> evt)
+        protected override string LoadSubjectTemplate(UserAccountEvent<T> evt)
         {
             string templateName = CleanGenericName(evt.GetType());
             MessageTemplate template = _messageTemplateServce.GetByName(templateName);
@@ -243,7 +304,7 @@ namespace Web
                 return base.LoadSubjectTemplate(evt);
             return template.Subject;
         }
-        protected override string LoadBodyTemplate(UserAccountEvent<NhUserAccount> evt)
+        protected override string LoadBodyTemplate(UserAccountEvent<T> evt)
         {
             string templateName = CleanGenericName(evt.GetType());
             MessageTemplate template = _messageTemplateServce.GetByName(templateName);
@@ -263,9 +324,9 @@ namespace Web
         }
     }
 
-    public class CustomClaimsMapper : ICommandHandler<MapClaimsFromAccount<NhUserAccount>>
+    public class CustomClaimsMapper<T> : ICommandHandler<MapClaimsFromAccount<T>> where T : NhUserAccount
     {
-        public void Handle(MapClaimsFromAccount<NhUserAccount> cmd)
+        public void Handle(MapClaimsFromAccount<T> cmd)
         {
             cmd.MappedClaims = new System.Security.Claims.Claim[]
             {

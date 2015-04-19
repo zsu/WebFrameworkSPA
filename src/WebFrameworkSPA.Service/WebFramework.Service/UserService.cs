@@ -11,17 +11,18 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using BrockAllen.MembershipReboot.Nh.Service;
 
 namespace Service
 {
     public class UserService : IUserService
     {
         private App.Common.Data.IRepository<NhUserAccount,Guid> _userRepository;
-        private UserAccountService<NhUserAccount> _userAccountService;
+        private NhUserAccountService<NhUserAccount> _userAccountService;
         private IActivityLogService _activityLogService;
         private MembershipRebootConfiguration<NhUserAccount> _membershipConfiguration;
         private enum ActivityType { AddUser, DeleteUser, UpdateUser};
-        public UserService(App.Common.Data.IRepository<NhUserAccount, Guid> userRepository, UserAccountService<NhUserAccount> userAccountService,
+        public UserService(App.Common.Data.IRepository<NhUserAccount, Guid> userRepository, NhUserAccountService<NhUserAccount> userAccountService,
             MembershipRebootConfiguration<NhUserAccount> membershipConfiguration,IActivityLogService activityLogService)
         {
             _userRepository = userRepository;
@@ -120,11 +121,11 @@ namespace Service
             NhUserAccount user = _userRepository.Query.SingleOrDefault(x => x.ID == id);
             if(user==null)
                 throw new Exception(string.Format("Cannot find user {0}",id));
-            App.Common.Data.IRepository<WebFramework.Data.Domain.PasswordHistory,Guid> passwordRepository = IoC.GetService<App.Common.Data.IRepository<WebFramework.Data.Domain.PasswordHistory,Guid>>();
-            List<WebFramework.Data.Domain.PasswordHistory> passwordHistories = passwordRepository.Query.Where(x => x.User.ID == id).ToList();
+            App.Common.Data.IRepository<PasswordHistory,Guid> passwordRepository = IoC.GetService<App.Common.Data.IRepository<PasswordHistory,Guid>>();
+            List<PasswordHistory> passwordHistories = passwordRepository.Query.Where(x => x.User.ID == id).ToList();
             using (var scope = new UnitOfWorkScope())
             {
-                foreach (WebFramework.Data.Domain.PasswordHistory item in passwordHistories)
+                foreach (PasswordHistory item in passwordHistories)
                 {
                     passwordRepository.Delete(item);
                 }

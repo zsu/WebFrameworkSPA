@@ -5,10 +5,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFramework.Api", "WebFramework.Api\WebFramework.Api.csproj", "{207BF911-041A-4963-A2A3-B34C9BAA42DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{DD431C62-7CC0-48EB-BA3F-B3A2147E84C9}"
-	ProjectSection(SolutionItems) = preProject
-		libs\BrockAllen.MembershipReboot.WebHost.dll = libs\BrockAllen.MembershipReboot.WebHost.dll
-		libs\BrockAllen.OAuth2.dll = libs\BrockAllen.OAuth2.dll
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0FC6887C-98A5-4767-BE1E-4C99131E0CE2}"
 EndProject
@@ -43,8 +39,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Infrastructure.Log4net", "App.Infrastructure.Log4net\App.Infrastructure.Log4net.csproj", "{1F70D105-B8FD-4685-B836-3301A38C4AD2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Infrastructure.NHibernate", "App.Infrastructure.NHibernate\App.Infrastructure.NHibernate.csproj", "{C1B60E5C-3F01-42C0-9A97-D4E562550BAD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrockAllen.MembershipReboot", "BrockAllen.MembershipReboot\BrockAllen.MembershipReboot.csproj", "{A33FE01F-AE9B-4BDE-B521-AB13916B1CFA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrockAllen.MembershipReboot.Nh", "BrockAllen.MembershipReboot.Nh\BrockAllen.MembershipReboot.Nh.csproj", "{E53D1E50-194F-445F-9477-FCBC3E6DA824}"
 EndProject
@@ -134,10 +128,6 @@ Global
 		{C1B60E5C-3F01-42C0-9A97-D4E562550BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1B60E5C-3F01-42C0-9A97-D4E562550BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1B60E5C-3F01-42C0-9A97-D4E562550BAD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A33FE01F-AE9B-4BDE-B521-AB13916B1CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A33FE01F-AE9B-4BDE-B521-AB13916B1CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A33FE01F-AE9B-4BDE-B521-AB13916B1CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A33FE01F-AE9B-4BDE-B521-AB13916B1CFA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E53D1E50-194F-445F-9477-FCBC3E6DA824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E53D1E50-194F-445F-9477-FCBC3E6DA824}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E53D1E50-194F-445F-9477-FCBC3E6DA824}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -168,8 +168,8 @@ namespace Web.Controllers
         {
             string username = null, email = null, mobile = null;
             string verificationKey = "dT34Lgd3O8cyjsHCREf78g";
-            string baseUrl = Url.Content("~/"), loginUrl = "UserAccount/Login", confirmPasswordResetUrl = "UserAccount/PasswordReset/Confirm/", confirmChangeEmailUrl = "UserAccount/ChangeEmail/Confirm/",
-                cancelVerificationUrl = "UserAccount/Register/Cancel/", initialPassword = "A2^kF7%mG5(vJ8$uP", thumbprint = "kF7%mG", providerName = "Microsoft";
+            string baseUrl = GetApplicationBaseUrl(), loginUrl = "login", confirmPasswordResetUrl = "confirmpasswordreset/", confirmChangeEmailUrl = "confirmemail/",
+                cancelVerificationUrl = "cancelverificationrequest/", initialPassword = "A2^kF7%mG5(vJ8$uP", thumbprint = "kF7%mG", providerName = "Microsoft";
             ClaimsPrincipal principal = HttpContext.Current.User as ClaimsPrincipal;
             if (principal != null)
             {
@@ -213,6 +213,15 @@ namespace Web.Controllers
                 query = query.Where(x => x.Name.StartsWith(string.Format("{0}.", App.Common.Util.ApplicationConfiguration.AppAcronym)));
             var data = Web.Infrastructure.Util.GetGridData<MessageTemplate>(searchModel, query);
             return data;
+        }
+        private string GetApplicationBaseUrl()
+        {
+            string baseUrl = System.Configuration.ConfigurationManager.AppSettings[Constants.APPSETTING_KEY_BASE_URL];
+            if (string.IsNullOrWhiteSpace(baseUrl))
+                baseUrl = (HttpContext.Current.Request.Url.GetComponents(
+                    UriComponents.SchemeAndServer, UriFormat.Unescaped).TrimEnd('/')
+                 + HttpContext.Current.Request.ApplicationPath.Substring(0, HttpContext.Current.Request.ApplicationPath.LastIndexOf('/')).TrimEnd('/')); //HttpContext.Current.GetApplicationUrl();
+            return baseUrl;
         }
     }
 }

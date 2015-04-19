@@ -92,10 +92,10 @@ app.factory('CommonHttpInterceptor', function ($q, $injector) {
         }
     };
 });
-app.config(["$urlRouterProvider", "$stateProvider", "$locationProvider", "$translateProvider", "$httpProvider", "routeResolverProvider", "$controllerProvider", "$compileProvider", "$filterProvider", "$provide", "cfpLoadingBarProvider", "tokenAuthenticationProvider",
-    function ($urlRouterProvider, $stateProvider, $locationProvider, $translateProvider, $httpProvider, routeResolverProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, cfpLoadingBarProvider, tokenAuthenticationProvider) {
+app.config(["$urlRouterProvider", "$stateProvider", "$locationProvider", "$translateProvider", "$httpProvider", "routeResolverProvider", "$controllerProvider", "$compileProvider", "$filterProvider", "$provide", "$urlMatcherFactoryProvider", "cfpLoadingBarProvider", "tokenAuthenticationProvider",
+    function ($urlRouterProvider, $stateProvider, $locationProvider, $translateProvider, $httpProvider, routeResolverProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $urlMatcherFactoryProvider, cfpLoadingBarProvider, tokenAuthenticationProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|ghttps?|ms-appx|x-wmapp0):/);
-
+        $urlMatcherFactoryProvider.caseInsensitive(true);
         cfpLoadingBarProvider.includeSpinner = false;
 
         tokenAuthenticationProvider.setUrl(ttTools.baseUrl + "token");

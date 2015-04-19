@@ -5,6 +5,7 @@
 
     using BrockAllen.MembershipReboot;
     using App.Common.Data;
+using App.Data;
 
     public class NhUserAccountRepository<TAccount> : QueryableUserAccountRepository<TAccount>
         where TAccount : NhUserAccount
@@ -33,22 +34,30 @@
         public override void Add(TAccount item)
         {
 
-            this.accountRepository.Add(item);//.Save(item);
+            using (var scope = new UnitOfWorkScope())
+            {
+                this.accountRepository.Add(item);//.Save(item);
+                scope.Commit();
+            }
 
         }
 
         public override void Remove(TAccount item)
         {
-
-            this.accountRepository.Delete(item);
-
+            using (var scope = new UnitOfWorkScope())
+            {
+                this.accountRepository.Delete(item);
+                scope.Commit();
+            }
         }
 
         public override void Update(TAccount item)
         {
-
-            this.accountRepository.Update(item);
-
+            using (var scope = new UnitOfWorkScope())
+            {
+                this.accountRepository.Update(item);
+                scope.Commit();
+            }
         }
 
         public override TAccount GetByLinkedAccount(string tenant, string provider, string id)
@@ -72,10 +81,10 @@
                 select a;
             return accounts.SingleOrDefault();
         }
-        public override void Refresh(TAccount item)
-        {
-            accountRepository.Refresh(item);
-        }
+        //public override void Refresh(TAccount item)
+        //{
+        //    accountRepository.Refresh(item);
+        //}
     }
 
     public class NhUserAccountRepository : NhUserAccountRepository<NhUserAccount>

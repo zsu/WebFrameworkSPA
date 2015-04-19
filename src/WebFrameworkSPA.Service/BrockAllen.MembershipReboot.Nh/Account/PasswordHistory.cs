@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebFramework.Data.Domain
+namespace BrockAllen.MembershipReboot.Nh
 {
     public class PasswordHistory:Entity<Guid>
     {
