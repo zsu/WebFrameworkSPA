@@ -32,8 +32,6 @@ namespace Web.Controllers.Common
             StringBuilder message = new StringBuilder();
             Guid userId=User==null || !User.HasUserID() || !User.Identity.IsAuthenticated?Guid.Empty:User.GetUserID();
             NhUserAccount user = null;
-            if (string.IsNullOrEmpty(item.UserName) && User == null)
-                return BadRequest("User cannot be emapty.");
             if (!string.IsNullOrEmpty(item.UserName))
             {
                 user = _userService.FindBy(x=>x.Username==item.UserName.Trim());

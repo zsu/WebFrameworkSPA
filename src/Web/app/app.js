@@ -219,7 +219,8 @@ app.config(["$urlRouterProvider", "$stateProvider", "$locationProvider", "$trans
               templateUrl: viewBaseUrl + "account/account.html",
               controller: "AccountController"
           }).state("changepassword", {
-              url: "/changepassword/:name",
+              //url: "/changepassword/:name",
+              url: "/changepassword",
               params: {
                   name: {
                       value: null
