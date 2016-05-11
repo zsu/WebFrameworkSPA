@@ -125,7 +125,7 @@ namespace Web.Controllers
         {
             if (id == default(long))
                 return BadRequest("Id cannot be emapty.");
-            var item = _service.GetById(id);
+            var item = _service.GetLogById(id);
             return Ok(item);
         }
         private GridModel<Logs> GetQuery(IQueryable<Logs> query, [FromUri] JqGridSearchModel searchModel, int maxRecords = Constants.DEFAULT_MAX_RECORDS_RETURN)

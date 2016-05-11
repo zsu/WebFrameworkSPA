@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using Iesi.Collections.Generic;
+    //using Iesi.Collections.Generic;
 
     public class NhUserAccount: UserAccount
     {
@@ -20,55 +20,55 @@
         private int? cachedHashcode;
 
 
-        public virtual Guid ID { get{return base.ID;} set{base.ID=value;} }
+        public virtual new Guid ID { get{return base.ID;} set{base.ID=value;} }
 
         [StringLength(50)]
         [Required]
-        public virtual string Tenant { get { return base.Tenant; } set { base.Tenant = value; } }
+        public virtual new string Tenant { get { return base.Tenant; } set { base.Tenant = value; } }
         [StringLength(100)]
         [Required]
-        public virtual string Username { get { return base.Username; } set { base.Username = value; } }
+        public virtual new string Username { get { return base.Username; } set { base.Username = value; } }
 
-        public virtual DateTime Created { get { return base.Created; } set { base.Created = value; } }
-        public virtual DateTime LastUpdated { get { return base.LastUpdated; } set { base.LastUpdated = value; } }
-        public virtual bool IsAccountClosed { get { return base.IsAccountClosed; } set { base.IsAccountClosed = value; } }
-        public virtual DateTime? AccountClosed { get { return base.AccountClosed; } set { base.AccountClosed = value; } }
+        public virtual new DateTime Created { get { return base.Created; } set { base.Created = value; } }
+        public virtual new DateTime LastUpdated { get { return base.LastUpdated; } set { base.LastUpdated = value; } }
+        public virtual new bool IsAccountClosed { get { return base.IsAccountClosed; } set { base.IsAccountClosed = value; } }
+        public virtual new DateTime? AccountClosed { get { return base.AccountClosed; } set { base.AccountClosed = value; } }
 
-        public virtual bool IsLoginAllowed { get { return base.IsLoginAllowed; } set { base.IsLoginAllowed = value; } }
-        public virtual DateTime? LastLogin { get { return base.LastLogin; } set { base.LastLogin = value; } }
-        public virtual DateTime? LastFailedLogin { get { return base.LastFailedLogin; } set { base.LastFailedLogin = value; } }
-        public virtual int FailedLoginCount { get { return base.FailedLoginCount; } set { base.FailedLoginCount = value; } }
+        public virtual new bool IsLoginAllowed { get { return base.IsLoginAllowed; } set { base.IsLoginAllowed = value; } }
+        public virtual new DateTime? LastLogin { get { return base.LastLogin; } set { base.LastLogin = value; } }
+        public virtual new DateTime? LastFailedLogin { get { return base.LastFailedLogin; } set { base.LastFailedLogin = value; } }
+        public virtual new int FailedLoginCount { get { return base.FailedLoginCount; } set { base.FailedLoginCount = value; } }
 
-        public virtual DateTime? PasswordChanged { get { return base.PasswordChanged; } set { base.PasswordChanged = value; } }
-        public virtual bool RequiresPasswordReset { get { return base.RequiresPasswordReset; } set { base.RequiresPasswordReset = value; } }
+        public virtual new DateTime? PasswordChanged { get { return base.PasswordChanged; } set { base.PasswordChanged = value; } }
+        public virtual new bool RequiresPasswordReset { get { return base.RequiresPasswordReset; } set { base.RequiresPasswordReset = value; } }
 
         [EmailAddress]
         [StringLength(100)]
-        public virtual string Email { get { return base.Email; } set { base.Email = value; } }
-        public virtual bool IsAccountVerified { get { return base.IsAccountVerified; } set { base.IsAccountVerified = value; } }
+        public virtual new string Email { get { return base.Email; } set { base.Email = value; } }
+        public virtual new bool IsAccountVerified { get { return base.IsAccountVerified; } set { base.IsAccountVerified = value; } }
 
-        public virtual DateTime? LastFailedPasswordReset { get { return base.LastFailedPasswordReset; } set { base.LastFailedPasswordReset = value; } }
-        public virtual int FailedPasswordResetCount { get { return base.FailedPasswordResetCount; } set { base.FailedPasswordResetCount = value; } }
+        public virtual new DateTime? LastFailedPasswordReset { get { return base.LastFailedPasswordReset; } set { base.LastFailedPasswordReset = value; } }
+        public virtual new int FailedPasswordResetCount { get { return base.FailedPasswordResetCount; } set { base.FailedPasswordResetCount = value; } }
 
         [StringLength(100)]
-        public virtual string MobileCode { get { return base.MobileCode; } set { base.MobileCode = value; } }
-        public virtual DateTime? MobileCodeSent { get { return base.MobileCodeSent; } set { base.MobileCodeSent = value; } }
+        public virtual new string MobileCode { get { return base.MobileCode; } set { base.MobileCode = value; } }
+        public virtual new DateTime? MobileCodeSent { get { return base.MobileCodeSent; } set { base.MobileCodeSent = value; } }
         [StringLength(20)]
-        public virtual string MobilePhoneNumber { get { return base.MobilePhoneNumber; } set { base.MobilePhoneNumber = value; } }
-        public virtual DateTime? MobilePhoneNumberChanged { get { return base.MobilePhoneNumberChanged; } set { base.MobilePhoneNumberChanged = value; } }
+        public virtual new string MobilePhoneNumber { get { return base.MobilePhoneNumber; } set { base.MobilePhoneNumber = value; } }
+        public virtual new DateTime? MobilePhoneNumberChanged { get { return base.MobilePhoneNumberChanged; } set { base.MobilePhoneNumberChanged = value; } }
 
-        public virtual TwoFactorAuthMode AccountTwoFactorAuthMode { get { return base.AccountTwoFactorAuthMode; } set { base.AccountTwoFactorAuthMode = value; } }
-        public virtual TwoFactorAuthMode CurrentTwoFactorAuthStatus { get { return base.CurrentTwoFactorAuthStatus; } set { base.CurrentTwoFactorAuthStatus = value; } }
+        public virtual new TwoFactorAuthMode AccountTwoFactorAuthMode { get { return base.AccountTwoFactorAuthMode; } set { base.AccountTwoFactorAuthMode = value; } }
+        public virtual new TwoFactorAuthMode CurrentTwoFactorAuthStatus { get { return base.CurrentTwoFactorAuthStatus; } set { base.CurrentTwoFactorAuthStatus = value; } }
 
         [StringLength(100)]
-        public virtual string VerificationKey { get { return base.VerificationKey; } set { base.VerificationKey = value; } }
-        public virtual VerificationKeyPurpose? VerificationPurpose { get { return base.VerificationPurpose; } set { base.VerificationPurpose = value; } }
-        public virtual DateTime? VerificationKeySent { get { return base.VerificationKeySent; } set { base.VerificationKeySent = value; } }
+        public virtual new string VerificationKey { get { return base.VerificationKey; } set { base.VerificationKey = value; } }
+        public virtual new VerificationKeyPurpose? VerificationPurpose { get { return base.VerificationPurpose; } set { base.VerificationPurpose = value; } }
+        public virtual new DateTime? VerificationKeySent { get { return base.VerificationKeySent; } set { base.VerificationKeySent = value; } }
         [StringLength(100)]
-        public virtual string VerificationStorage { get { return base.VerificationStorage; } set { base.VerificationStorage = value; } }
+        public virtual new string VerificationStorage { get { return base.VerificationStorage; } set { base.VerificationStorage = value; } }
 
         [StringLength(200)]
-        public virtual string HashedPassword { get { return base.HashedPassword; } set { base.HashedPassword = value; } }
+        public virtual new string HashedPassword { get { return base.HashedPassword; } set { base.HashedPassword = value; } }
         //Added by: Zhicheng Su
         [Required]
         [StringLength(100)]
@@ -81,14 +81,14 @@
         //public virtual IList<PasswordHistory> PasswordHistories { get; set; }
         public NhUserAccount()
         {
-            this.ClaimsCollection = new HashedSet<NhUserClaim>();
-            this.LinkedAccountsCollection = new HashedSet<NhLinkedAccount>();
-            this.LinkedAccountClaimsCollection = new HashedSet<NhLinkedAccountClaim>();
-            this.CertificatesCollection = new HashedSet<NhUserCertificate>();
-            this.TwoFactorAuthTokensCollection = new HashedSet<NhTwoFactorAuthToken>();
-            this.PasswordResetSecretsCollection = new HashedSet<NhPasswordResetSecret>();
+            this.ClaimsCollection = new HashSet<NhUserClaim>();
+            this.LinkedAccountsCollection = new HashSet<NhLinkedAccount>();
+            this.LinkedAccountClaimsCollection = new HashSet<NhLinkedAccountClaim>();
+            this.CertificatesCollection = new HashSet<NhUserCertificate>();
+            this.TwoFactorAuthTokensCollection = new HashSet<NhTwoFactorAuthToken>();
+            this.PasswordResetSecretsCollection = new HashSet<NhPasswordResetSecret>();
             //Changed by: Zhicheng Su
-            this.Roles = new HashedSet<Role>();
+            this.Roles = new HashSet<Role>();
             //this.PasswordHistories = new List<PasswordHistory>();
         }
 

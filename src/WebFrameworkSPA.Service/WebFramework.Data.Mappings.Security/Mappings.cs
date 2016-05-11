@@ -390,13 +390,12 @@ namespace WebFramework.Data.Mappings.Security
               {
                   map.Table("UserRoles");
                   map.Key(key =>
-                  {
-                      key.Column("UserAccountId");
-                      key.ForeignKey("FK_UserRoles_UserAccount");
+                  { key.Column("UserAccountId");
+                  key.ForeignKey("FK_UserRoles_UserAccount");
                   });
                   map.Cascade(Cascade.None);
               },
-              map => map.ManyToMany(c => { c.Column("RoleId"); c.ForeignKey("FK_UserRoles_Roles"); })
+              map => map.ManyToMany(c => {c.Column("RoleId");c.ForeignKey("FK_UserRoles_Roles");})
               );
             //Set(x => x.PasswordHistories, colmap => { colmap.Key(x => x.Column("UserId")); colmap.Inverse(true); }, map => { map.OneToMany(); });
 

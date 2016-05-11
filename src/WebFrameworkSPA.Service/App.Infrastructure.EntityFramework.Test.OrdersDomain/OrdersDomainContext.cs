@@ -5,7 +5,7 @@ using System.Text;
 using System.Data.Entity;
 using App.Infrastructure.EntityFramework.Test.OrdersDomain.Domain;
 using System.Configuration;
-using System.Data.Entity.Core.Objects;
+//using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using App.Infrastructure.EntityFramework.Test.OrdersDomain.Mappings;
 using System.Reflection;

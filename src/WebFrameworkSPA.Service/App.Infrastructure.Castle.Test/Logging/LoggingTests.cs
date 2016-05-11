@@ -18,7 +18,7 @@ namespace App.Infrastructure.Castle.Logging.Test
     [TestClass]
     public class LoggingTests
     {
-        private string logFilePath = string.Format(@"Logs/Log-{0}.log", Thread.CurrentThread.ManagedThreadId);
+        private string logFilePath = @"Logs/Test.log"; //string.Format(@"Logs/Log-{0}.log", Thread.CurrentThread.ManagedThreadId);
          private TestContext testContextInstance;
 
         /// <summary>
@@ -57,6 +57,8 @@ namespace App.Infrastructure.Castle.Logging.Test
         [TestInitialize()]
         public void TestInitialize()
         {
+            if (File.Exists(Path.GetFullPath(logFilePath)))
+                File.Delete(Path.GetFullPath(logFilePath));
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Util.LogConfigFilePath));
         }
         
@@ -172,7 +174,7 @@ namespace App.Infrastructure.Castle.Logging.Test
             catch
             {
             }
-            Assert.IsTrue(TestUtil.VerifyLogContent(logFilePath, "password1", false));
+            Assert.IsTrue(TestUtil.VerifyLogContent(filePath, "password1", false));
         }
         #region Private Methods
         private void LogAttributeWithDefaultValues()

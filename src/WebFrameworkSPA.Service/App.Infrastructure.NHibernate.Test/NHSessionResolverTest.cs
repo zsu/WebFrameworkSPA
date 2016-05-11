@@ -16,8 +16,8 @@ using NHibernate.Dialect;
 
 namespace App.Infrastructure.NHibernate.Test
 {
-
-
+    
+    
     /// <summary>
     ///This is a test class for NHSessionResolverTest and is intended
     ///to contain all NHSessionResolverTest Unit Tests
@@ -48,9 +48,9 @@ namespace App.Infrastructure.NHibernate.Test
         }
 
         #region Additional test attributes
-
+         
         //You can use the following additional attributes as you write your tests:
-
+        
         //Use ClassInitialize to run code before running the first test in the class
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
@@ -150,7 +150,7 @@ namespace App.Infrastructure.NHibernate.Test
 
             var resolved = resolver.GetFactoryFor<Order>();
             Assert.IsNotNull(resolved);
-            Assert.ReferenceEquals(resolved, _ordersFactory);
+            Assert.ReferenceEquals(resolved,_ordersFactory);
         }
 
         [TestMethod]

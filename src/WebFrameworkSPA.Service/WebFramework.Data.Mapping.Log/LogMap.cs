@@ -1,25 +1,22 @@
-﻿using WebFramework.Data.Domain;
-using NHibernate.Mapping.ByCode;
+﻿using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NHibernate.Type;
+using WebFramework.Data.Domain;
 
-namespace WebFramework.Data.Mapping.Log
+
+namespace WebFramework.Data.Mappings.Log
 {
     public class LogMap : ClassMapping<Logs>
     {
         public LogMap()
         {
             this.Table("Logs");
-            this.Id(x => x.Id, idm => idm.Generator(Generators.Native, g => g.Params(new
+            this.Id(x => x.Id,idm => idm.Generator(Generators.Native, g => g.Params(new
             {
                 sequence = "SQ_Logs_Id"
             })));
             this.Property(x => x.Application, pm => { pm.NotNullable(true); pm.Length(50); pm.Index("IX_Logs_Application"); });
-            this.Property(x => x.UserName, pm => { pm.NotNullable(false); pm.Length(100); pm.Index("IX_Logs_User"); });
+            this.Property(x => x.UserName, pm => { pm.NotNullable(false); pm.Length(100); pm.Index("IX_Logs_UserName"); });
             this.Property(x => x.CreatedDate, pm => { pm.NotNullable(true); pm.Index("IX_Logs_CreatedDate"); });
             this.Property(x => x.Thread, pm => { pm.NotNullable(true); });
             this.Property(x => x.LogLevel, pm => { pm.NotNullable(true); pm.Index("IX_Logs_Level"); });

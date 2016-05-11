@@ -14,7 +14,7 @@ namespace App.Infrastructure.EntityFramework.Test.OrdersDomain.Mappings
         {
             ToTable("Orders");
             HasKey(x => x.OrderID);
-            Property(x => x.OrderID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity).IsRequired();        
+            Property(x => x.OrderID).HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity).IsRequired();        
             Property(x => x.OrderDate);
             Property(x => x.ShipDate);
             HasRequired(o => o.Customer)

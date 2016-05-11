@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Entity.ModelConfiguration;
 using App.Infrastructure.EntityFramework.Test.OrdersDomain.Domain;
-using System.ComponentModel.DataAnnotations.Schema;
+//using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Infrastructure.EntityFramework.Test.OrdersDomain.Mappings
 {
@@ -14,7 +14,7 @@ namespace App.Infrastructure.EntityFramework.Test.OrdersDomain.Mappings
         {
             ToTable("Customers");
             HasKey(c => c.CustomerID);
-            Property(c=>c.CustomerID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity).IsRequired();
+            Property(c=>c.CustomerID).HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity).IsRequired();
             Property(c => c.FirstName);
             Property(c => c.LastName);
             Property(c => c.StreetAddress1);

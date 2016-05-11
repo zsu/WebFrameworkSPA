@@ -84,7 +84,7 @@ namespace App.Infrastructure.NHibernate
             {
                 if (_openSessions != null && _openSessions.Count > 0)
                 {
-                    //_openSessions.ForEach(session => session.Value.Dispose());
+                    _openSessions.ForEach(session => session.Value.Dispose());
                     _openSessions.Clear();
                 } 
             }

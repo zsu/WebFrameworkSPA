@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("App.Infrastructure.NHibernate")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("ZSU")]
 [assembly: AssemblyProduct("App.Infrastructure.NHibernate")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright © ZSU 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

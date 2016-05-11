@@ -1,7 +1,6 @@
 ﻿using App.Common;
 using App.Common.Data;
 using App.Common.InversionOfControl;
-using Elmah;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,18 +15,18 @@ namespace Service
 {
     public class LogService : ILogService
     {
-        private IRepository<Logs, long> _logsRepository;
+        private IRepository<Logs,long> _logsRepository;
 
         public LogService(IRepository<Logs, long> logsRepository)
         {
             _logsRepository = logsRepository;
         }
-        public IQueryable<Logs> Query()
+        public IQueryable<Logs> Query() 
         {
             return _logsRepository.Query;
         }
 
-        public Logs GetById(long id)
+        public Logs GetLogById(long id)
         {
             if (id == default(long))
                 return null;

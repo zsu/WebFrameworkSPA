@@ -68,7 +68,12 @@ namespace App.Infrastructure.Castle.Test
                 return true;
             if (File.Exists(filePath))
             {
-                string fileString = File.ReadAllText(filePath);
+                string fileString = null;
+                using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var textReader = new StreamReader(fileStream))
+                {
+                    fileString = textReader.ReadToEnd();
+                }
                 if (fileString != null && fileString.Trim() != string.Empty && Regex.Match(fileString, pattern, RegexOptions.IgnoreCase).Success)
                     match = true;
             }

@@ -57,6 +57,9 @@ namespace App.Infrastructure.Log4net.Test
         public void MyTestCleanup()
         {
             log4net.LogManager.Shutdown();
+            if (Directory.Exists(_baseFilePath))
+                Directory.Delete(_baseFilePath,true);
+
             //DeleteFiles(_baseFilePath);
         }
         //
@@ -65,7 +68,7 @@ namespace App.Infrastructure.Log4net.Test
         public void Debug_Should_Log_Message()
         {
             string folder = Path.GetFullPath("Logs");
-            string filePattern = string.Format("log-{0}.log", Thread.CurrentThread.ManagedThreadId);
+            string filePattern = string.Format("Test.log", Thread.CurrentThread.ManagedThreadId);
             VerifyLogFile(null, LogLevel.Debug, filePattern, true);
         }
         

@@ -20,7 +20,7 @@ namespace App.Common.Test
 
             resolverFactory.Setup(f => f.CreateInstance()).Returns(resolver.Object);
 
-            resolver.Setup(r => (ILog)r.GetService(typeof(ILog),null)).Returns(log.Object);
+            resolver.Setup(r => r.GetService(typeof(ILog),null)).Returns(log.Object);
 
             IoC.InitializeWith(resolverFactory.Object);
         }

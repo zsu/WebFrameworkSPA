@@ -98,7 +98,6 @@ namespace NCommon.Data.NHibernate.Test
             var session=new Mock<ISession>();
             resolver.Setup(x => x.OpenSessionFor<string>()).Returns(session.Object);
             resolver.Setup(x => x.OpenSessionFor<int>()).Returns(session.Object);
-
             var unitOfWork = new NHUnitOfWork(resolver.Object);
             unitOfWork.GetSession<string>();
             unitOfWork.GetSession<int>();

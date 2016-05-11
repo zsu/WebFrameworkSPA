@@ -16,10 +16,10 @@ namespace App.Infrastructure.Castle {
                 .Register(Component.For<IMethodLogger>().ImplementedBy<MethodLogger>().Named("MethodLogger"))
                 .Register(Component.For<ILogFactory>().ImplementedBy<Log4netLogFactory>().Named("Log4netFactory"));
             } 
-            if (!container.Kernel.HasComponent("LogFacility"))
+            if (!container.Kernel.HasComponent(typeof(LogFacility)))
             {
-                container.AddFacility("LogFacility", new LogFacility());
-                container.AddFacility("ExceptionHandlerFacility", new ExceptionHandlerFacility());
+                container.AddFacility(new LogFacility());
+                container.AddFacility(new ExceptionHandlerFacility());
             }
         }
     }

@@ -11,19 +11,21 @@ using BrockAllen.MembershipReboot.Hierarchical;
 using BrockAllen.MembershipReboot.Nh;
 using BrockAllen.MembershipReboot.Nh.Repository;
 using BrockAllen.MembershipReboot.Relational;
-using BrockAllen.MembershipReboot.WebHost;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Service;
 using System;
 using System.Configuration;
 using System.Web;
 using System.Web.Http.Controllers;
+using System.Web.Mvc;
 using App.Common.Security;
 using App.Common.Data;
 using App.Common.Events;
 using App.Common.Tasks;
 using BrockAllen.MembershipReboot.Nh.Service;
+using BrockAllen.MembershipReboot.Owin;
 namespace Web
 {
     public static class IoCConfig
@@ -57,7 +59,7 @@ namespace Web
                .RegisterType<ISubscriptionService, SubscriptionService>(LifetimeType.Singleton)
                .RegisterType<IScheduleTaskService, ScheduleTaskService>(LifetimeType.Transient)
                .RegisterType<ISessionMessageFactory, SessionMessageFactory>(LifetimeType.Singleton)
-               .RegisterInstance<ISessionMessageProvider>(IoC.GetService<ISessionMessageFactory>().CreateInstance(),LifetimeType.Transient);
+               .RegisterInstance<ISessionMessageProvider>(IoC.GetService<ISessionMessageFactory>().CreateInstance(), LifetimeType.Transient);
             //var eventConsumers=IoC.GetService<ITypeFinder>().FindClassesOfType(typeof(IConsumer<>));
             //foreach(var eventConsumer in eventConsumers)
             //{
@@ -72,20 +74,19 @@ namespace Web
                 .ConfigureData<NHConfiguration>(x => x.WithSessionFactory(NHibernateConfig.SecurityDomainFactory).WithSessionFactory(NHibernateConfig.LogDomainFactory)
                     .WithSessionFactory(NHibernateConfig.AppDomainFactory))
                 .ConfigureUnitOfWork<DefaultUnitOfWorkConfiguration>();//x => x.AutoCompleteScope());
-            container.Register(Component.For<NhUserAccountService<NhUserAccount>>().LifestyleTransient());
-            container.Register(Component.For<UserAccountService<NhUserAccount>>().LifestyleTransient());
-            container.Register(Component.For<AuthenticationService<NhUserAccount>>().ImplementedBy<SamAuthenticationService<NhUserAccount>>().LifestyleTransient());
+            //container.Register(Component.For<NhUserAccountService<NhUserAccount>>().LifestyleTransient());
+            //container.Register(Component.For<UserAccountService<NhUserAccount>>().LifestyleTransient());
+            //container.Register(Component.For<AuthenticationService<NhUserAccount>>().ImplementedBy<OwinAuthenticationService<NhUserAccount>>().LifestyleTransient());
             IoC.RegisterType(null, typeof(IRepository<,>), typeof(NHRepository<,>), LifetimeType.Transient);
             container.Register(Component.For<IUserAccountRepository<NhUserAccount>>().ImplementedBy<NhUserAccountRepository<NhUserAccount>>().LifestyleTransient());
             IoC.RegisterType<IUserAccountQuery, NhUserAccountRepository<NhUserAccount>>(LifetimeType.Transient);
             IoC.RegisterType<IPasswordGenerator, PasswordGenerator>(LifetimeType.Transient);
 
-            //container.Register(Component.For<Elmah.Mvc.ElmahController>().LifestyleTransient());
-            //container.Register(Classes.FromThisAssembly().BasedOn<IController>().LifestyleTransient());
+            container.Register(Classes.FromThisAssembly().BasedOn<IController>().LifestyleTransient());
             container.Register(Classes.FromThisAssembly().BasedOn<IHttpController>().LifestylePerWebRequest());//.LifestyleScoped());
             container.Register(Classes.FromAssemblyNamed("WebFramework.Service").BasedOn<IService>().WithService.AllInterfaces().LifestyleTransient());
-            var config = SecurityConfig.Config();//Depends on IMessageTemplateService
-            container.Register(Component.For<MembershipRebootConfiguration<NhUserAccount>>().Instance(config));
+            //var config = SecurityConfig.Config();//Depends on IMessageTemplateService
+            //container.Register(Component.For<MembershipRebootConfiguration<NhUserAccount>>().Instance(config));
             container.Register(Classes.FromThisAssembly().BasedOn<ITask>().LifestyleTransient());
         }
     }

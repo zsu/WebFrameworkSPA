@@ -6,7 +6,6 @@ using BrockAllen.MembershipReboot;
 using BrockAllen.MembershipReboot.Hierarchical;
 using BrockAllen.MembershipReboot.Nh;
 using BrockAllen.MembershipReboot.Relational;
-using BrockAllen.MembershipReboot.WebHost;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,12 +17,15 @@ using Service;
 using System.Text;
 using System.Linq.Expressions;
 using BrockAllen.MembershipReboot.Nh.Service;
+using BrockAllen.MembershipReboot.Owin;
+using Microsoft.Owin;
+using Owin;
 
 namespace Web
 {
     public class SecurityConfig
     {
-        public static MembershipRebootConfiguration<NhUserAccount> Config()
+        public static MembershipRebootConfiguration<NhUserAccount> Config(IAppBuilder app)
         {
             var settings = SecuritySettings.Instance;
             settings.MultiTenant = false;
@@ -35,12 +37,7 @@ namespace Web
             config.AddCommandHandler(new CustomClaimsMapper<NhUserAccount>());
 
             var delivery = new SmtpMessageDelivery();
-
-            var appinfo = new Web.Infrastructure.MembershipRebootAppInfo(Util.ApplicationConfiguration.AppAcronym, Util.ApplicationConfiguration.SupportOrganization,
-                "login",
-                "confirmemail/",
-                "cancelverificationrequest/",
-                "confirmpasswordreset/");
+            var appinfo = IoC.GetService<ApplicationInformation>();
             var messageTemplateService = IoC.GetService<IMessageTemplateService>();
             var formatter = new CustomEmailMessageFormatter<NhUserAccount>(appinfo, messageTemplateService);
 
@@ -74,11 +71,7 @@ namespace Web
             body.AppendLine("Thanks!");
             body.AppendLine();
             body.AppendLine("{emailSignature}");
-            var appinfo = new Web.Infrastructure.MembershipRebootAppInfo(Util.ApplicationConfiguration.AppAcronym, Util.ApplicationConfiguration.SupportOrganization,
-                "login",
-                "confirmemail/",
-                "cancelverificationrequest/",
-                "confirmpasswordreset/");
+            var appinfo = IoC.GetService<ApplicationInformation>();
             string msgBody = body.ToString(), msgSubject = "[{applicationName}] Temporary Password";
 
             string templateName = CleanGenericName(evt.GetType());

@@ -215,7 +215,7 @@ namespace Service
         {
             using (var scope = new UnitOfWorkScope())
             {
-                _userAccountService.ChangePassword(id,oldPassword,newPassword);
+                _userAccountService.ChangePassword(id, oldPassword, newPassword);
                 scope.Commit();
             }
         }
@@ -224,7 +224,7 @@ namespace Service
             bool success;
             using (var scope = new UnitOfWorkScope())
             {
-                success=_userAccountService.ChangePasswordFromResetKey(key,newPassword,out account);
+                success = _userAccountService.ChangePasswordFromResetKey(key, newPassword, out account);
                 scope.Commit();
             }
             return success;
@@ -241,7 +241,7 @@ namespace Service
         {
             using (var scope = new UnitOfWorkScope())
             {
-                _userAccountService.CancelVerification(key,out accountClosed);
+                _userAccountService.CancelVerification(key, out accountClosed);
                 scope.Commit();
             }
         }
