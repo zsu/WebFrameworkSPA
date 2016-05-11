@@ -48,3 +48,5 @@ packages
 *.user
 *.vspscc
 *.log
+/src/.vs/config/applicationhost.config
+/src/WebFrameworkSPA.Service/.vs/config/applicationhost.config

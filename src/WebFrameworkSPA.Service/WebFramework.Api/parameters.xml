@@ -1,0 +1,22 @@
+﻿<parameters>
+  <parameter name="SmtpUser" description="Username for the SMTP server" defaultvalue="__SmtpUser__" tags="">
+    <parameterentry kind="XmlFile" scope="\\web.config$" match="/configuration/system.net/mailSettings/smtp/network/@userName">
+    </parameterentry>
+  </parameter>
+   <parameter name="SmtpPassword" description="Password for the SMTP server" defaultvalue="__SmtpPassword__" tags="">
+    <parameterentry kind="XmlFile" scope="\\web.config$" match="/configuration/system.net/mailSettings/smtp/network/@password">
+    </parameterentry>
+  </parameter>
+  <parameter name="HostEnvironemnt" description="Host environment" defaultvalue="__RELEASE_ENVIRONMENTNAME__" tags="">
+    <parameterentry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='Environemnt']/@value">
+    </parameterentry>
+  </parameter>
+  <parameter name="SourceBranch" description="Source branch" defaultvalue="__BUILD_SOURCEBRANCHNAME__" tags="">
+    <parameterentry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='SourceBranch']/@value">
+    </parameterentry>
+  </parameter>
+  <parameter name="SourceVersion" description="Source version" defaultvalue="__BUILD_SOURCEVERSION__" tags="">
+    <parameterentry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='SourceVersion']/@value">
+    </parameterentry>
+  </parameter>
+</parameters>

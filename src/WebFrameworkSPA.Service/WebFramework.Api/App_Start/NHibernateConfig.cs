@@ -25,7 +25,7 @@ namespace Web
     public class NHibernateConfig
     {
         private static object _synRoot1 = new object(), _synRoot2 = new object(), _synRoot3 = new object();
-        private static ISessionFactory _securityDomainFactory, _logDomainFactory, _settingDomainFactory,_appDomainFactory;
+        private static ISessionFactory _securityDomainFactory, _logDomainFactory,_appDomainFactory;
         public static ISessionFactory SecurityDomainFactory()
         {
             if (_securityDomainFactory == null)
@@ -34,7 +34,7 @@ namespace Web
                 {
                     if (_securityDomainFactory == null)
                     {
-                        var createSchema = false;
+                        //var createSchema = false;
                         var configuration = new Configuration()
                             .DataBaseIntegration(d =>
                             {
@@ -67,7 +67,7 @@ namespace Web
                 {
                     if (_logDomainFactory == null)
                     {
-                        var createSchema = false;
+                        //var createSchema = false;
                         var configuration = new Configuration()
                             .DataBaseIntegration(d =>
                                             {
@@ -100,7 +100,7 @@ namespace Web
                 {
                     if (_appDomainFactory == null)
                     {
-                        var createSchema = false;
+                        //var createSchema = false;
                         var configuration = new Configuration()
                             .DataBaseIntegration(d =>
                             {

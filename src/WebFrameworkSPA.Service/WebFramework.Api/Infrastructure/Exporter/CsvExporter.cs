@@ -83,7 +83,7 @@ namespace Web.Infrastructure
             StringBuilder output = new StringBuilder();
             //Get property collection and set selected property list
             List<int> propList = GetSelectedProperties(data, includeProperties, excludeProperties);
-            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
+            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", format = "{0}";
 
 
             foreach (int i in propList)
@@ -137,7 +137,7 @@ namespace Web.Infrastructure
             StringBuilder output = new StringBuilder();
             //Get property collection and set selected property list
             List<int> propList = GetSelectedProperties(data, includeProperties, excludeProperties);
-            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
+            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", format = "{0}";
 
             using (StreamWriter file = new StreamWriter(filePath))
             {
@@ -239,7 +239,7 @@ namespace Web.Infrastructure
             //Get property collection and set selected property list
             PropertyInfo[] props = typeof(T).GetProperties();
             List<PropertyInfo> propList = GetSelectedProperties(props, includeProperties, excludeProperties);
-            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
+            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", format = "{0}";
 
             using (StreamWriter file = new StreamWriter(filePath))
             {
@@ -341,7 +341,7 @@ namespace Web.Infrastructure
         private StringBuilder DoExport(DataSet data, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
         {
             StringBuilder output = new StringBuilder();
-            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
+            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", format = "{0}";
             foreach (DataTable dt in data.Tables)
             {
                 for (int i = 0; i < dt.Columns.Count; i++)
@@ -382,7 +382,7 @@ namespace Web.Infrastructure
         private void DoExport(DataSet data, string filePath, List<string> includeProperties, List<string> excludeProperties, bool addTimeStamp)
         {
             StringBuilder output = new StringBuilder();
-            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", formatQuote = "\"{0}\"", format = "{0}";
+            string formatQuoteWithComma = "\"{0}\",", formatComma = "{0},", format = "{0}";
             using (StreamWriter file = new StreamWriter(filePath))
             {
                 foreach (DataTable dt in data.Tables)

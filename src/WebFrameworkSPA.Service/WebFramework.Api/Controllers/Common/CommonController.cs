@@ -3,10 +3,12 @@ using App.Common.Caching;
 using App.Common.InversionOfControl;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Web.Http;
 using Web.Infrastructure.Extensions;
 
@@ -34,7 +36,7 @@ namespace Web.Controllers.Common
         [HttpGet]
         public IHttpActionResult GetVersion()
         {
-            string version = string.Format("{0} {1}", this.GetType().Assembly.GetName().Version, File.GetLastWriteTimeUtc(this.GetType().Assembly.Location).ToClientTime());
+            string version = string.Format("{0} {1} {2} {3}", ConfigurationManager.AppSettings["SourceBranch"],ConfigurationManager.AppSettings["SourceVersion"], ConfigurationManager.AppSettings["Environment"], File.GetLastWriteTimeUtc(Assembly.GetExecutingAssembly().Location).ToClientTime("yyyy-MM-dd"));
             return Json<object>(new { Success = true, Version = version }); 
         }
     }

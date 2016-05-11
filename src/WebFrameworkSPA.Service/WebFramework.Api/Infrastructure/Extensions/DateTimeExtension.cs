@@ -1,4 +1,5 @@
 ﻿using App.Common.Logging;
+using NodaTime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,13 @@ namespace Web.Infrastructure.Extensions
     {
         public static string ToClientTime(this DateTime dt)
         {
-            return ToClientTime(dt, true);
+            return ToClientTime(dt, true, null);
         }
-        public static string ToClientTime(this DateTime dt, bool withTimeZoneInfo)
+        public static string ToClientTime(this DateTime dt, string format)
+        {
+            return ToClientTime(dt, true, format);
+        }
+        public static string ToClientTime(this DateTime dt, bool withTimeZoneInfo, string format)
         {
             string timezoneId = null;
             try
@@ -24,9 +29,9 @@ namespace Web.Infrastructure.Extensions
                 {
                     var localTime = TimeZoneInfo.ConvertTimeFromUtc(dt, TimeZoneInfo.FindSystemTimeZoneById(windowsTimezone));
                     if (withTimeZoneInfo)
-                        return string.Format("{0} {1}", localTime.ToString(), windowsTimezone);
+                        return string.Format("{0} {1}", localTime.ToString(format), windowsTimezone);
                     else
-                        return localTime.ToString();
+                        return localTime.ToString(format);
                 }
                 //else
                 //    Logger.Log(LogLevel.Error, string.Format("Invalid timezone {0}", timezoneId));
@@ -39,9 +44,9 @@ namespace Web.Infrastructure.Extensions
 
             // if there is no timezoneid in session return the datetime in server timezone
             if (withTimeZoneInfo)
-                return string.Format("{0} UTC", dt.ToString());
+                return string.Format("{0} UTC", dt.ToString(format));
             else
-                return dt.ToString();
+                return dt.ToString(format);
         }
     }
 }
