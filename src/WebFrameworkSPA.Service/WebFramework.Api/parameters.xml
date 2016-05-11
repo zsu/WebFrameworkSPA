@@ -8,7 +8,7 @@
     </parameterentry>
   </parameter>
   <parameter name="HostEnvironemnt" description="Host environment" defaultvalue="__RELEASE_ENVIRONMENTNAME__" tags="">
-    <parameterentry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='Environemnt']/@value">
+    <parameterentry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='Environment']/@value">
     </parameterentry>
   </parameter>
   <parameter name="SourceBranch" description="Source branch" defaultvalue="__BUILD_SOURCEBRANCHNAME__" tags="">
