@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Text.RegularExpressions;
 using App.Common.Logging;
 using System.Threading;
 using log4net.Config;

@@ -1,7 +1,5 @@
-﻿using App.Infrastructure.NHibernate;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using App.Data;
 using NHibernate;
 using Moq;
 using NHibernate.Metadata;
@@ -9,8 +7,8 @@ using System.Collections.Generic;
 
 namespace App.Infrastructure.NHibernate.Test
 {
-    
-    
+
+
     /// <summary>
     ///This is a test class for NHUnitOfWorkFactoryTest and is intended
     ///to contain all NHUnitOfWorkFactoryTest Unit Tests

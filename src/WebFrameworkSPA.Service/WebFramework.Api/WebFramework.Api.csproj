@@ -208,7 +208,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\WebFramework.sdf" />
+    <None Include="App_Data\WebFramework.sdf" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Configurations\Application.config">
@@ -248,7 +248,9 @@
     <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="parameters.xml" />
+    <None Include="parameters.xml">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

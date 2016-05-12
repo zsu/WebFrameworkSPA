@@ -1,5 +1,4 @@
-﻿using System;
-namespace App.Common
+﻿namespace App.Common
 {
     public interface IAppConfig
     {

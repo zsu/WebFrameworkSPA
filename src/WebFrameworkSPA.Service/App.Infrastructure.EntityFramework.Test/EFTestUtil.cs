@@ -1,20 +1,11 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Transactions;
+﻿using System.Transactions;
 using App.Data;
 using Moq;
 using App.Common.InversionOfControl;
 using App.Common.Logging;
 using App.Common.Caching;
-using System.Data;
-using System.Data.Entity.Core.Objects;
 using System.Data.Entity;
 using App.Infrastructure.EntityFramework.Test.OrdersDomain;
-using App.Infrastructure.EntityFramework;
-using System.Data.Entity.Infrastructure;
 
 namespace App.Infrastructure.EntityFramework.Test
 {

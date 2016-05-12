@@ -1,13 +1,8 @@
 ﻿using App.Common;
 using App.Common.Caching;
 using App.Common.InversionOfControl;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Web.Http;
 using Web.Infrastructure.Extensions;

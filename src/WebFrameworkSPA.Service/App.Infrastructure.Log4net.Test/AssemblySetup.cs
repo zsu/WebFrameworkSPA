@@ -1,12 +1,7 @@
-﻿using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using log4net.Config;
-using System;
-using System.Reflection;
-using System.Text;
-using App.Common;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace App.Infrastructure.Log4net.Test {
+namespace App.Infrastructure.Log4net.Test
+{
     [TestClass()]
     public class AssemblySetup {
         //[AssemblyInitialize()]

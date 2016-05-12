@@ -1,4 +1,3 @@
-using System;
 using Castle.Windsor;
 using App.Common;
 using App.Common.Logging;
@@ -6,7 +5,8 @@ using App.Infrastructure.Castle.Logging;
 using Castle.MicroKernel.Registration;
 using App.Infrastructure.Log4net;
 
-namespace App.Infrastructure.Castle {
+namespace App.Infrastructure.Castle
+{
     public static class ComponentRegistrar {
         public static void AddComponentsTo(IWindsorContainer container) {
             Check.IsNotNull(container, "container");

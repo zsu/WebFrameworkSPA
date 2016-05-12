@@ -3,10 +3,7 @@ using App.Common.InversionOfControl;
 using App.Common.Tasks;
 using Service;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Web;
 
 namespace Web.Infrastructure.Tasks
 {

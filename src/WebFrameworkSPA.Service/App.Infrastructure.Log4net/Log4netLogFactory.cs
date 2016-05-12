@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using App.Common.Logging;
+﻿using App.Common.Logging;
 
 namespace App.Infrastructure.Log4net
 {

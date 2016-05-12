@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Caching;
 using System.Text.RegularExpressions;
-using System.Linq;
 
 namespace App.Common.Caching
 {

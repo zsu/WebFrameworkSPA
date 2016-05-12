@@ -15,12 +15,10 @@ using Service;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using Web;
 
 [assembly: OwinStartupAttribute(typeof(Web.Startup))]
 namespace Web

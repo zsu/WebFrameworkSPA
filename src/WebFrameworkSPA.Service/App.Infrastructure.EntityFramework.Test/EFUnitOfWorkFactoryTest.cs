@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using App.Infrastructure.EntityFramework.Test.OrdersDomain;
 using System.Data.Entity.Infrastructure;

@@ -1,9 +1,6 @@
 /// Author: Zhicheng Su
 using System;
 using System.Configuration;
-using System.Collections.Generic;
-using System.Text;
-using System.Collections;
 using System.IO;
 using System.Threading;
 using System.Xml;
@@ -11,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace App.Common
 {
-	public class AppConfigManager
+    public class AppConfigManager
 	{
 
 		#region Fields

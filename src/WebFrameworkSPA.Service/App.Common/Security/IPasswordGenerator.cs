@@ -1,5 +1,4 @@
-﻿using System;
-namespace App.Common.Security
+﻿namespace App.Common.Security
 {
     public interface IPasswordGenerator
     {

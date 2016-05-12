@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using NHibernate;
 using App.Common;
-using App.Common.InversionOfControl;
 
 namespace App.Infrastructure.NHibernate
 {

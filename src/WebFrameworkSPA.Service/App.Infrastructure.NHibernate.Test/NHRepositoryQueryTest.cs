@@ -1,21 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
 using NHibernate;
 using NHibernate.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using App.Data;
 using App.Infrastructure.NHibernate.Test.OrdersDomain;
-using App.Infrastructure.NHibernate.Test.HRDomain.Domain;
-using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
-using NHibernate.Tool.hbm2ddl;
-using Moq;
-using App.Common.InversionOfControl;
 using App.Common;
-using App.Common.Caching;
-using App.Common.Logging;
-using System.Transactions;
-using System;
 using log4net.Config;
 using System.IO;
 

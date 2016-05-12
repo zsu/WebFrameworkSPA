@@ -1,13 +1,11 @@
 ﻿/// Author: Zhicheng Su
 using System;
 using App.Common.SessionMessage;
-using System.Web;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Runtime.Serialization;
-using System.Web.Http.Filters;
 using System.Runtime.Serialization.Json;
 
 namespace Web.FilterAttributes

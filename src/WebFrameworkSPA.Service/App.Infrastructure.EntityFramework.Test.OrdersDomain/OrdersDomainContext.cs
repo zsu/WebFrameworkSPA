@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Data.Entity;
-using App.Infrastructure.EntityFramework.Test.OrdersDomain.Domain;
-using System.Configuration;
 //using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using App.Infrastructure.EntityFramework.Test.OrdersDomain.Mappings;
 using System.Reflection;
 using System.Data.Entity.ModelConfiguration;
 using System.Data;
-using System.Data.Common;
 
 namespace App.Infrastructure.EntityFramework.Test.OrdersDomain
 {

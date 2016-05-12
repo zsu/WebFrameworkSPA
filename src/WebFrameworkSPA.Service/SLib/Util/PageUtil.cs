@@ -1,19 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Specialized;
-using System.Configuration;
-using System.Data;
-using System.Text;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 
 namespace SLib.Util
 {
-	public abstract class PageUtil
+    public abstract class PageUtil
 	{
 		private static string GetFilterValue( NameValueCollection collection, string value ) {
 			if (collection == null || collection.Count == 0)

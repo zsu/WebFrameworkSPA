@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
 using App.Infrastructure.EntityFramework.Test.OrdersDomain.Domain;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Infrastructure.EntityFramework.Test.OrdersDomain.Mappings
 {

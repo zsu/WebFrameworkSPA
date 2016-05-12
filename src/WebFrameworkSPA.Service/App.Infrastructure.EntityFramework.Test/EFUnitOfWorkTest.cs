@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-using App.Infrastructure.EntityFramework.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

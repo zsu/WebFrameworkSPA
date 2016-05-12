@@ -1,5 +1,4 @@
 using System.Linq;
-using App.Infrastructure.EntityFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using log4net.Config;
 using System.IO;

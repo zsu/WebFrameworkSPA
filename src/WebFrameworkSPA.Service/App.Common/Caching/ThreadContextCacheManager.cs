@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Web;
-using App.Common.Contexts;
-using System.ServiceModel;
 using System.Runtime.Caching;
 
 namespace App.Common.Caching

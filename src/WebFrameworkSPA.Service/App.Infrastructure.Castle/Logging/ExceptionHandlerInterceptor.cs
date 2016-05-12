@@ -1,8 +1,6 @@
 //Author: Zhicheng Su
 using System;
 using System.Reflection;
-using Castle.Core.Interceptor;
-using App.Infrastructure.Castle.Logging;
 using App.Common;
 using System.Text;
 using System.Linq;

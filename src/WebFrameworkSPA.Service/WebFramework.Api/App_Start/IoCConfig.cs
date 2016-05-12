@@ -7,25 +7,17 @@ using App.Common.TypeFinder;
 using App.Infrastructure.Castle;
 using App.Infrastructure.NHibernate;
 using BrockAllen.MembershipReboot;
-using BrockAllen.MembershipReboot.Hierarchical;
 using BrockAllen.MembershipReboot.Nh;
 using BrockAllen.MembershipReboot.Nh.Repository;
-using BrockAllen.MembershipReboot.Relational;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Service;
-using System;
-using System.Configuration;
-using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Mvc;
 using App.Common.Security;
 using App.Common.Data;
 using App.Common.Events;
 using App.Common.Tasks;
-using BrockAllen.MembershipReboot.Nh.Service;
-using BrockAllen.MembershipReboot.Owin;
 namespace Web
 {
     public static class IoCConfig

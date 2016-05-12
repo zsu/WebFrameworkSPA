@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Security.Principal;
-using System.Web.Security;
 using System.Linq;
-using App.Common.InversionOfControl;
 using System.Security.Claims;
 namespace Web.Infrastructure.Extensions
 {

@@ -1,5 +1,4 @@
 using FluentNHibernate.Mapping;
-using App.Infrastructure.NHibernate.Test.OrdersDomain;
 
 namespace App.Infrastructure.NHibernate.Test.OrdersDomain.Mappings
 {

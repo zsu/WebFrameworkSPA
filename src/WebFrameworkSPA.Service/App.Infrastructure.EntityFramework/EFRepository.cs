@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using App.Common.Data;
 
 namespace App.Infrastructure.EntityFramework

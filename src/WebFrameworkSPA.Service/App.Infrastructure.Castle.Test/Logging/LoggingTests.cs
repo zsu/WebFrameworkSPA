@@ -1,12 +1,10 @@
 ﻿using System.IO;
-using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using log4net.Config;
 using App.Common;
 using App.Common.Logging;
-using System.Threading;
 using App.Common.Attributes;
 using App.Common.InversionOfControl;
 using System.Collections;

@@ -5,7 +5,6 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Text;
 using System.Linq;
-using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
 using App.Common;
 using App.Common.Attributes;

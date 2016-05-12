@@ -3,7 +3,6 @@ using System.Xml;
 using System.Security.Cryptography;
 using System.IO;
 using System.Text;
-using System.Configuration.Provider;
 using System.Collections.Specialized;
 using System.Configuration;
 

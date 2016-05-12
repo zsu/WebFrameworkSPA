@@ -1,7 +1,6 @@
 ﻿using BrockAllen.MembershipReboot.Nh;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
-using NHibernate.Type;
 
 
 namespace WebFramework.Data.Mappings.Security

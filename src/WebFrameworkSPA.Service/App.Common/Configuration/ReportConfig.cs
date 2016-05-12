@@ -1,15 +1,5 @@
 /// Author: Zhicheng Su
-using System;
-using System.IO;
-using System.Xml;
-using System.Web;
-using System.Text;
-using System.Web.Caching;
 using System.Collections.Generic;
-using System.Threading;
-using System.Configuration;
-using App.Common.InversionOfControl;
-using App.Common.Caching;
 using System.Linq;
 using System.Xml.Linq;
 

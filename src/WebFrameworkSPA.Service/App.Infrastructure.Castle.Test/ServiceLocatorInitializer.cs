@@ -1,4 +1,3 @@
-using System;
 using Castle.Windsor;
 using App.Infrastructure.Castle.Logging.Test;
 using App.Common.Logging;

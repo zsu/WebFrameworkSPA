@@ -1,14 +1,11 @@
-﻿using App.Infrastructure.NHibernate;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using NHibernate;
-using NHibernate.Bytecode;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using App.Infrastructure.NHibernate.Test.OrdersDomain;
 using App.Infrastructure.NHibernate.Test.HRDomain.Domain;
 using NHibernate.Tool.hbm2ddl;
-using NHibernate.Cfg;
 using log4net.Config;
 using System.IO;
 using App.Common;
@@ -16,8 +13,8 @@ using NHibernate.Dialect;
 
 namespace App.Infrastructure.NHibernate.Test
 {
-    
-    
+
+
     /// <summary>
     ///This is a test class for NHSessionResolverTest and is intended
     ///to contain all NHSessionResolverTest Unit Tests

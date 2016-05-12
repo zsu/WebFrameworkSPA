@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using App.Common.Data;
 using NHibernate;
 using NHibernate.Linq;
-using App.Common.InversionOfControl;
 
 namespace App.Infrastructure.NHibernate
 {

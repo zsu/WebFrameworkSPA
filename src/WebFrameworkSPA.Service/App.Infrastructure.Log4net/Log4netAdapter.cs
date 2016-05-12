@@ -1,13 +1,11 @@
 ﻿///Author: Zhicheng Su 
 ///Date: 02/24/2010
 using System;
-using System.IO;
 using System.Web;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 using log4net;
-using log4net.Config;
 using App.Common;
 using App.Common.Logging;
 using System.Threading;

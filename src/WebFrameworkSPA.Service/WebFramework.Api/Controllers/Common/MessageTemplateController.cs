@@ -1,6 +1,5 @@
 ﻿using Service;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -14,7 +13,6 @@ using System.Security.Claims;
 using App.Common.SessionMessage;
 using Web.Infrastructure.JqGrid;
 using WebFramework.Data.Domain;
-using App.Common;
 using Web.Infrastructure;
 using System.IO;
 

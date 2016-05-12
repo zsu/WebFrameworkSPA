@@ -1,8 +1,6 @@
 ﻿/// Author: Zhicheng Su
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using App.Common.Caching;
 using App.Common.InversionOfControl;
 using System.Runtime.Caching;

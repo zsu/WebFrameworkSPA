@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using App.Infrastructure.NHibernate.Test.OrdersDomain;
 using App.Infrastructure.NHibernate.Test.HRDomain.Domain;
 using NHibernate.Tool.hbm2ddl;
-using System.Transactions;
 using App.Data;
 using Moq;
 using App.Common.InversionOfControl;
 using App.Common.Logging;
 using App.Common.Caching;
-using NHibernateCfg = NHibernate.Cfg;
-using System.Data;
 using NHibernate.Dialect;
 
 namespace App.Infrastructure.NHibernate.Test

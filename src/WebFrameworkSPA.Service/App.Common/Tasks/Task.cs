@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using App.Common.InversionOfControl;
 using System.Collections.Generic;
 using App.Common.Logging;

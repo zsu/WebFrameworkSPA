@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using App.Infrastructure.EntityFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using log4net.Config;
 using System.IO;
@@ -8,7 +7,6 @@ using App.Common;
 using App.Infrastructure.EntityFramework.Test.OrdersDomain.Domain;
 using App.Data;
 using App.Infrastructure.EntityFramework.Test.OrdersDomain;
-using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
 
 namespace App.Infrastructure.EntityFramework.Test

@@ -2,13 +2,10 @@
 using System;
 using App.Common.SessionMessage;
 using System.Web;
-using System.Linq;
 using App.Common.InversionOfControl;
 using Service;
-using System.Web.Routing;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using Web.Infrastructure.Extensions;
 using System.Collections.Generic;
 using System.Web.Http.Filters;

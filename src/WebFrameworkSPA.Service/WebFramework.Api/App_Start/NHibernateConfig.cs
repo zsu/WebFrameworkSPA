@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using App.Common;
+﻿using App.Common;
 using App.Infrastructure.NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Bytecode;
-using App.Common.InversionOfControl;
-using App.Data;
-using App.Common.Data;
 using NHibernate;
 using NHibernate.Dialect;
 using NHibernate.Mapping.ByCode;

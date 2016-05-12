@@ -1,8 +1,8 @@
 ﻿using System;
 using App.Common.Logging;
-using Castle.Core.Interceptor;
 
-namespace App.Infrastructure.Castle.Logging {
+namespace App.Infrastructure.Castle.Logging
+{
     public class ExceptionLogger : IExceptionLogger {
         private readonly ILogFactory _logFactory;
         public ExceptionLogger(ILogFactory logFactory)

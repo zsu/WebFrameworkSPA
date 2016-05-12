@@ -1,9 +1,7 @@
 ﻿/// Author: Zhicheng Su
 using System;
-using System.Text;
 using System.IO;
 using System.Threading;
-using System.Collections;
 
 namespace App.Common
 {

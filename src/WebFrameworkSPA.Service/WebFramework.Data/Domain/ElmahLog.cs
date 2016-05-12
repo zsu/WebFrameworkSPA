@@ -1,11 +1,6 @@
 ﻿using App.Common.Data;
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WebFramework.Data.Domain
 {

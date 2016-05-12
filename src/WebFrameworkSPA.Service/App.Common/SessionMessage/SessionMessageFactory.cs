@@ -1,5 +1,4 @@
-﻿using App.Common.SessionMessage;
-using System;
+﻿using System;
 using System.Configuration;
 namespace App.Common.SessionMessage
 {
