@@ -1,16 +1,16 @@
-using FluentNHibernate.Mapping;
+using NHibernate.Mapping.ByCode;
+using NHibernate.Mapping.ByCode.Conformist;
 
 namespace App.Infrastructure.NHibernate.Test.OrdersDomain.Mappings
 {
-	public class ProductMap : ClassMap<Product>
+	public class ProductMap : ClassMapping<Product>
 	{
 		public ProductMap()
 		{
 			Table("Products");
-			Id(x => x.ProductID)
-				.GeneratedBy.Identity();
-			Map(x => x.Name);
-			Map(x => x.Description);
+            Id(x => x.ProductID, idm => idm.Generator(Generators.Identity));
+            Property(x => x.Name);
+			Property(x => x.Description);
 		}
 	}
 }

@@ -1,15 +1,18 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using NHibernate.Cfg;
 using NHibernate;
-using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
+using NHibernate.Dialect;
+using NHibernate.Bytecode;
+using NHibernate.Mapping.ByCode;
 using App.Infrastructure.NHibernate.Test.OrdersDomain;
 using App.Infrastructure.NHibernate.Test.HRDomain.Domain;
-using NHibernate.Tool.hbm2ddl;
 using log4net.Config;
 using System.IO;
 using App.Common;
-using NHibernate.Dialect;
+using System.Reflection;
+using SysEnv = System.Environment;
+using NHEnv = NHibernate.Cfg.Environment;
 
 namespace App.Infrastructure.NHibernate.Test
 {
@@ -28,6 +31,7 @@ namespace App.Infrastructure.NHibernate.Test
         private static ISessionFactory _ordersFactory;
         private static ISessionFactory _hrFactory;
         private const string ConnectionString = @"Data Source=Test.sdf";
+        private static System.Data.SqlServerCe.SqlCeEngine _engine;
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -45,38 +49,63 @@ namespace App.Infrastructure.NHibernate.Test
         }
 
         #region Additional test attributes
-         
+
         //You can use the following additional attributes as you write your tests:
-        
+
         //Use ClassInitialize to run code before running the first test in the class
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Util.LogConfigFilePath));
-            if (File.Exists("Test.sdf")) File.Delete("Test.sdf");
-            using (var engine = new System.Data.SqlServerCe.SqlCeEngine(ConnectionString))
+            //if (File.Exists("Test.sdf")) File.Delete("Test.sdf");
+            using (_engine = new System.Data.SqlServerCe.SqlCeEngine(ConnectionString))
             {
-                engine.CreateDatabase();
+                if (!File.Exists("Test.sdf"))
+                    _engine.CreateDatabase();
             }
-            var cnf = Fluently.Configure()
-            .Database(MsSqlCeConfiguration.Standard
-            .ConnectionString(((ConnectionStringBuilder cs) => cs.Is(ConnectionString)))
-            .Dialect<MsSqlCe40Dialect>())
-            .Mappings(mappings => mappings.FluentMappings.AddFromAssembly(typeof(Order).Assembly).ExportTo("."))
-            .ExposeConfiguration(x => new SchemaExport(x).Execute(false, true, false));//, GetConnection(), null));
-            //var config = cnf.BuildConfiguration()
-            //    .SetProperty(NHibernateCfg.Environment.ReleaseConnections, "on_close");
-            _ordersFactory = cnf.BuildConfiguration().BuildSessionFactory();
+            var cnf = new Configuration()
+                .DataBaseIntegration(d =>
+                {
+                    d.ConnectionString = ConnectionString;
+                    d.Dialect<MsSqlCe40Dialect>();
+                    //d.Dialect<Oracle10gDialect>();
+                    d.SchemaAction = SchemaAutoAction.Create;
+                })
+                .Proxy(p => p.ProxyFactoryFactory<DefaultProxyFactoryFactory>())
+                .CurrentSessionContext<LazySessionContext>()
+                //.SetProperty(NHEnv.Hbm2ddlKeyWords, "none")
+                //.SetProperty(NHEnv.Hbm2ddlAuto, (createSchema == true) ? SchemaAutoAction.Update.ToString() : SchemaAutoAction.Validate.ToString())
+                .SetProperty(NHEnv.ReleaseConnections, "on_close");
+            var mapper = new ModelMapper();
 
-            cnf = Fluently.Configure()
-            .Database(MsSqlCeConfiguration.Standard
-            .ConnectionString(((ConnectionStringBuilder cs) => cs.Is(ConnectionString)))
-            .Dialect<MsSqlCe40Dialect>())
-            .Mappings(mappings => mappings.FluentMappings.AddFromAssembly(typeof(SalesPerson).Assembly).ExportTo("."))
-            .ExposeConfiguration(x => new SchemaExport(x).Execute(false, true, false));//, GetConnection(), null));
-            //config = cnf.BuildConfiguration()
-            //    .SetProperty(NHibernateCfg.Environment.ReleaseConnections, "on_close"); 
-            _hrFactory = cnf.BuildConfiguration().BuildSessionFactory();
+            mapper.AddMappings(Assembly.GetAssembly(typeof(Order)).GetExportedTypes());
+            var mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
+
+            cnf.AddMapping(mapping);
+            cnf.BuildMapping();
+            _ordersFactory = cnf.BuildSessionFactory();
+
+            cnf = new Configuration()
+                            .DataBaseIntegration(d =>
+                            {
+                                d.ConnectionString = ConnectionString;
+                                d.Dialect<MsSqlCe40Dialect>();
+                                //d.Dialect<Oracle10gDialect>();
+                                d.SchemaAction = SchemaAutoAction.Create;
+                            })
+                            .Proxy(p => p.ProxyFactoryFactory<DefaultProxyFactoryFactory>())
+                            .CurrentSessionContext<LazySessionContext>()
+                            //.SetProperty(NHEnv.Hbm2ddlKeyWords, "none")
+                            //.SetProperty(NHEnv.Hbm2ddlAuto, (createSchema == true) ? SchemaAutoAction.Update.ToString() : SchemaAutoAction.Validate.ToString())
+                            .SetProperty(NHEnv.ReleaseConnections, "on_close");
+            mapper = new ModelMapper();
+
+            mapper.AddMappings(Assembly.GetAssembly(typeof(SalesPerson)).GetExportedTypes());
+            mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
+
+            cnf.AddMapping(mapping);
+            cnf.BuildMapping();
+            _hrFactory = cnf.BuildSessionFactory();
         }
         //
         //Use ClassCleanup to run code after all tests in a class have run
@@ -86,6 +115,7 @@ namespace App.Infrastructure.NHibernate.Test
             log4net.LogManager.Shutdown();
             _ordersFactory.Dispose();
             _hrFactory.Dispose();
+            _engine.Dispose();
         }
         //
         //Use TestInitialize to run code before running each test
@@ -147,7 +177,7 @@ namespace App.Infrastructure.NHibernate.Test
 
             var resolved = resolver.GetFactoryFor<Order>();
             Assert.IsNotNull(resolved);
-            Assert.ReferenceEquals(resolved,_ordersFactory);
+            Assert.ReferenceEquals(resolved, _ordersFactory);
         }
 
         [TestMethod]

@@ -1,6 +1,4 @@
 ﻿using System;
-using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using App.Infrastructure.NHibernate.Test.OrdersDomain;
 using App.Infrastructure.NHibernate.Test.HRDomain.Domain;
@@ -11,6 +9,12 @@ using App.Common.InversionOfControl;
 using App.Common.Logging;
 using App.Common.Caching;
 using NHibernate.Dialect;
+using NHibernate.Mapping.ByCode;
+using NHibernate.Cfg;
+using NHibernate.Bytecode;
+using System.Reflection;
+using NHEnv = NHibernate.Cfg.Environment;
+using System.IO;
 
 namespace App.Infrastructure.NHibernate.Test
 {
@@ -22,33 +26,60 @@ namespace App.Infrastructure.NHibernate.Test
         protected const string ConnectionString = @"Data Source=Test.sdf";
         //protected ISession OrdersDomainSession { get; set; }
         //protected ISession HRDomainSession { get; set; }
+        private static System.Data.SqlServerCe.SqlCeEngine _engine;
         public NHTestBase()
         {
-            using (var engine = new System.Data.SqlServerCe.SqlCeEngine(ConnectionString))
+            //if (File.Exists("Test.sdf")) File.Delete("Test.sdf");
+            using (_engine = new System.Data.SqlServerCe.SqlCeEngine(ConnectionString))
             {
-                engine.CreateDatabase();
+                if (!File.Exists("Test.sdf"))
+                    _engine.CreateDatabase();
             }
-            var cnf = Fluently.Configure()
-            .Database(MsSqlCeConfiguration.Standard
-            .ConnectionString(((ConnectionStringBuilder cs) => cs.Is(ConnectionString)))
-            .Dialect <MsSqlCe40Dialect>())
-            .Mappings(mappings => mappings.FluentMappings.AddFromAssembly(typeof(Order).Assembly).ExportTo("."))
-            .ExposeConfiguration(x => new SchemaExport(x).Execute(false, true, false));//, GetConnection(), null));
-            //var config = cnf.BuildConfiguration()
-            //    .SetProperty(NHibernateCfg.Environment.ReleaseConnections, "on_close");
-            OrdersDomainFactory = cnf.BuildConfiguration().BuildSessionFactory();
+            var cnf = new Configuration()
+                .DataBaseIntegration(d =>
+                {
+                    d.ConnectionString = ConnectionString;
+                    d.Dialect<MsSqlCe40Dialect>();
+                    //d.Dialect<Oracle10gDialect>();
+                    d.SchemaAction = SchemaAutoAction.Create;
+                })
+                .Proxy(p => p.ProxyFactoryFactory<DefaultProxyFactoryFactory>())
+                .CurrentSessionContext<LazySessionContext>()
+                //.SetProperty(NHEnv.Hbm2ddlKeyWords, "none")
+                //.SetProperty(NHEnv.Hbm2ddlAuto, (createSchema == true) ? SchemaAutoAction.Update.ToString() : SchemaAutoAction.Validate.ToString())
+                .SetProperty(NHEnv.ReleaseConnections, "on_close");
+            var mapper = new ModelMapper();
 
-            cnf  = Fluently.Configure()
-            .Database(MsSqlCeConfiguration.Standard
-            .ConnectionString(((ConnectionStringBuilder cs) => cs.Is(ConnectionString)))
-            .Dialect <MsSqlCe40Dialect>())
-            .Mappings(mappings => mappings.FluentMappings.AddFromAssembly(typeof(SalesPerson).Assembly).ExportTo("."))
-            .ExposeConfiguration(x => new SchemaExport(x).Execute(false, true, false));//, GetConnection(), null));
-            //config = cnf.BuildConfiguration()
-            //    .SetProperty(NHibernateCfg.Environment.ReleaseConnections, "on_close"); 
-            HRDomainFactory = cnf.BuildConfiguration().BuildSessionFactory();
-            //OrdersDomainSession = OrdersDomainFactory.OpenSession(GetConnection());
-            //HRDomainSession = HRDomainFactory.OpenSession(GetConnection());
+            mapper.AddMappings(Assembly.GetAssembly(typeof(Order)).GetExportedTypes());
+            var mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
+
+            cnf.AddMapping(mapping);
+            cnf.BuildMapping();
+            OrdersDomainFactory = cnf.BuildSessionFactory();
+
+            cnf = new Configuration()
+                            .DataBaseIntegration(d =>
+                            {
+                                d.ConnectionString = ConnectionString;
+                                d.Dialect<MsSqlCe40Dialect>();
+                                //d.Dialect<Oracle10gDialect>();
+                                d.SchemaAction = SchemaAutoAction.Create;
+                            })
+                            .Proxy(p => p.ProxyFactoryFactory<DefaultProxyFactoryFactory>())
+                            .CurrentSessionContext<LazySessionContext>()
+                            //.SetProperty(NHEnv.Hbm2ddlKeyWords, "none")
+                            //.SetProperty(NHEnv.Hbm2ddlAuto, (createSchema == true) ? SchemaAutoAction.Update.ToString() : SchemaAutoAction.Validate.ToString())
+                            .SetProperty(NHEnv.ReleaseConnections, "on_close");
+            mapper = new ModelMapper();
+
+            mapper.AddMappings(Assembly.GetAssembly(typeof(SalesPerson)).GetExportedTypes());
+            mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
+
+            cnf.AddMapping(mapping);
+            cnf.BuildMapping();
+            HRDomainFactory = cnf.BuildSessionFactory();
+
+
             UnitOfWorkFactory = new NHUnitOfWorkFactory();
             UnitOfWorkFactory.RegisterSessionFactoryProvider(() => OrdersDomainFactory);
             UnitOfWorkFactory.RegisterSessionFactoryProvider(() => HRDomainFactory);
@@ -84,6 +115,7 @@ namespace App.Infrastructure.NHibernate.Test
                     //if (_connection != null)
                     //    _connection.Close();
                     //_connection = null;
+                    _engine.Dispose();
                 }
 
                 // TODO: free your own state (unmanaged objects).
