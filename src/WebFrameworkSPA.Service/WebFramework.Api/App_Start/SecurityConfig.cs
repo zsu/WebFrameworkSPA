@@ -27,14 +27,13 @@ namespace Web
 
             var config = new MembershipRebootConfiguration<NhUserAccount>(settings);
             //config.RegisterPasswordValidator(new PasswordValidator());
-            config.ConfigurePasswordComplexity(7, 4);
+            config.ConfigurePasswordComplexity(8, 4);
 
             config.AddCommandHandler(new CustomClaimsMapper<NhUserAccount>());
 
             var delivery = new SmtpMessageDelivery();
             var appinfo = IoC.GetService<ApplicationInformation>();
-            var messageTemplateService = IoC.GetService<IMessageTemplateService>();
-            var formatter = new CustomEmailMessageFormatter<NhUserAccount>(appinfo, messageTemplateService);
+            var formatter = new CustomEmailMessageFormatter<NhUserAccount>(appinfo);
 
             config.AddEventHandler(new EmailAccountEventsHandler<NhUserAccount>(formatter, delivery));
             config.AddEventHandler(new AuthenticationAuditEventHandler<NhUserAccount>());
@@ -263,11 +262,9 @@ namespace Web
     // customize default email messages
     public class CustomEmailMessageFormatter<T> : EmailMessageFormatter<T> where T : UserAccount
     {
-        private IMessageTemplateService _messageTemplateServce;
-        public CustomEmailMessageFormatter(ApplicationInformation info, IMessageTemplateService messageTemplateService)
+        public CustomEmailMessageFormatter(ApplicationInformation info)
             : base(info)
         {
-            _messageTemplateServce = messageTemplateService;
         }
 
         protected override string GetBody(UserAccountEvent<T> evt, IDictionary<string, string> values)
@@ -286,16 +283,18 @@ namespace Web
         }
         protected override string LoadSubjectTemplate(UserAccountEvent<T> evt)
         {
+            IMessageTemplateService messageTemplateServce = IoC.GetService<IMessageTemplateService>();
             string templateName = CleanGenericName(evt.GetType());
-            MessageTemplate template = _messageTemplateServce.GetByName(templateName);
+            MessageTemplate template = messageTemplateServce.GetByName(templateName);
             if (template == null)
                 return base.LoadSubjectTemplate(evt);
             return template.Subject;
         }
         protected override string LoadBodyTemplate(UserAccountEvent<T> evt)
         {
+            IMessageTemplateService messageTemplateServce = IoC.GetService<IMessageTemplateService>();
             string templateName = CleanGenericName(evt.GetType());
-            MessageTemplate template = _messageTemplateServce.GetByName(templateName);
+            MessageTemplate template = messageTemplateServce.GetByName(templateName);
             if (template == null)
                 return base.LoadBodyTemplate(evt);
             return template.Body;
