@@ -21,7 +21,7 @@ namespace App.Infrastructure.NHibernate
         {
             get
             {
-                if (_session == null)
+                if (_session == null || !_session.IsOpen)
                     _session = UnitOfWork<NHUnitOfWork>().GetSession<T>();
                 return _session;
             }
