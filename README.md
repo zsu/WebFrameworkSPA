@@ -89,6 +89,9 @@ Find the following in src\Web\app\infrastructure\tool.js:
 ttTools.cloudUrl = "WebFrameworkService/";
 Change the url to the one you used to host the WebFramework.Service;
 
+#License
+All source code is licensed under MIT license - http://www.opensource.org/licenses/mit-license.php
+
 #Screenshots
 ![WebFramework](screenshots/home.jpg?raw=true "home")
 ![WebFramework](screenshots/login.jpg?raw=true "login")
