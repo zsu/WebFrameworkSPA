@@ -1,4 +1,4 @@
-#What is WebFrameworkSPA
+# What is WebFrameworkSPA
 
 WebFrameworkSPA is a Single Page Application(SPA) framework built on top of AngularJS, Web Api.
 
@@ -13,12 +13,12 @@ Some of the features of WebFrameworkSPA are:
   * Messaging
   * Web Server management(Refresh Cache, Restart AppPool, Application offline scheduler)  
 
-###Live Demo: https://webframeworkspa.azurewebsites.net/
+### Live Demo: https://webframeworkspa.azurewebsites.net/
 Login: user1/Abc123
 
-#Getting started with WebFrameworkSPA
+# Getting started with WebFrameworkSPA
 There are two web applications: WebFramework is the GUI web application using AngularJS; WebFramework.Service is the Web Service application using asp.net Web Api 2.
-##Configure WebFramework.Service
+## Configure WebFramework.Service
   * Restore Nuget package
   * Build solution
   * Copy the encrypted string inside \<EncryptedData\> in web.config; 
