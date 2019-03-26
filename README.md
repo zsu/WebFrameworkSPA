@@ -1,4 +1,4 @@
-#What is WebFrameworkSPA
+# What is WebFrameworkSPA
 
 WebFrameworkSPA is a Single Page Application(SPA) framework built on top of AngularJS, Web Api.
 
@@ -13,9 +13,9 @@ Some of the features of WebFrameworkSPA are:
   * Messaging
   * Web Server management(Refresh Cache, Restart AppPool, Application offline scheduler)  
 
-#Getting started with WebFrameworkSPA
+# Getting started with WebFrameworkSPA
 There are two web applications: WebFramework is the GUI web application using AngularJS; WebFramework.Service is the Web Service application using asp.net Web Api 2.
-##Configure WebFramework.Service
+## Configure WebFramework.Service
   * Restore Nuget package
   * Build solution
   * Copy the encrypted string inside \<EncryptedData\> in web.config; 
@@ -81,15 +81,15 @@ The encrypted connectionstrings in web.config also has three corresponding conne
 	<add name="AppDB" connectionString="Data Source=|DataDirectory|WebFramework.sdf;Enlist=false;" providerName="System.Data.SqlServerCe.4.0" />
 </connectionStrings>
 ```
-##Configure WebFrameworkSPA
+## Configure WebFrameworkSPA
 Find the following in src\Web\app\infrastructure\tool.js:
 ttTools.cloudUrl = "WebFrameworkService/";
 Change the url to the one you used to host the WebFramework.Service;
 
-#License
+# License
 All source code is licensed under MIT license - http://www.opensource.org/licenses/mit-license.php
 
-#Screenshots
+# Screenshots
 ![WebFramework](screenshots/home.jpg?raw=true "home")
 ![WebFramework](screenshots/login.jpg?raw=true "login")
 ![WebFramework](screenshots/menu.jpg?raw=true "menu")
