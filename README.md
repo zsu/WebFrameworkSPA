@@ -13,9 +13,6 @@ Some of the features of WebFrameworkSPA are:
   * Messaging
   * Web Server management(Refresh Cache, Restart AppPool, Application offline scheduler)  
 
-###Live Demo: https://webframeworkspa.azurewebsites.net/
-Login: user1/Abc123
-
 #Getting started with WebFrameworkSPA
 There are two web applications: WebFramework is the GUI web application using AngularJS; WebFramework.Service is the Web Service application using asp.net Web Api 2.
 ##Configure WebFramework.Service
